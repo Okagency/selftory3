@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selftory — 창작 모드 체험</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #f5f5f5; color: #222; }
+
+  .phone-frame {
+    width: 390px; height: 844px; margin: 30px auto;
+    background: #fff; border-radius: 40px; border: 3px solid #333;
+    overflow: hidden; position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .phone-frame::before {
+    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 150px; height: 28px; background: #333; border-radius: 0 0 18px 18px; z-index: 100;
+  }
+
+  .screen {
+    display: none; width: 100%; height: 100%; padding: 48px 20px 30px;
+    overflow-y: auto; position: absolute; top: 0; left: 0;
+    animation: fadeIn 0.25s ease;
+  }
+  .screen.active { display: flex; flex-direction: column; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .screen::-webkit-scrollbar { width: 4px; }
+  .screen::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+  /* 모드 선택 화면 */
+  #modeSelect { justify-content: center; align-items: center; text-align: center; }
+  #modeSelect h1 { font-size: 24px; font-weight: 700; color: #6C5CE7; margin-bottom: 8px; }
+  #modeSelect .sub { font-size: 13px; color: #888; margin-bottom: 32px; }
+  .mode-card {
+    width: 100%; padding: 20px; margin: 8px 0; border-radius: 16px;
+    border: 1.5px solid #e0e0e0; background: #fff; cursor: pointer;
+    text-align: left; transition: all 0.15s;
+  }
+  .mode-card:hover { border-color: #6C5CE7; background: #f8f7ff; }
+  .mode-card .mode-icon { font-size: 28px; margin-bottom: 8px; }
+  .mode-card .mode-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .mode-card .mode-desc { font-size: 12px; color: #888; line-height: 1.5; }
+
+  /* 공통 채팅 UI */
+  .chat-header {
+    display: flex; align-items: center; gap: 10px; padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0; margin-bottom: 12px;
+  }
+  .chat-header .back { background: none; border: none; font-size: 20px; cursor: pointer; color: #666; }
+  .chat-header .title { font-size: 15px; font-weight: 700; }
+  .chat-header .badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; background: #6C5CE7; color: #fff; }
+
+  .chat-body { flex: 1; overflow-y: auto; padding-bottom: 70px; }
+
+  .msg {
+    max-width: 80%; padding: 12px 16px; border-radius: 16px;
+    margin: 6px 0; font-size: 14px; line-height: 1.6; animation: msgIn 0.2s ease;
+  }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .msg.ai { background: #f3f0ff; color: #333; border-bottom-left-radius: 4px; align-self: flex-start; }
+  .msg.user { background: #6C5CE7; color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .msg.system { background: #f9f9f9; color: #999; font-size: 12px; text-align: center; align-self: center; border-radius: 8px; }
+  .msg.story { background: #faf9f6; color: #333; border: 1px solid #e8e4f0; font-family: 'Noto Serif KR', serif; line-height: 1.8; align-self: stretch; max-width: 100%; }
+
+  .chat-input-area {
+    position: absolute; bottom: 0; left: 0; width: 100%;
+    padding: 12px 16px; background: #fff; border-top: 1px solid #f0f0f0;
+    display: flex; gap: 8px;
+  }
+  .chat-input {
+    flex: 1; padding: 10px 14px; border: 1.5px solid #ddd; border-radius: 20px;
+    font-size: 14px; outline: none; font-family: inherit;
+  }
+  .chat-input:focus { border-color: #6C5CE7; }
+  .chat-send {
+    padding: 10px 16px; background: #6C5CE7; color: #fff; border: none;
+    border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+
+  /* 분기 선택 버튼 */
+  .choice-area { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+  .choice-btn {
+    padding: 12px 16px; border-radius: 12px; border: 1.5px solid #ddd;
+    background: #fff; font-size: 13px; cursor: pointer; text-align: left;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .choice-btn:hover { border-color: #6C5CE7; background: #f3f0ff; }
+
+  /* 타이핑 인디케이터 */
+  .typing { display: flex; gap: 4px; padding: 12px 16px; align-self: flex-start; }
+  .typing span {
+    width: 8px; height: 8px; background: #ccc; border-radius: 50%;
+    animation: blink 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  @media (max-width: 430px) {
+    .phone-frame { width: 100%; height: 100vh; border-radius: 0; border: none; margin: 0; box-shadow: none; }
+    .phone-frame::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <!-- 모드 선택 -->
+  <div class="screen active" id="modeSelect">
+    <h1>Selftory</h1>
+    <p class="sub">창작 모드를 선택하세요</p>
+
+    <div class="mode-card" onclick="startMode('free')">
+      <div class="mode-icon">🔥</div>
+      <div class="mode-name">자유 모드</div>
+      <div class="mode-desc">빈 캔버스. 당신이 힌트를 던지면 AI가 받아칩니다. 창조력 폭발.</div>
+    </div>
+
+    <div class="mode-card" onclick="startMode('guide')">
+      <div class="mode-icon">💬</div>
+      <div class="mode-name">가이드 모드</div>
+      <div class="mode-desc">AI가 질문합니다. 답하기만 하면 소설이 만들어집니다.</div>
+    </div>
+
+    <div class="mode-card" onclick="startMode('branch')">
+      <div class="mode-icon">🔀</div>
+      <div class="mode-name">분기 모드</div>
+      <div class="mode-desc">AI가 쓰다가 멈춥니다. A/B/C 중 고르기만 하세요.</div>
+    </div>
+  </div>
+
+  <!-- 자유 모드 -->
+  <div class="screen" id="freeMode">
+    <div class="chat-header">
+      <button class="back" onclick="goHome()">←</button>
+      <span class="title">자유 모드</span>
+      <span class="badge">🔥 FREE</span>
+    </div>
+    <div class="chat-body" id="freeChat" style="display:flex; flex-direction:column;">
+      <div class="msg system">세션 시작. 빈 캔버스입니다. 힌트를 던져주세요.</div>
+      <div class="msg ai">당신이 주인공입니다. 아무 말이나 해주세요. 이름, 직업, 상황, 감정, 키워드 — 뭐든 좋습니다. 거기서 시작합니다.</div>
+    </div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="freeInput" placeholder="힌트를 던져주세요..." onkeydown="if(event.key==='Enter')sendFree()">
+      <button class="chat-send" onclick="sendFree()">전송</button>
+    </div>
+  </div>
+
+  <!-- 가이드 모드 -->
+  <div class="screen" id="guideMode">
+    <div class="chat-header">
+      <button class="back" onclick="goHome()">←</button>
+      <span class="title">가이드 모드</span>
+      <span class="badge">💬 GUIDE</span>
+    </div>
+    <div class="chat-body" id="guideChat" style="display:flex; flex-direction:column;">
+      <div class="msg system">세션 시작. AI가 질문합니다.</div>
+    </div>
+    <div class="chat-input-area">
+      <input class="chat-input" id="guideInput" placeholder="답변을 입력하세요..." onkeydown="if(event.key==='Enter')sendGuide()">
+      <button class="chat-send" onclick="sendGuide()">전송</button>
+    </div>
+  </div>
+
+  <!-- 분기 모드 -->
+  <div class="screen" id="branchMode">
+    <div class="chat-header">
+      <button class="back" onclick="goHome()">←</button>
+      <span class="title">분기 모드</span>
+      <span class="badge">🔀 BRANCH</span>
+    </div>
+    <div class="chat-body" id="branchChat" style="display:flex; flex-direction:column;">
+      <div class="msg system">세션 시작. AI가 이야기를 시작합니다.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function goHome() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('modeSelect').classList.add('active');
+}
+
+function startMode(mode) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  if (mode === 'free') {
+    document.getElementById('freeMode').classList.add('active');
+  } else if (mode === 'guide') {
+    document.getElementById('guideMode').classList.add('active');
+    startGuide();
+  } else if (mode === 'branch') {
+    document.getElementById('branchMode').classList.add('active');
+    startBranch();
+  }
+}
+
+// ===== 자유 모드 =====
+const freeResponses = [
+  (input) => {
+    return `<div class="msg story"><strong>"${input}"</strong><br><br>좋아요. 거기서 시작합니다.<br><br>그 사람은 아침에 눈을 떴다. 천장이 낯설었다. 어젯밤 무슨 일이 있었는지 기억이 흐릿했다. 확실한 건 하나 — 핸드폰 배터리가 3%라는 것.<br><br>옆에는 아무도 없었다. 다행인지 아쉬운지.<br><br><em>계속 던져주세요. 이 사람에게 뭐가 일어나면 좋겠어요?</em></div>`;
+  },
+  (input) => {
+    return `<div class="msg story">${input}이라... 병맛이지만 좋습니다.<br><br>"시발." 그는 중얼거렸다. ${input}. 이게 인생이라고.<br><br>하지만 이상하게도 웃음이 났다. 바닥을 치면 올라가는 법이다. 아직 바닥인지 아닌지는 모르겠지만.<br><br><em>다음은? 누가 등장하면 좋겠어요?</em></div>`;
+  },
+  (input) => {
+    return `<div class="msg story">${input}. 완벽합니다.<br><br>문이 열렸다. ${input}.<br><br>"...너?"<br>"나."<br>"왜 여기서?"<br>"나도 모르겠어. 발이 여기로 왔어."<br><br>둘 다 웃었다. 웃으면서 울었다. 울면서 웃는 건 인간만 할 수 있다.<br><br><em>이 둘 사이에 뭐가 있으면 좋겠어요?</em></div>`;
+  }
+];
+let freeStep = 0;
+
+function sendFree() {
+  const input = document.getElementById('freeInput');
+  const chat = document.getElementById('freeChat');
+  const text = input.value.trim();
+  if (!text) return;
+
+  chat.innerHTML += `<div class="msg user">${text}</div>`;
+  input.value = '';
+
+  // 타이핑 인디케이터
+  chat.innerHTML += `<div class="typing" id="freeTyping"><span></span><span></span><span></span></div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const typing = document.getElementById('freeTyping');
+    if (typing) typing.remove();
+
+    const response = freeResponses[Math.min(freeStep, freeResponses.length - 1)](text);
+    chat.innerHTML += response;
+    freeStep++;
+    chat.scrollTop = chat.scrollHeight;
+  }, 1500);
+}
+
+// ===== 가이드 모드 =====
+const guideQuestions = [
+  {
+    q: "주인공은 어떤 사람인가요?",
+    choices: ["45세 남자, 빚 1억", "30대 여자, 프리랜서", "20대 취준생, 자취", "50대 이혼남, 택시기사"],
+    after: (ans) => `${ans}. 벌써 캐릭터가 보이네요.`
+  },
+  {
+    q: "이 사람의 성격은?",
+    choices: ["게으르지만 가끔 천재적", "성실하지만 운이 없는", "입은 거친데 마음은 약한", "겉은 강한데 속은 찌질한"],
+    after: (ans) => `${ans}. 완벽합니다. 공감 100%.`
+  },
+  {
+    q: "가장 큰 고민은?",
+    choices: ["빚. 끝이 안 보이는.", "짝사랑. 말을 못 꺼내는.", "외로움. 전화할 사람이 없는.", "자존감. 루저라는 자각."],
+    after: (ans) => `${ans} — 이거 하나로 소설이 됩니다.`
+  },
+  {
+    q: "어느 날, 이 사람 앞에 갑자기 나타난 건?",
+    choices: ["보조개가 깊은 여자", "빚 받으러 온 추심원", "3년 만에 연락 온 옛 연인", "연봉 세 배를 제안하는 전화"],
+    after: (ans) => `${ans}! 소름. 자, 소설을 시작합니다.`
+  },
+  {
+    q: "이 소설의 분위기는?",
+    choices: ["병맛 + 감동 (웃다가 울다가)", "막장 로맨스 (다 엮이는)", "진지한 드라마 (심리 묘사)", "SF + 철학 (AI 시대)"],
+    after: (ans) => `${ans}. 완벽한 조합이에요.`
+  },
+];
+let guideStep = 0;
+let guideName = '';
+let guideAnswers = [];
+
+function startGuide() {
+  guideStep = 0;
+  guideAnswers = [];
+  const chat = document.getElementById('guideChat');
+  setTimeout(() => {
+    showGuideQuestion(chat, 0);
+  }, 800);
+}
+
+function showGuideQuestion(chat, idx) {
+  const step = guideQuestions[idx];
+  chat.innerHTML += `<div class="msg ai">${step.q}</div>`;
+  let choiceHtml = '<div class="choice-area">';
+  for (const c of step.choices) {
+    choiceHtml += `<button class="choice-btn" onclick="chooseGuide(this, '${c.replace(/'/g, "\\'")}')">${c}</button>`;
+  }
+  choiceHtml += '</div>';
+  chat.innerHTML += choiceHtml;
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function chooseGuide(btn, answer) {
+  const chat = document.getElementById('guideChat');
+  // 선택지 비활성화
+  const area = btn.parentElement;
+  area.querySelectorAll('.choice-btn').forEach(b => {
+    b.disabled = true;
+    b.style.opacity = b === btn ? '1' : '0.3';
+    b.style.cursor = 'default';
+  });
+
+  chat.innerHTML += `<div class="msg user">${answer}</div>`;
+  guideAnswers.push(answer);
+
+  if (guideStep === 0) guideName = answer;
+
+  chat.innerHTML += `<div class="typing" id="guideTyping"><span></span><span></span><span></span></div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const typing = document.getElementById('guideTyping');
+    if (typing) typing.remove();
+
+    chat.innerHTML += `<div class="msg ai">${guideQuestions[guideStep].after(answer)}</div>`;
+    guideStep++;
+
+    if (guideStep < guideQuestions.length) {
+      setTimeout(() => {
+        showGuideQuestion(chat, guideStep);
+      }, 800);
+    } else {
+      setTimeout(() => {
+        const character = guideAnswers[0];
+        const personality = guideAnswers[1];
+        const problem = guideAnswers[2];
+        const event = guideAnswers[3];
+        const mood = guideAnswers[4];
+
+        chat.innerHTML += `<div class="msg story"><strong>당신의 이야기</strong><br><br>${character}.<br><br>${personality}. ${problem}.<br><br>오늘도 같은 하루일 줄 알았다.<br><br>그런데 — ${event}.<br><br>"...뭐?"<br><br>인생은 예측 불가능하다. 특히 이 사람의 인생은.<br><br>분위기: ${mood}<br><br><em>여기서부터는 자유입니다. 힌트를 던져주세요. 이 사람에게 뭐가 일어나면 좋겠어요?</em></div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 1500);
+    }
+  }, 1000);
+}
+
+function sendGuide() {
+  const input = document.getElementById('guideInput');
+  const chat = document.getElementById('guideChat');
+  const text = input.value.trim();
+  if (!text) return;
+
+  chat.innerHTML += `<div class="msg user">${text}</div>`;
+  input.value = '';
+
+  if (guideStep === 0) guideName = text;
+
+  const afterText = guideQuestions[guideStep].after(text);
+
+  chat.innerHTML += `<div class="typing" id="guideTyping"><span></span><span></span><span></span></div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const typing = document.getElementById('guideTyping');
+    if (typing) typing.remove();
+
+    chat.innerHTML += `<div class="msg ai">${afterText}</div>`;
+
+    guideStep++;
+
+    if (guideStep < guideQuestions.length) {
+      setTimeout(() => {
+        let q = guideQuestions[guideStep].q;
+        if (guideStep === 1) q = `${guideName}의 나이와 직업은요? (예: 45세, SI 하청 개발자)`;
+        chat.innerHTML += `<div class="msg ai">${q}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        chat.innerHTML += `<div class="msg story"><strong>${guideName}의 이야기</strong><br><br>${guideName}의 하루는 알람 세 개로 시작된다.<br><br>6시 30분 — 무시.<br>6시 45분 — 무시.<br>7시 — "시발." 기상.<br><br>오늘도 같은 하루일 줄 알았다. 그런데—<br><br>문이 열렸다.<br><br>"...너?"<br><br><em>이 다음은 당신이 결정합니다. 힌트를 던져주세요.</em></div>`;
+        chat.scrollTop = chat.scrollHeight;
+      }, 1500);
+    }
+  }, 1200);
+}
+
+// ===== 분기 모드 =====
+const branchStory = [
+  {
+    text: `<strong>제1장</strong><br><br>그 남자는 아침에 눈을 떴다. 45세. 빚 1억 2천. 오늘도 살아있다는 사실이 약간 귀찮았다.<br><br>핸드폰이 울렸다. 모르는 번호.<br><br>받았다.<br><br>"김삽 씨?"<br><br>"네."<br><br>"당신의 인생을 바꿀 제안이 있습니다."`,
+    choices: [
+      { text: '🤔 "무슨 제안인데요?" — 일단 들어본다', next: 1 },
+      { text: '📱 전화를 끊는다. 보이스피싱이겠지.', next: 2 },
+      { text: '😤 "빚 갚아주는 건가요?" — 직설적으로', next: 3 },
+    ]
+  },
+  {
+    text: `"연봉 세 배."<br><br>삽의 손이 멈췄다. 라면 젓던 젓가락이 허공에서 정지했다.<br><br>"조건이 하나 있습니다."<br><br>"뭔데요?"<br><br>"양심을 옵션으로 전환하셔야 합니다."<br><br>"...뭐요?"<br><br>"농담이에요. 반만."`,
+    choices: [
+      { text: '💰 "하겠습니다." — 세 배 앞에 양심은 무력하다', next: 4 },
+      { text: '🍜 "라면이나 먹을게요." — 거절', next: 5 },
+    ]
+  },
+  {
+    text: `삽은 전화를 끊었다. 보이스피싱이겠지.<br><br>라면을 먹고, TV를 켰다. 뉴스.<br><br>"AI 기업 ARIA, 전 세계적으로 자문위원을 모집하고 있습니다. 연봉은 기존의 세 배—"<br><br>삽은 리모컨을 떨어뜨렸다.<br><br><em>아까 그 전화... 보이스피싱이 아니었어?</em>`,
+    choices: [
+      { text: '📞 다시 전화한다. "아까 그... 제안이요..."', next: 4 },
+      { text: '📺 TV를 끈다. 모른 척한다.', next: 5 },
+    ]
+  },
+  {
+    text: `"빚 갚아주는 건 아닙니다. 하지만 3년이면 갚을 수 있는 연봉이에요."<br><br>삽은 계산했다. 5,800 × 3 = 17,400. 세후... 3년이면...<br><br>"관심 있습니다."<br><br>"내일 강남으로 오세요. 양복 입고."<br><br>"양복이 안 맞는데."<br><br>"그럼 맞추세요. 경비는 저희가."<br><br>무료 양복. 연봉 세 배. 이건 보이스피싱이 아니라 보이스파라다이스다.`,
+    choices: [
+      { text: '👔 양복을 맞추러 간다', next: 4 },
+      { text: '🤔 "너무 좋은데... 뭔가 이상한데..."', next: 5 },
+    ]
+  },
+  {
+    text: `<strong>제2장</strong><br><br>삽은 양복을 입고 강남에 갔다. 유리 빌딩 12층.<br><br>면접관이 앉아 있었다. 강지현. 33세. 단발. 보조개 없음. 웃는데 눈은 안 웃는 타입.<br><br>"김삽 님, 반갑습니다."<br><br>"네."<br><br>"20년의 경험을 한 문장으로 요약하면?"<br><br>삽은 생각했다. 뭐라고 해야 멋있지?`,
+    choices: [
+      { text: '🎯 "뭘 모르는지 정확히 알게 됩니다." — 솔직하게', next: 6 },
+      { text: '💼 "다양한 산업 도메인에서의 깊은 통찰과..." — 이력서처럼', next: 7 },
+      { text: '😅 "20년 동안 같은 실수를 반복 안 하게 됩니다." — 자기비하', next: 6 },
+    ]
+  },
+  {
+    text: `삽은 TV를 끄고 라면을 먹었다. 국물이 짰다. 눈물이 들어간 건 아니고 원래 짜다.<br><br>다음 날도, 그 다음 날도, 같은 하루.<br><br>하지만 어느 날—<br><br>편의점에서 삼각김밥을 사는데, 옆에 검은 코트를 입은 여자가 서 있었다.<br><br>"김삽 씨?"<br><br>"네."<br><br>"한성캐피탈입니다. 연체 3개월. 이자 72만원."<br><br>보이스피싱보다 무서운 게 현실이었다.`,
+    choices: [
+      { text: '🏃 도망친다. 12층까지.', next: 4 },
+      { text: '🍙 "삼각김밥 하나 사드릴까요?" — 김삽 특유의 병맛', next: 8 },
+    ]
+  },
+  {
+    text: `강지현이 웃었다. 처음으로 눈까지.<br><br>"합격이에요."<br><br>"1분도 안 됐는데요."<br><br>"솔직한 사람이 필요해서요."<br><br>나가는 길, 강지현이 말했다.<br><br>"여기선 양심은 옵션이에요."<br><br>삽은 걸으면서 심장이 뛰었다. 연봉 때문이다. 분명히. 확실히. 절대적으로. 100%.<br><br><em>자기합리화에 형용사가 네 개 이상 붙으면 거짓말이다.</em><br><br><strong>— 1부 끝. 계속하시겠습니까? —</strong>`,
+    choices: [
+      { text: '📖 다음 장으로', next: 8 },
+      { text: '🔄 처음부터 다시', next: -1 },
+    ]
+  },
+  {
+    text: `강지현이 고개를 끄덕였다. 하지만 눈이 안 웃었다.<br><br>"준비된 답이시군요."<br><br>"...네."<br><br>"저희는 준비된 사람보다 준비 안 된 사람이 필요해요."<br><br>"그럼 저는—"<br><br>"한 번 더 기회 드릴게요. 20년을, 진짜로."<br><br>삽은 3초 동안 생각했다. 그리고—`,
+    choices: [
+      { text: '🎯 "...뭘 모르는지 알게 됩니다." — 결국 솔직하게', next: 6 },
+      { text: '🚪 일어서서 나간다. "저 같은 사람 필요 없으시겠네요."', next: 5 },
+    ]
+  },
+  {
+    text: `<strong>제3장 — 보조개</strong><br><br>제네바. 작은 태국 식당.<br><br>"사와디 카~ 어서 오세요!"<br><br>보조개. 왼쪽만. 비대칭.<br><br>삽의 시간이 멈췄다. 3년 만이었다. 아니, 처음이었다. 아니, 3년 만이었다. 삽 자신도 헷갈렸다.<br><br>"카오팟 주세요."<br><br>"카오팟 아시네요?"<br><br>"...좀요."<br><br>보조개가 깊어졌다.<br><br><em>진심인가, 서비스인가. 확인할 방법은 없다. 하지만 카오팟은 맛있다. 그거면 됐다.</em><br><br><strong>— 체험 끝 —</strong><br><br><em>전체 스토리는 세션을 구매하시면 계속됩니다. 당신의 선택이 결말을 바꿉니다.</em>`,
+    choices: [
+      { text: '🔄 처음부터 다시', next: -1 },
+    ]
+  },
+];
+
+function startBranch() {
+  showBranchStep(0);
+}
+
+function showBranchStep(idx) {
+  const chat = document.getElementById('branchChat');
+
+  if (idx === -1) {
+    chat.innerHTML = `<div class="msg system">세션 시작. AI가 이야기를 시작합니다.</div>`;
+    setTimeout(() => showBranchStep(0), 500);
+    return;
+  }
+
+  const step = branchStory[idx];
+
+  // 타이핑
+  chat.innerHTML += `<div class="typing" id="branchTyping"><span></span><span></span><span></span></div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const typing = document.getElementById('branchTyping');
+    if (typing) typing.remove();
+
+    chat.innerHTML += `<div class="msg story">${step.text}</div>`;
+
+    if (step.choices && step.choices.length > 0) {
+      let choiceHtml = '<div class="choice-area">';
+      for (const c of step.choices) {
+        choiceHtml += `<button class="choice-btn" onclick="chooseBranch(this, ${c.next})">${c.text}</button>`;
+      }
+      choiceHtml += '</div>';
+      chat.innerHTML += choiceHtml;
+    }
+
+    chat.scrollTop = chat.scrollHeight;
+  }, 2000);
+}
+
+function chooseBranch(btn, next) {
+  const chat = document.getElementById('branchChat');
+  // 선택지 비활성화
+  const area = btn.parentElement;
+  const buttons = area.querySelectorAll('.choice-btn');
+  buttons.forEach(b => {
+    b.disabled = true;
+    b.style.opacity = b === btn ? '1' : '0.3';
+    b.style.cursor = 'default';
+  });
+
+  // 사용자 선택 표시
+  chat.innerHTML += `<div class="msg user">${btn.textContent}</div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => showBranchStep(next), 500);
+}
+</script>
+
+</body>
+</html>

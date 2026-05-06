@@ -1,0 +1,193 @@
+ <h4>10.7 CO 모듈 인터뷰 표준 질문 30개 — 관리회계·원가</h4>
+ <ol>
+ <li><strong>원가 평가법은? (표준원가·이동평균·실제·FIFO 자재유형별)</strong>
+ <ul>
+ <li><strong>의도</strong>: 자재유형별 평가법 매트릭스 사전 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 평가법 변경은 운영 중 어려움. 도입 시 결정. 잘못 결정 시 마이그레이션 평균 3억.</li>
+ <li><strong>타 모듈 연계</strong>: MM(자재 평가), FI(재고 평가), 50장.</li>
+ </ul></li>
+
+ <li><strong>표준원가 갱신 주기와 결재 절차는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 표준원가 거버넌스.</li>
+ <li><strong>프로젝트 영향</strong>: 분기 1회 + 5% 변동 시 긴급 갱신 권고.</li>
+ <li><strong>타 모듈 연계</strong>: MM(자재 단가), PP(BOM 변경), 51장 표준원가.</li>
+ </ul></li>
+
+ <li><strong>표준원가 vs 실제원가 차이 평균 % 와 분석 주기는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 결산을 표준원가로 할 수 있는지 판단. K-IFRS 1002호 '실제와 유사한 경우' 조건.</li>
+ <li><strong>프로젝트 영향</strong>: 차이 ±5% 이내 = 표준원가 결산 OK. 7% 이상 = 외부감사 지적 위험. 51.0 참조.</li>
+ <li><strong>타 모듈 연계</strong>: FI(결산), 외부감사.</li>
+ </ul></li>
+
+ <li><strong>차이배부(Variance Settlement) 룰 명문화 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 매월 KO88·CO88 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 미설정 = 차이가 매출원가에 흡수, 영업이익률 왜곡. 케이스 51.1 참조.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매출원가), Material Ledger.</li>
+ </ul></li>
+
+ <li><strong>Material Ledger / Actual Costing 활용 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: Actual Costing 활성화 비용·복잡도 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 활성화 한 번 = 못 끔. 중견기업은 부담스러워함. 부록 50.8 참조.</li>
+ <li><strong>타 모듈 연계</strong>: MM, FI.</li>
+ </ul></li>
+
+ <li><strong>비용 배부(Allocation) 룰 — Cycle·Segment 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 간접비 배부 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: Cycle 50개 이상 = 배부 룰 재설계 권고.</li>
+ <li><strong>타 모듈 연계</strong>: 52장 비용배부.</li>
+ </ul></li>
+
+ <li><strong>활동기준원가(ABC) 도입 여부와 활동 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 정밀 원가 가시성.</li>
+ <li><strong>프로젝트 영향</strong>: ABC 미도입 + 다품종 소량 생산 = ABC 도입 권고. 추가 견적 2~4억.</li>
+ <li><strong>타 모듈 연계</strong>: PP(활동), 52장.</li>
+ </ul></li>
+
+ <li><strong>CO-PA Operating Concern 설계 — Characteristic 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 다차원 마진 분석 설계.</li>
+ <li><strong>프로젝트 영향</strong>: Characteristic 12~15개 권고. 너무 많으면 성능 저하.</li>
+ <li><strong>타 모듈 연계</strong>: SD(매출), MM(원가), 53장 CO-PA.</li>
+ </ul></li>
+
+ <li><strong>제품별·고객별·채널별 마진 분석 가시화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 의사결정 데이터 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 가시화 안 됨 = 저마진 수주 누적. 영업이익률 1~2%p 손실.</li>
+ <li><strong>타 모듈 연계</strong>: SD, BI/Analytics.</li>
+ </ul></li>
+
+ <li><strong>다단계 공헌이익(Contribution Margin Layers) 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 의사결정 회계 깊이.</li>
+ <li><strong>프로젝트 영향</strong>: CO-PA 활용도와 직결.</li>
+ <li><strong>타 모듈 연계</strong>: 53장.</li>
+ </ul></li>
+
+ <li><strong>예산(Budget) 수립 주기와 운영 단위(BU·CC·PC)는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 예산 통제 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: BCS(Budget Control System) 도입 검토.</li>
+ <li><strong>타 모듈 연계</strong>: 56장 예산관리.</li>
+ </ul></li>
+
+ <li><strong>예산 vs 실적 차이 분석 자동화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 예산 통제 모니터링.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 미운영 = 매월 보고 추가 2~3일.</li>
+ <li><strong>타 모듈 연계</strong>: BI, Fiori.</li>
+ </ul></li>
+
+ <li><strong>비용 중심점(Cost Center) 수와 책임자 매핑은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 책임 회계 단위.</li>
+ <li><strong>프로젝트 영향</strong>: CC 100개 이상 = 책임자 매핑 명문화 필수.</li>
+ <li><strong>타 모듈 연계</strong>: HCM(조직), 52장.</li>
+ </ul></li>
+
+ <li><strong>이익 중심점(Profit Center) 운영 여부와 분리 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 사업부별 손익 분리.</li>
+ <li><strong>프로젝트 영향</strong>: PC 운영 = 사업부 P/L 자동 산출.</li>
+ <li><strong>타 모듈 연계</strong>: FI(연결결산).</li>
+ </ul></li>
+
+ <li><strong>Internal Order 활용 — 일회성 비용 추적 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 일회성 비용 추적.</li>
+ <li><strong>프로젝트 영향</strong>: 마케팅 캠페인·R&amp;D 추적.</li>
+ <li><strong>타 모듈 연계</strong>: PS, FI.</li>
+ </ul></li>
+
+ <li><strong>WBS 활용 — 프로젝트 원가 추적은?</strong>
+ <ul>
+ <li><strong>의도</strong>: PS 모듈 도입 필요성.</li>
+ <li><strong>프로젝트 영향</strong>: 대형 프로젝트 5건 이상 = PS 활성화.</li>
+ <li><strong>타 모듈 연계</strong>: PS, FI.</li>
+ </ul></li>
+
+ <li><strong>Target Costing 적용 제품군은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 목표원가 관리.</li>
+ <li><strong>프로젝트 영향</strong>: 적용 제품 = 설계-구매-생산 통합 워크플로 신설.</li>
+ <li><strong>타 모듈 연계</strong>: PLM, PP, 53.7.</li>
+ </ul></li>
+
+ <li><strong>매월 차이 Top 20 분석과 액션 사이클은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 차이분석 운영 성숙도.</li>
+ <li><strong>프로젝트 영향</strong>: 분석 미운영 = ERP 가치 50% 손실.</li>
+ <li><strong>타 모듈 연계</strong>: 51.6.</li>
+ </ul></li>
+
+ <li><strong>제조원가명세서 자동 생성 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 한국 제조업 결산 표준.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 미운영 = 매월 추가 2일. 54장.</li>
+ <li><strong>타 모듈 연계</strong>: PP, FI.</li>
+ </ul></li>
+
+ <li><strong>외주가공 원가 처리 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: Subcontracting 원가 정확성.</li>
+ <li><strong>프로젝트 영향</strong>: 외주 비중 30% 이상 = 외주 원가 가시화 필수.</li>
+ <li><strong>타 모듈 연계</strong>: MM(외주 PO), PP.</li>
+ </ul></li>
+
+ <li><strong>이전가격(Transfer Pricing) 운영 — 본사·자회사 단가 결정은?</strong>
+ <ul>
+ <li><strong>의도</strong>: OECD TP 가이드라인 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 자회사 영업이익률 5~10% 구간 유지 = 매년 조정. 31장 베트남.</li>
+ <li><strong>타 모듈 연계</strong>: FI(연결), Group Reporting.</li>
+ </ul></li>
+
+ <li><strong>운전자본 KPI(재고회전·DSO·DPO) 관리 주기는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 운전자본 효율성.</li>
+ <li><strong>프로젝트 영향</strong>: 매월 모니터링 = 운전자본 매년 수십억 절감.</li>
+ <li><strong>타 모듈 연계</strong>: SD, MM, FI, TR.</li>
+ </ul></li>
+
+ <li><strong>의사결정 지원 — Make-or-Buy·BEP 분석 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 관리회계 의사결정 도구.</li>
+ <li><strong>프로젝트 영향</strong>: 운영 안 됨 = 시뮬레이션 도구 신설.</li>
+ <li><strong>타 모듈 연계</strong>: BI/Analytics.</li>
+ </ul></li>
+
+ <li><strong>경영진 대시보드(BI·Fiori)에 표시되는 핵심 KPI 5개는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 임원진 가시성.</li>
+ <li><strong>프로젝트 영향</strong>: 5개 KPI = Fiori 앱 5개 신설. 변화관리 ADKAR.</li>
+ <li><strong>타 모듈 연계</strong>: BI, Fiori, Analytics.</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong></li>
+
+ <li><strong>가격 결정 — 영업팀과 원가팀의 데이터 일치도는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 영업-원가 데이터 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 일치도 80% 이하 = 저마진 수주 발생. 정합성 룰 신설.</li>
+ <li><strong>타 모듈 연계</strong>: SD, CO-PA.</li>
+ </ul></li>
+
+ <li><strong>월결산 후 차이분석 보고 일정과 청중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 결산 후 분석 사이클.</li>
+ <li><strong>프로젝트 영향</strong>: 보고 일정 명문화 = D+5 결산 후 D+10 분석 보고 표준.</li>
+ <li><strong>타 모듈 연계</strong>: FI(결산).</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong></li>
+ </ol>
+

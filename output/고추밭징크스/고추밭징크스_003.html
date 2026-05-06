@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고추밭 징크스</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Noto Serif KR', serif;
+    line-height: 2;
+    font-size: 17px;
+    overflow-x: hidden;
+  }
+
+  .cover {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a0800 50%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '🌶';
+    position: absolute;
+    font-size: 260px;
+    color: rgba(255, 60, 60, 0.04);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: grayscale(100%);
+    animation: pulse 3s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.08; transform: translate(-50%, -50%) scale(1.05); }
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: #fff;
+    text-shadow: 0 0 80px rgba(255, 60, 60, 0.35);
+    z-index: 1;
+    text-align: center;
+  }
+
+  .cover .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #555;
+    margin-top: 20px;
+    z-index: 1;
+    letter-spacing: 1px;
+  }
+
+  .cover .tagline {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    color: #777;
+    margin-top: 32px;
+    text-align: center;
+    line-height: 2;
+    z-index: 1;
+    font-style: italic;
+  }
+
+  .cover .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #333;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .chapter {
+    padding: 120px 0;
+    border-bottom: 1px solid #1a1a1a;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .chapter.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .chapter-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ff3c3c;
+    margin-bottom: 50px;
+    letter-spacing: -1px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #cc2a2a;
+    margin: 60px 0 28px;
+    letter-spacing: -0.5px;
+    border-left: 3px solid #ff3c3c;
+    padding-left: 14px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  .dialogue {
+    color: #ccc;
+  }
+
+  .yell {
+    color: #ff3c3c;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .thought {
+    color: #888;
+    font-style: italic;
+  }
+
+  .punch {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin: 40px 0;
+    padding: 20px 20px;
+    border-left: 3px solid #ff3c3c;
+  }
+
+  .quiet {
+    color: #555;
+    font-size: 15px;
+  }
+
+  .gap {
+    height: 60px;
+  }
+
+  .silence {
+    font-family: 'JetBrains Mono', monospace;
+    color: #444;
+    font-size: 18px;
+    letter-spacing: 4px;
+    margin: 20px 0;
+  }
+
+  .epilogue-box {
+    background: #0f0f0f;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 28px 32px;
+    margin: 40px 0;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    line-height: 2.2;
+    color: #bbb;
+  }
+
+  .epilogue-box .label {
+    color: #ff3c3c;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .epilogue-box ol {
+    padding-left: 20px;
+    color: #999;
+  }
+
+  .epilogue-box ol li {
+    margin-bottom: 8px;
+  }
+
+  .tag-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #444;
+    margin-top: 40px;
+    line-height: 2;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #1f1f1f;
+    margin: 40px 0;
+  }
+
+  .final-quote {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+    font-size: 16px;
+    margin: 40px 0;
+    padding: 0 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>고추밭 징크스</h1>
+  <div class="subtitle">brunch story · 003</div>
+  <div class="tagline">
+    김해 어느 마을, 고추 농사의 신 박씨 영감네 가족 이야기.<br>
+    고추밭에서 시작된 인연은, 고추밭에서 대를 잇는다.
+  </div>
+  <div class="scroll-hint">↓ scroll</div>
+</div>
+
+<!-- CHAPTER 1 -->
+<div class="container">
+  <div class="chapter">
+    <div class="chapter-title">1편. 야한 맛</div>
+
+    <p>김해 고추밭에 올해도 박씨 영감이 나왔다.</p>
+    <p>근데 올해는 좀 달랐다. 옆 밭에 서울에서 귀농한 여자가 왔다. 이름은 수정씨. 나이 서른둘.</p>
+    <p>수정씨가 고추를 따는 모습을 박씨 영감 아들 민호가 봤다.</p>
+
+    <p class="dialogue">"저... 고추를 그렇게 따면 안 됩니다."</p>
+    <p class="dialogue">"네? 왜요?"</p>
+    <p class="dialogue">"고추를 너무 세게 잡으면 꼭지가 빠집니다."</p>
+
+    <p>수정씨가 웃었다.</p>
+    <p class="dialogue">"아, 그래요? 그럼 어떻게 잡아야 돼요?"</p>
+    <p class="dialogue">"이렇게... 살짝 감싸듯이..."</p>
+
+    <p>두 손이 고추 위에서 겹쳤다.</p>
+
+    <p class="silence">......</p>
+    <p class="silence">......</p>
+
+    <p>박씨 영감이 뒤에서 소리쳤다.</p>
+    <p class="yell">"야 이 놈아! 고추 가르쳐준다더니 손을 잡고 있냐!"</p>
+
+    <p class="dialogue">"아, 아닙니다 아버지!"</p>
+    <p>수정씨 얼굴이 고추보다 빨개졌다.</p>
+
+    <hr class="divider">
+
+    <p>그날 저녁 박씨 영감이 마누라한테 말했다.</p>
+    <p class="dialogue">"여보, 옆 밭 처자가 우리 아들 고추를 탐내는 것 같소."</p>
+    <p class="dialogue">"고추가 크긴 커? 우리 밭 고추가?"</p>
+    <p class="dialogue">"밭 고추 말고..."</p>
+    <p class="yell">"뭐?"</p>
+    <p class="dialogue">"...아무것도 아니오."</p>
+
+    <hr class="divider">
+
+    <p>다음 날 수정씨가 또 왔다. 이번엔 청양고추를 들고.</p>
+    <p class="dialogue">"어제 감사했어요. 이거 매운 건데... 드셔보실래요?"</p>
+
+    <p>민호가 받아 한 입 베어물었다.</p>
+    <p class="yell">"ㅎ...!!!!"</p>
+    <p>눈물이 쏟아졌다. 콧물도.</p>
+
+    <p class="dialogue">"매운 거 못 드시네. 고추 농사꾼이."</p>
+    <p class="dialogue">"고추는... 종류가... 다릅니다..."</p>
+
+    <hr class="divider">
+
+    <p>그 해 가을, 두 사람은 결혼했다.</p>
+    <p>청첩장에 이렇게 적혀 있었다.</p>
+
+    <p class="thought">"고추밭에서 시작된 인연, 고추보다 매운 사랑"</p>
+
+    <p>박씨 영감의 축사:</p>
+    <p class="punch">"고추를 딸 때는 왼손으로. 여자 손은 오른손으로. 이게 진짜 징크스다."</p>
+  </div>
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter">
+    <div class="chapter-title">2편. 겨울 김장</div>
+
+    <p>겨울이 왔다. 민호와 수정씨는 결혼한 지 두 달.</p>
+    <p>시어머니가 선언했다.</p>
+    <p class="dialogue">"올해 김장은 며느리가 주도해."</p>
+
+    <p>수정씨는 서울 출신이라 김장을 해본 적이 없었다.</p>
+
+    <p class="dialogue">"어머니, 고춧가루는 얼마나 넣어요?"</p>
+    <p class="dialogue">"눈대중이야. 손으로 퍼서."</p>
+
+    <p>수정씨가 고춧가루를 한 움큼 집었다. 그리고 버무리기 시작했는데...</p>
+
+    <p class="dialogue">"며느리야, 그렇게 주무르면 배추가 으깨진다."</p>
+    <p class="dialogue">"아... 어떻게 해야 돼요?"</p>
+    <p class="dialogue">"내가 보여줄게."</p>
+
+    <p>민호가 수정씨 뒤에 서서 손을 잡고 버무리기 시작했다.</p>
+
+    <p class="dialogue">"이렇게... 부드럽게... 감싸듯이..."</p>
+    <p class="dialogue">"이거 고추 딸 때랑 똑같잖아."</p>
+    <p class="dialogue">"원리가 같아."</p>
+
+    <p>시어머니가 부엌 문 앞에서 봤다.</p>
+    <p class="yell">"야! 김장을 하라고 했지 뒤에서 껴안으라고 했냐!"</p>
+    <p class="dialogue">"아, 아닙니다 어머니!"</p>
+
+    <p>박씨 영감이 마당에서 들었다.</p>
+    <p class="dialogue">"뭐야 또?"</p>
+    <p class="dialogue">"당신 아들이 김장하다가 며느리한테 기술 가르치고 있어!"</p>
+    <p class="dialogue">"그래... 기술이 중요하지."</p>
+    <p class="yell">"뭐?!"</p>
+    <p class="dialogue">"김장 기술 말이오."</p>
+    <p class="dialogue">"당신도 똑같아!"</p>
+
+    <hr class="divider">
+
+    <p>그날 저녁, 김장이 끝났다. 200포기.</p>
+    <p>수정씨가 만든 김치를 다 같이 맛봤다.</p>
+    <p>영감이 한 입 먹더니 눈을 감았다.</p>
+
+    <p class="quiet">"...맵다."</p>
+    <p class="dialogue">"맛은요?"</p>
+
+    <p class="dialogue">"니 마누라가 만든 김치는 고추 딸 때처럼 매콤하고... 손잡을 때처럼 달콤하고..."</p>
+
+    <p>시어머니가 젓가락을 내려놓았다.</p>
+    <p class="yell">"영감, 오늘 마당에서 자."</p>
+    <p class="dialogue">"내가 뭘..."</p>
+
+    <p>수정씨가 웃으며 민호에게 속삭였다.</p>
+    <p class="dialogue">"우리 아버지 로맨틱하시다."</p>
+    <p class="dialogue">"우리 집안 남자는 원래 고추 앞에서 솔직해져."</p>
+    <p class="yell">"뭐라고?!"</p>
+    <p class="quiet">— 시어머니, 부엌에서.</p>
+    <p class="dialogue">"...김치 고추요!"</p>
+
+    <hr class="divider">
+
+    <p>그 해 겨울, 박씨네 김치는 마을에서 1등을 했다.</p>
+    <p>비결을 물으니 영감이 답했다.</p>
+
+    <p class="punch">"김장할 때는 며느리 뒤에서 아들이 잡아줘야 해. 이게 두 번째 징크스다."</p>
+
+    <p class="yell">시어머니: "세 번째 징크스는 영감이 마당에서 자는 거야."</p>
+  </div>
+
+  <!-- CHAPTER 3 -->
+  <div class="chapter">
+    <div class="chapter-title">3편. 완결 — 대를 잇다</div>
+
+    <div class="section-title">봄 — 씨앗</div>
+
+    <p>3월이었다.</p>
+    <p>민호와 수정씨가 결혼한 지 1년. 박씨 영감은 요즘 심기가 불편했다.</p>
+
+    <p class="dialogue">"민호야."</p>
+    <p class="dialogue">"네, 아버지."</p>
+    <p class="dialogue">"올해 고추 모종 몇 판 했냐."</p>
+    <p class="dialogue">"서른 판이요."</p>
+    <p class="dialogue">"서른 판이면 뭐하냐. 대가 안 이어지는데."</p>
+
+    <p>민호가 멈칫했다.</p>
+    <p class="dialogue">"...고추 대요?"</p>
+
+    <p>시어머니가 부엌에서 소리쳤다.</p>
+    <p class="yell">"영감! 또 시작이야?!"</p>
+
+    <p class="dialogue">"고추 대 말이오. 고추."</p>
+    <p>수정씨가 옆에서 듣고 있었다. 얼굴이 서서히 빨개졌다.</p>
+    <p class="dialogue">"아버지, 고추 모종 서른 판이면 충분합니다."</p>
+    <p class="dialogue">"충분하긴. 내가 젊었을 때는 오십 판도 했다."</p>
+    <p class="yell">시어머니: "영감, 지금 무슨 소리를 하는 거야."</p>
+    <p class="dialogue">"고추 모종 말이오!"</p>
+
+    <div class="section-title">여름 — 꽃이 피다</div>
+
+    <p>6월. 고추밭에 하얀 꽃이 피기 시작했다.</p>
+    <p>수정씨는 올해부터 본격적으로 농사를 배우고 있었다. 스승은 시어머니.</p>
+
+    <p class="dialogue">"며느리야, 고추꽃이 피면 뭘 해야 하는지 알아?"</p>
+    <p class="dialogue">"물을 많이 줘야 하나요?"</p>
+    <p class="dialogue">"아니. 곁순을 쳐야 해."</p>
+    <p class="dialogue">"곁순이요?"</p>
+    <p class="dialogue">"옆에서 삐쭉 나오는 거. 그거 안 치면 영양분이 분산돼서 고추가 작아져."</p>
+
+    <p>수정씨가 고개를 끄덕이며 곁순을 따기 시작했다.</p>
+    <p>민호가 밭에 나타났다. 손에 음료수를 들고.</p>
+
+    <p class="dialogue">"수정아, 목 마르지?"</p>
+    <p class="dialogue">"어, 고마워."</p>
+    <p class="dialogue">"뭐 하는 거야?"</p>
+    <p class="dialogue">"곁순 치는 거. 어머니가 가르쳐주셨어."</p>
+
+    <p>민호가 수정씨 손을 봤다. 흙이 묻어 있었다. 작년 이맘때는 매니큐어가 발려 있던 손이었다.</p>
+
+    <p class="quiet">"...손 많이 변했다."</p>
+    <p class="dialogue">"응. 농사꾼 손이 됐지?"</p>
+
+    <p>민호가 그 손을 잡았다.</p>
+    <p class="punch">"예쁘다."</p>
+
+    <p class="dialogue">"고추밭에서 또 시작이야?"</p>
+
+    <p>영감이 100미터 떨어진 곳에서 망원경 없이도 봤다.</p>
+    <p class="yell">"야! 곁순을 쳐! 손을 잡지 말고!"</p>
+    <p class="dialogue">"아니 아버지가 어떻게 거기서 보이는 겁니까!"</p>
+    <p class="dialogue">"고추밭에서 일어나는 일은 다 보인다. 40년 경력이야."</p>
+
+    <div class="section-title">장마 — 위기</div>
+
+    <p>7월 중순. 장마가 시작됐다.</p>
+    <p>비가 열흘째 내렸다. 박씨네 고추밭 절반이 물에 잠겼다.</p>
+    <p>영감이 밭 앞에 서서 담배를 피웠다. 말이 없었다.</p>
+
+    <p class="dialogue">"아버지, 배수로를 더 파면..."</p>
+    <p class="quiet">"늦었다."</p>
+    <p class="silence">......</p>
+    <p class="quiet">"올해 반은 갔어."</p>
+
+    <p>저녁, 식탁에 네 사람이 앉았다. 아무도 말이 없었다.</p>
+    <p>수정씨가 먼저 입을 열었다.</p>
+
+    <p class="dialogue">"아버지, 저 하나 여쭤봐도 될까요?"</p>
+    <p class="dialogue">"뭐."</p>
+    <p class="dialogue">"물에 안 잠긴 밭, 어디예요?"</p>
+    <p class="dialogue">"윗밭. 경사진 데."</p>
+    <p class="dialogue">"거기 몇 포기 살았어요?"</p>
+    <p class="dialogue">"...한 천오백 포기?"</p>
+    <p class="dialogue">"그러면 그 천오백 포기를 최고로 키우면 되지 않나요?"</p>
+
+    <p>영감이 수정씨를 봤다.</p>
+    <p class="dialogue">"작년에 고추 잡는 법도 몰랐던 게..."</p>
+    <p class="dialogue">"네?"</p>
+    <p class="quiet">"...제법이네."</p>
+
+    <p>시어머니가 웃었다. 영감이 며느리를 칭찬한 건 처음이었다.</p>
+    <p>민호가 수정씨 손을 식탁 밑에서 꾹 잡았다.</p>
+
+    <div class="section-title">가을 — 수확</div>
+
+    <p>9월. 윗밭 고추가 빨갛게 익었다.</p>
+    <p>천오백 포기. 하지만 한 포기 한 포기가 예년보다 실했다. 수정씨가 곁순을 열심히 친 덕이었다.</p>
+
+    <p class="dialogue">"이거 보통 고추가 아니야."</p>
+    <p class="dialogue">"어떤 고추예요?"</p>
+    <p class="dialogue">"며느리 고추."</p>
+    <p class="yell">시어머니: "영감."</p>
+    <p class="dialogue">"며느리가 키운 고추란 말이오!"</p>
+
+    <p>수확 날, 온 가족이 밭에 나왔다.</p>
+    <p>영감이 첫 고추를 땄다. 왼손으로.</p>
+
+    <p class="dialogue">"자, 올해도 왼손부터."</p>
+    <p>민호가 땄다. 왼손으로.</p>
+    <p>수정씨도 땄다. 근데 오른손으로.</p>
+
+    <p class="dialogue">"며느리, 왼손으로 따야..."</p>
+    <p class="dialogue">"아버지, 저는 오른손이 편해요."</p>
+    <p class="quiet">"...그럼 올해 망하는 거야."</p>
+    <p class="dialogue">"작년에 민호씨가 오른손으로 땄는데 최고 수확이었잖아요."</p>
+
+    <p class="silence">......</p>
+
+    <p>영감이 할 말을 잃었다.</p>
+    <p class="dialogue">"영감, 졌어."</p>
+    <p class="quiet">"...징크스를 업데이트해야겠소."</p>
+
+    <div class="section-title">첫 서리 — 소식</div>
+
+    <p>10월 말. 첫 서리가 내렸다.</p>
+    <p>수정씨가 아침에 화장실에서 나오더니 식탁에 뭔가를 올려놨다.</p>
+
+    <p>임신 테스트기.</p>
+    <p>두 줄.</p>
+
+    <p>민호가 봤다.</p>
+    <p class="silence">......</p>
+    <p class="silence">......</p>
+
+    <p class="dialogue">"수정아, 이거..."</p>
+    <p class="dialogue">"응."</p>
+
+    <p>민호 눈에 물이 고였다. 작년에 청양고추 먹었을 때와는 다른 눈물이었다.</p>
+
+    <p>영감이 내려왔다. 식탁 위를 봤다.</p>
+    <p class="dialogue">"이게 뭐냐."</p>
+    <p class="dialogue">"아버지... 대가 이어집니다."</p>
+    <p class="dialogue">"뭐?"</p>
+    <p class="dialogue">"고추 대가..."</p>
+
+    <p>영감이 멈췄다. 그리고 천천히 의자에 앉았다.</p>
+    <p>한참을 말이 없더니, 입을 열었다.</p>
+
+    <p class="quiet">"...왼손으로 딴 거냐, 오른손으로 딴 거냐."</p>
+
+    <p>시어머니가 국자를 들었다.</p>
+    <p class="yell">"영감!!!"</p>
+    <p class="yell">"축하한다는 뜻이오!!!"</p>
+
+    <div class="section-title">겨울 — 이름</div>
+
+    <p>12월. 수정씨 배가 불러왔다.</p>
+    <p>영감이 어느 날 민호를 불렀다.</p>
+
+    <p class="dialogue">"민호야."</p>
+    <p class="dialogue">"네."</p>
+    <p class="dialogue">"아이 이름 생각했냐."</p>
+    <p class="dialogue">"아직요."</p>
+    <p class="dialogue">"내가 하나 지어도 되겠냐."</p>
+    <p class="dialogue">"뭔데요?"</p>
+
+    <p>영감이 진지한 얼굴로 말했다.</p>
+
+    <p class="punch">"고추."</p>
+
+    <p class="dialogue">"...네?"</p>
+    <p class="dialogue">"박고추. 어감이 좋잖아."</p>
+
+    <p>시어머니가 빗자루를 들었다.</p>
+    <p class="dialogue">"아버지, 그건 좀..."</p>
+
+    <p>수정씨가 거실에서 듣고 있다가 웃으며 말했다.</p>
+    <p class="dialogue">"아버지, 고추 대신 다른 건요?"</p>
+    <p class="dialogue">"다른 거?"</p>
+    <p class="dialogue">"고추를 한자로 하면 초(椒)잖아요. 박초(朴初)는 어때요? 처음이라는 뜻도 되고."</p>
+
+    <p>영감이 생각했다.</p>
+    <p class="quiet">"박초... 박초..."</p>
+    <p class="dialogue">"첫 아이니까 처음 초. 고추에서 따온 초."</p>
+
+    <p>영감이 고개를 끄덕였다.</p>
+    <p class="punch">"...며느리가 나보다 낫다."</p>
+
+    <p class="quiet">시어머니: "그건 원래부터."</p>
+
+    <div class="section-title">다음 해 봄 — 새 징크스</div>
+
+    <p>3월. 박초가 태어났다. 아들이었다.</p>
+    <p>영감이 손자를 안고 고추밭에 나갔다.</p>
+    <p>밭에는 아직 아무것도 없었다. 겨울이 막 끝난 빈 밭.</p>
+
+    <p>영감이 손자에게 말했다.</p>
+
+    <p class="dialogue">"야, 박초. 여기가 니 할아버지 밭이다."</p>
+    <p class="silence">......</p>
+    <p class="dialogue">"니 아버지가 여기서 니 어머니 손을 잡았다."</p>
+    <p class="silence">......</p>
+    <p class="dialogue">"니 어머니가 여기서 곁순을 치면서 농사를 배웠다."</p>
+    <p class="silence">......</p>
+    <p class="dialogue">"장마 때 반이 날아가도 니 어머니가 포기 안 했다."</p>
+    <p class="silence">......</p>
+
+    <p>영감이 하늘을 봤다.</p>
+    <p class="dialogue">"고추밭 징크스가 있다. 왼손으로 따면 풍년이고, 오른손으로 따면 대풍년이고."</p>
+    <p class="dialogue">"아버지, 그건 작년에 업데이트한 거 아닙니까."</p>
+    <p class="dialogue">"시끄러. 마지막이 남았다."</p>
+
+    <p>영감이 손자를 높이 들었다.</p>
+
+    <p class="punch">"손자가 태어나면... 그건 대대풍년이다."</p>
+
+    <p>수정씨가 마루에서 봤다. 눈물이 났다.</p>
+    <p>시어머니가 옆에서 코를 풀었다.</p>
+    <p class="quiet">"에이, 영감이 저런 말을 다 하고."</p>
+
+    <p>민호가 아버지 옆에 섰다.</p>
+    <p class="dialogue">"아버지."</p>
+    <p class="dialogue">"왜."</p>
+    <p class="dialogue">"내년에는 고추 오십 판 하죠."</p>
+
+    <p>영감이 웃었다. 40년 고추 농사에서 처음 보는 웃음이었다.</p>
+    <p class="dialogue">"그래. 오십 판 하자."</p>
+  </div>
+
+  <!-- EPILOGUE -->
+  <div class="chapter">
+    <div class="chapter-title">에필로그</div>
+
+    <p>김해 어느 마을 고추밭.</p>
+    <p>5년이 지났다. 박초는 다섯 살이 됐다.</p>
+    <p>아이가 밭에서 소리쳤다.</p>
+
+    <p class="yell">"할아버지! 고추 땄어!"</p>
+
+    <p>영감이 봤다. 작은 손에 빨간 고추 하나.</p>
+
+    <p class="dialogue">"어느 손으로 땄냐?"</p>
+
+    <p>박초가 두 손을 펼쳐 보였다.</p>
+
+    <p class="punch">"두 손으로!"</p>
+
+    <p>영감이 하늘을 보며 중얼거렸다.</p>
+    <p class="quiet">"...새 징크스가 생겼구나."</p>
+
+    <hr class="divider">
+
+    <div class="epilogue-box">
+      <span class="label">// 박씨네 고추밭 징크스 (최종판)</span>
+      <ol>
+        <li>고추를 딸 때는 왼손으로 — 풍년</li>
+        <li>오른손으로 따도 된다 — 대풍년</li>
+        <li>김장할 때는 뒤에서 잡아줘야 한다 — 맛 보장</li>
+        <li>영감은 마당에서 잔다 — 가정 평화</li>
+        <li>손자가 두 손으로 따면 — 대대대풍년</li>
+      </ol>
+    </div>
+
+    <div class="final-quote">"고추밭에서 시작된 인연은, 고추밭에서 대를 잇는다."</div>
+
+    <div class="tag-line">
+      #단편소설 &nbsp; #고추밭 &nbsp; #김해 &nbsp; #귀농 &nbsp; #가족 &nbsp; #징크스 &nbsp; #시골이야기 &nbsp; #로맨스 &nbsp; #유머
+    </div>
+  </div>
+</div>
+
+<script>
+  const chapters = document.querySelectorAll('.chapter');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  chapters.forEach(chapter => observer.observe(chapter));
+</script>
+</body>
+</html>

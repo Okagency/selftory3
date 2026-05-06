@@ -1,0 +1,158 @@
+ <h4>10.8 QM 모듈 인터뷰 표준 질문 25개 — 품질</h4>
+ <ol>
+ <li><strong>품질검사 종류 — 입고·공정·출하 검사 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 검사 시점별 자동화 룰 설계.</li>
+ <li><strong>프로젝트 영향</strong>: 출하 검사 100% = QM 출하 통합 필수, SD 인터페이스 강화.</li>
+ <li><strong>타 모듈 연계</strong>: MM(입고 검사 자동), PP(공정 검사), SD(출하 검사).</li>
+ </ul></li>
+
+ <li><strong>월 평균 검사 로트 수와 표본 추출 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 시스템 부하·샘플링 룰 결정.</li>
+ <li><strong>프로젝트 영향</strong>: AQL·MIL-STD-105E 적용 = SAP QM Sampling Procedure 신설.</li>
+ <li><strong>타 모듈 연계</strong>: MM, PP, 통계 분석.</li>
+ </ul></li>
+
+ <li><strong>검사 항목(MIC) 마스터 정합성 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마스터 데이터 품질.</li>
+ <li><strong>프로젝트 영향</strong>: 정합성 70% 이하 = 정제 4~6주.</li>
+ <li><strong>타 모듈 연계</strong>: 마스터 거버넌스(MDG).</li>
+ </ul></li>
+
+ <li><strong>부적합(Non-Conformance) 처리 절차와 월 건수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: NC 자동화·CAPA 사이클.</li>
+ <li><strong>프로젝트 영향</strong>: 월 100건 이상 = QM Notification 신설, 8D Report 자동화.</li>
+ <li><strong>타 모듈 연계</strong>: MM(반품), FI(NC 비용), 외부 공급사.</li>
+ </ul></li>
+
+ <li><strong>고객 클레임 처리 시스템(8D Report) 운영 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 고객 응대 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 8D 운영 미흡 = 고객 신뢰 손실. 자동화 필수.</li>
+ <li><strong>타 모듈 연계</strong>: SD(클레임), CRM.</li>
+ </ul></li>
+
+ <li><strong>품질 KPI 5개 — 불량률·재작업률·CPK·반품률·고객만족도?</strong>
+ <ul>
+ <li><strong>의도</strong>: 품질 성과 측정 기준.</li>
+ <li><strong>프로젝트 영향</strong>: KPI 자동 산출 = Fiori 대시보드 5개 신설.</li>
+ <li><strong>타 모듈 연계</strong>: BI/Analytics, CO.</li>
+ </ul></li>
+
+ <li><strong>외주가공 입고 검사 비중과 부적합 처리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외주 품질 통제.</li>
+ <li><strong>프로젝트 영향</strong>: 외주 입고 검사 100% = QM Sampling 룰 별도.</li>
+ <li><strong>타 모듈 연계</strong>: MM(외주 PO), PP.</li>
+ </ul></li>
+
+ <li><strong>SPC(통계적 공정관리) 적용 공정과 도구는?</strong>
+ <ul>
+ <li><strong>의도</strong>: SPC 자동화 수준.</li>
+ <li><strong>프로젝트 영향</strong>: SPC 적용 공정 10개 이상 = MES-QM 통합 필수.</li>
+ <li><strong>타 모듈 연계</strong>: MES, PP.</li>
+ </ul></li>
+
+ <li><strong>측정장비(Calibration) 관리와 ERP 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: PM(설비유지) 모듈 연계.</li>
+ <li><strong>프로젝트 영향</strong>: 측정장비 100대 이상 = QM-PM 통합 권고.</li>
+ <li><strong>타 모듈 연계</strong>: PM(설비), AM(자산).</li>
+ </ul></li>
+
+ <li><strong>품질 인증(ISO 9001·IATF 16949·AS9100) 보유는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 인증 요구사항 ERP 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: IATF 16949 보유 = 자동차 OEM 추적성 자동화 필수. PPAP 패키지.</li>
+ <li><strong>타 모듈 연계</strong>: PLM, MM, PP.</li>
+ </ul></li>
+
+ <li><strong>PPAP(Production Part Approval Process) 패키지 자동화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자동차 OEM 승인 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 미운영 = 부품 승인 매번 2~4주 추가. 한성정밀 H자동차 납품 핵심.</li>
+ <li><strong>타 모듈 연계</strong>: PLM, SD(고객 승인).</li>
+ </ul></li>
+
+ <li><strong>SCAR(Supplier Corrective Action Request) 처리 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 공급사 품질 관리.</li>
+ <li><strong>프로젝트 영향</strong>: SCAR 자동화 = 공급사 품질 30% 개선 가능.</li>
+ <li><strong>타 모듈 연계</strong>: MM, SLM.</li>
+ </ul></li>
+
+ <li><strong>로트 추적성 — 부품 단위 추적 가능 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 리콜·추적성 보장.</li>
+ <li><strong>프로젝트 영향</strong>: 부품 추적 미운영 = 리콜 시 천문학적 비용. Batch 관리 필수.</li>
+ <li><strong>타 모듈 연계</strong>: MM(Batch), PP, 61장 로트관리.</li>
+ </ul></li>
+
+ <li><strong>품질 비용(COQ) 관리 — 예방·평가·실패비용 분리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 품질 비용 가시화.</li>
+ <li><strong>프로젝트 영향</strong>: COQ 분리 = 품질 투자 의사결정 근거.</li>
+ <li><strong>타 모듈 연계</strong>: CO, FI.</li>
+ </ul></li>
+
+ <li><strong>샘플링 플랜(AQL·MIL-STD-105E) 적용 자재는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 샘플링 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: SAP QM Sampling Procedure 자재별 설정.</li>
+ <li><strong>타 모듈 연계</strong>: MM(자재 마스터).</li>
+ </ul></li>
+
+ <li><strong>품질팀 인원 구성과 시스템 사용자 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 라이선스·교육 인원.</li>
+ <li><strong>프로젝트 영향</strong>: 사용자 수 = 라이선스 비용.</li>
+ <li><strong>타 모듈 연계</strong>: HCM.</li>
+ </ul></li>
+
+ <li><strong>고객 감사(Audit) 대응 빈도와 준비 자료는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외부 감사 대응 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 자동 보고서 신설 = 감사 대응 인력 절감.</li>
+ <li><strong>타 모듈 연계</strong>: PLM, MM, SD.</li>
+ </ul></li>
+
+ <li><strong>리콜·재작업 처리 절차와 비용 추적은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 리콜 비용 가시화.</li>
+ <li><strong>프로젝트 영향</strong>: 리콜 비용 자동 집계 = 회수 의사결정 근거.</li>
+ <li><strong>타 모듈 연계</strong>: CO, FI.</li>
+ </ul></li>
+
+ <li><strong>SLED(Shelf Life Expiration Date) 관리 자재는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 식품·약품·일부 부품 유통기한.</li>
+ <li><strong>프로젝트 영향</strong>: SLED 적용 = WM Picking Strategy FIFO 필수.</li>
+ <li><strong>타 모듈 연계</strong>: WM, MM.</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong></li>
+
+ <li><strong>품질-생산-구매 3팀 협업 워크플로 정합성은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 부서간 통합.</li>
+ <li><strong>프로젝트 영향</strong>: 정합성 부족 = NC 처리 지연.</li>
+ <li><strong>타 모듈 연계</strong>: MM, PP.</li>
+ </ul></li>
+
+ <li><strong>품질 데이터의 회계 인식(불량 비용·폐기) 자동화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 품질 비용 회계 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 미운영 = 결산 시 수기 분개.</li>
+ <li><strong>타 모듈 연계</strong>: FI, CO.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong></li>
+ </ol>
+

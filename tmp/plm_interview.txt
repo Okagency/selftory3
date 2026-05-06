@@ -1,0 +1,153 @@
+ <h4>10.10 PLM 모듈 인터뷰 표준 질문 25개 — 제품수명주기</h4>
+ <ol>
+ <li><strong>현재 PLM 시스템(PTC Windchill·Teamcenter·ENOVIA·Aras)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: As-Is 시스템·인터페이스 결정.</li>
+ <li><strong>프로젝트 영향</strong>: PLM 보유 = SAP 인터페이스 신설(IF 5종). 미보유 = SAP PLM 모듈 활성화 또는 PLM 신규 도입.</li>
+ <li><strong>타 모듈 연계</strong>: 60장 PLM-ERP 통합, MM(자재 마스터), PP(BOM).</li>
+ </ul></li>
+
+ <li><strong>CAD 도구(Creo·NX·CATIA·SolidWorks) 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: CAD-PLM 연계 인터페이스.</li>
+ <li><strong>프로젝트 영향</strong>: CAD 다종 운영 = 통합 인터페이스 복잡도 증가.</li>
+ <li><strong>타 모듈 연계</strong>: PLM 시스템 직접 연계.</li>
+ </ul></li>
+
+ <li><strong>제품 카테고리별 도면 등록 건수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 도면 마스터 규모.</li>
+ <li><strong>프로젝트 영향</strong>: 도면 10만건 이상 = DMS(문서관리) 별도 설계.</li>
+ <li><strong>타 모듈 연계</strong>: ERP DMS.</li>
+ </ul></li>
+
+ <li><strong>도면 Rev(Revision) 관리 룰과 승인 절차는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 도면 변경 통제.</li>
+ <li><strong>프로젝트 영향</strong>: Rev 관리 룰 명문화 안 됨 = 컷오버 시 마스터 정합성 위험.</li>
+ <li><strong>타 모듈 연계</strong>: ECO 워크플로.</li>
+ </ul></li>
+
+ <li><strong>EBOM과 MBOM 분리 운영 여부와 변환 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: EBOM-MBOM 변환 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 분리 운영 = PLM-ERP 변환 룰 신설(23장 참조). 통합 운영 = 마스터 단일화.</li>
+ <li><strong>타 모듈 연계</strong>: PP(MBOM), 22·23장.</li>
+ </ul></li>
+
+ <li><strong>설계변경(ECO) 연 발생 건수와 평균 처리 기간은?</strong>
+ <ul>
+ <li><strong>의도</strong>: ECO 자동화 ROI.</li>
+ <li><strong>프로젝트 영향</strong>: 연 ECO 1,000건 이상 = ECO 자동 워크플로 필수.</li>
+ <li><strong>타 모듈 연계</strong>: PP(BOM 동기화), MM(자재 변경), 24장 ECO.</li>
+ </ul></li>
+
+ <li><strong>ECN·ECR·ECO 3단계 워크플로 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 표준 ECM(Engineering Change Mgmt) 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 3단계 운영 = SAP ECM 모듈 활성화.</li>
+ <li><strong>타 모듈 연계</strong>: 24장.</li>
+ </ul></li>
+
+ <li><strong>설계변경 영향도 분석(Where-Used) 자동화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 변경 영향 사전 가시화.</li>
+ <li><strong>프로젝트 영향</strong>: Where-Used 자동화 미운영 = 변경 누락 사고 위험.</li>
+ <li><strong>타 모듈 연계</strong>: PP(BOM 영향), MM(자재 영향).</li>
+ </ul></li>
+
+ <li><strong>품번(Part Number) 부여 룰과 코드 체계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마스터 코드 체계 통일.</li>
+ <li><strong>프로젝트 영향</strong>: PLM 코드 vs ERP 코드 차이 = 매핑 룰 신설.</li>
+ <li><strong>타 모듈 연계</strong>: MM(자재 코드).</li>
+ </ul></li>
+
+ <li><strong>부품 분류(Classification) 체계 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 부품 검색·재사용.</li>
+ <li><strong>프로젝트 영향</strong>: 분류 체계 = SAP Classification 활성화.</li>
+ <li><strong>타 모듈 연계</strong>: MM(자재 그룹).</li>
+ </ul></li>
+
+ <li><strong>외주 설계 협업과 도면 외부 송신 보안은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 보안 통제.</li>
+ <li><strong>프로젝트 영향</strong>: 외주 설계 비중 30% 이상 = 보안 통제 강화.</li>
+ <li><strong>타 모듈 연계</strong>: PLM 보안, IT 보안.</li>
+ </ul></li>
+
+ <li><strong>도면-BOM-라우팅 정합성 검증 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마스터 데이터 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 검증 자동화 = 컷오버 정합성 90% 이상 가능.</li>
+ <li><strong>타 모듈 연계</strong>: PP(BOM, Routing).</li>
+ </ul></li>
+
+ <li><strong>설계 표준화율(공통 부품 활용률)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 부품 표준화 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 공통 부품 활용률 50% 이하 = 표준화 캠페인 권고.</li>
+ <li><strong>타 모듈 연계</strong>: MM, CO(원가 절감).</li>
+ </ul></li>
+
+ <li><strong>R&amp;D 비용 추적 — 프로젝트별·제품별 분리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: R&amp;D 비용 가시화.</li>
+ <li><strong>프로젝트 영향</strong>: PS 모듈 활성화 권고.</li>
+ <li><strong>타 모듈 연계</strong>: PS, CO.</li>
+ </ul></li>
+
+ <li><strong>품질 인증(PPAP·자동차 OEM 승인) 패키지 자동화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자동차 OEM 승인 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 한성정밀 H자동차 납품 = PPAP 자동화 핵심.</li>
+ <li><strong>타 모듈 연계</strong>: QM, SD.</li>
+ </ul></li>
+
+ <li><strong>특허·지적재산 관리 시스템 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: IP 관리 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 특허 100건 이상 = 외부 IP 시스템 연계.</li>
+ <li><strong>타 모듈 연계</strong>: 외부 IP.</li>
+ </ul></li>
+
+ <li><strong>제품 단종(Discontinuation) 절차와 잔여 재고 처리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 단종 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 단종 룰 미운영 = 데드 스톡 누적.</li>
+ <li><strong>타 모듈 연계</strong>: MM(재고 처리), CO(폐기 비용).</li>
+ </ul></li>
+
+ <li><strong>고객 맞춤 설계(Configuration) 비중과 자동화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: VC(Variant Configuration) 도입 필요성.</li>
+ <li><strong>프로젝트 영향</strong>: 맞춤 설계 30% 이상 = SAP VC 활성화.</li>
+ <li><strong>타 모듈 연계</strong>: SD(견적), PP(BOM).</li>
+ </ul></li>
+
+ <li><strong>설계 BOM과 SAP MBOM 동기화 인터페이스는?</strong>
+ <ul>
+ <li><strong>의도</strong>: PLM-ERP BOM 인터페이스.</li>
+ <li><strong>프로젝트 영향</strong>: BAPI_BOM_UPLOAD 자동화 필수. 60장 PLM-ERP 통합.</li>
+ <li><strong>타 모듈 연계</strong>: PP, MM.</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong></li>
+
+ <li><strong>설계팀 인원과 PLM 사용자 수는?</strong></li>
+
+ <li><strong>제품수명주기 단계별(컨셉·설계·시제품·양산·서비스·단종) 데이터 흐름은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 전 수명주기 데이터 흐름 가시화.</li>
+ <li><strong>프로젝트 영향</strong>: 단계별 시스템 분리 = 통합 인터페이스 신설.</li>
+ <li><strong>타 모듈 연계</strong>: 60장 PLM-ERP.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong></li>
+ </ol>
+

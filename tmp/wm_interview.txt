@@ -1,0 +1,141 @@
+ <h4>10.11 WM/EWM 모듈 인터뷰 표준 질문 25개 — 창고관리</h4>
+ <ol>
+ <li><strong>창고 수와 위치, 면적은?</strong>
+ <ul>
+ <li><strong>의도</strong>: WM 도입 범위 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 창고 5개 이상 = SAP EWM(Extended WM) 권고. WM은 단순 운영용.</li>
+ <li><strong>타 모듈 연계</strong>: MM(재고), SD(출하).</li>
+ </ul></li>
+
+ <li><strong>저장 위치(Storage Location·Bin) 체계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: Bin 관리 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: Bin 단위 관리 = EWM 활성화.</li>
+ <li><strong>타 모듈 연계</strong>: MM.</li>
+ </ul></li>
+
+ <li><strong>입고-피킹-출하 자동화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 창고 운영 효율.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 50% 이하 = WMS 도입 ROI 큼.</li>
+ <li><strong>타 모듈 연계</strong>: SD, MM.</li>
+ </ul></li>
+
+ <li><strong>RF·PDA·Voice Picking 등 모바일 도구 활용은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 모바일 통합.</li>
+ <li><strong>프로젝트 영향</strong>: RF 미운영 = 입출고 정확도 90% 이하. RF 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: 외부 모바일 시스템.</li>
+ </ul></li>
+
+ <li><strong>FIFO·LIFO·SLED 출고 룰 적용 자재는?</strong>
+ <ul>
+ <li><strong>의도</strong>: Picking Strategy 결정.</li>
+ <li><strong>프로젝트 영향</strong>: SLED 적용 = WM Picking Strategy 별도 설정.</li>
+ <li><strong>타 모듈 연계</strong>: MM(Batch), QM(SLED).</li>
+ </ul></li>
+
+ <li><strong>실사 주기와 차이 처리 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 재고 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 실사 차이 ±2% 이상 = 마스터 정제 필수.</li>
+ <li><strong>타 모듈 연계</strong>: MM, FI.</li>
+ </ul></li>
+
+ <li><strong>외주 창고(3PL) 운영 비중과 시스템 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 3PL 인터페이스.</li>
+ <li><strong>프로젝트 영향</strong>: 3PL 비중 30% 이상 = EDI 인터페이스 신설.</li>
+ <li><strong>타 모듈 연계</strong>: 외부 3PL.</li>
+ </ul></li>
+
+ <li><strong>크로스도킹·재포장 운영 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 고급 WM 기능 필요성.</li>
+ <li><strong>프로젝트 영향</strong>: 크로스도킹 30% 이상 = EWM 필수.</li>
+ <li><strong>타 모듈 연계</strong>: SD.</li>
+ </ul></li>
+
+ <li><strong>위험물·온도 관리 자재 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 특수 자재 관리.</li>
+ <li><strong>프로젝트 영향</strong>: 위험물 = EH&amp;S 모듈 도입 검토.</li>
+ <li><strong>타 모듈 연계</strong>: EH&amp;S, QM.</li>
+ </ul></li>
+
+ <li><strong>운송업체와의 데이터 연계 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: TM 통합.</li>
+ <li><strong>프로젝트 영향</strong>: TM 도입 검토.</li>
+ <li><strong>타 모듈 연계</strong>: SD, TM.</li>
+ </ul></li>
+
+ <li><strong>월 평균 입고·출고 트랜잭션 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 시스템 부하·라이선스.</li>
+ <li><strong>프로젝트 영향</strong>: 월 10,000건 이상 = HANA 인프라 강화.</li>
+ <li><strong>타 모듈 연계</strong>: MM, SD.</li>
+ </ul></li>
+
+ <li><strong>창고 KPI 5개 — 입고시간·피킹정확도·재고회전·결품률·인당처리량?</strong>
+ <ul>
+ <li><strong>의도</strong>: 창고 성과 측정.</li>
+ <li><strong>프로젝트 영향</strong>: KPI 자동화 = Fiori 대시보드.</li>
+ <li><strong>타 모듈 연계</strong>: BI.</li>
+ </ul></li>
+
+ <li><strong>VMI·Consignment·Just-in-Time 운영 자재는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 특수 재고 관리.</li>
+ <li><strong>프로젝트 영향</strong>: VMI 운영 = 외부 시스템 연계.</li>
+ <li><strong>타 모듈 연계</strong>: MM.</li>
+ </ul></li>
+
+ <li><strong>로트·시리얼 추적 자재 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 추적성 보장.</li>
+ <li><strong>프로젝트 영향</strong>: 로트 추적 100% = SAP Batch 관리 필수.</li>
+ <li><strong>타 모듈 연계</strong>: MM, QM, 61장.</li>
+ </ul></li>
+
+ <li><strong>창고 인원 구성과 시스템 사용자 수는?</strong></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong></li>
+
+ <li><strong>WMS-ERP-MES 3시스템 인터페이스 정합성은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 3시스템 통합.</li>
+ <li><strong>프로젝트 영향</strong>: 인터페이스 미운영 = 실시간 재고 가시성 손실.</li>
+ <li><strong>타 모듈 연계</strong>: MM, MES.</li>
+ </ul></li>
+
+ <li><strong>월말 결산 시 창고팀이 회계팀에 제출하는 자료는?</strong></li>
+
+ <li><strong>베트남 법인 창고와 한국 본사 창고의 운영 차이는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 본사-자회사 창고 통합.</li>
+ <li><strong>프로젝트 영향</strong>: 차이 5건 이상 = 룰 별도 설계.</li>
+ <li><strong>타 모듈 연계</strong>: 31장 베트남.</li>
+ </ul></li>
+
+ <li><strong>긴급 출하·반품 처리 사이클은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 예외 프로세스.</li>
+ <li><strong>프로젝트 영향</strong>: 긴급 비중 높음 = 표준 프로세스 재설계.</li>
+ <li><strong>타 모듈 연계</strong>: SD.</li>
+ </ul></li>
+
+ <li><strong>창고 자동화(컨베이어·AGV·로봇) 도입 계획은?</strong>
+ <ul>
+ <li><strong>의도</strong>: Smart Warehouse 로드맵.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 계획 = EWM + WCS 통합 권고.</li>
+ <li><strong>타 모듈 연계</strong>: EWM, 외부 WCS.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong></li>
+ </ol>
+

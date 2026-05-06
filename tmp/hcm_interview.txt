@@ -1,0 +1,153 @@
+ <h4>10.9 HCM 모듈 인터뷰 표준 질문 25개 — 인사</h4>
+ <ol>
+ <li><strong>총 인원과 직군별·직급별 분포는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 조직구조 설계의 기초.</li>
+ <li><strong>프로젝트 영향</strong>: 인원 1,000명 이상 = SAP SuccessFactors 별도 견적 5~10억.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈(권한·조직).</li>
+ </ul></li>
+
+ <li><strong>고용형태 비중(정규·계약·파견·일용)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 급여·복지 룰 분리.</li>
+ <li><strong>프로젝트 영향</strong>: 비정규 30% 이상 = 급여 룰 별도 설계.</li>
+ <li><strong>타 모듈 연계</strong>: FI(인건비 분개), CO.</li>
+ </ul></li>
+
+ <li><strong>조직구조 — 본사·자회사·해외법인 별도 운영인가?</strong>
+ <ul>
+ <li><strong>의도</strong>: 다중 회사코드·조직 매핑.</li>
+ <li><strong>프로젝트 영향</strong>: 자회사 5개 이상 = 조직 매핑 4~6주.</li>
+ <li><strong>타 모듈 연계</strong>: 다중 회사코드, FI Group Reporting.</li>
+ </ul></li>
+
+ <li><strong>급여 산정 방식 — 호봉제·직무급·연봉제 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 급여 룰 복잡도.</li>
+ <li><strong>프로젝트 영향</strong>: 호봉제 = 급여 룰 100개 이상. SAP HCM Payroll 또는 외부 급여 시스템.</li>
+ <li><strong>타 모듈 연계</strong>: FI, CO.</li>
+ </ul></li>
+
+ <li><strong>월 급여 처리 시스템과 마감일은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 급여 처리 일정·자동화 수준.</li>
+ <li><strong>프로젝트 영향</strong>: 마감일 25일 = 자동화 80% 이상 필수.</li>
+ <li><strong>타 모듈 연계</strong>: FI(월결산).</li>
+ </ul></li>
+
+ <li><strong>4대보험·소득세·지방세 자동 계산 정확도는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 세무 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 외부 시스템(이지페이·일렉토리) 연계 검토.</li>
+ <li><strong>타 모듈 연계</strong>: 세무 시스템.</li>
+ </ul></li>
+
+ <li><strong>퇴직금 처리(DB·DC) 운영 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-IFRS 1019호 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: DB 운영 = 외부 보험계리인 평가 자동 연동.</li>
+ <li><strong>타 모듈 연계</strong>: FI(퇴직급여 채무), 외부 보험계리.</li>
+ </ul></li>
+
+ <li><strong>연차·휴가 관리 시스템과 사용률은?</strong>
+ <ul>
+ <li><strong>의도</strong>: ESS(Employee Self Service) 활용도.</li>
+ <li><strong>프로젝트 영향</strong>: 종이 결재 운영 = ESS 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: ESS·MSS Portal.</li>
+ </ul></li>
+
+ <li><strong>출퇴근 관리(GPS·지문·IC) 시스템 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 근태 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 외부 근태 시스템(이지타임·SK Telink) 연계 필수.</li>
+ <li><strong>타 모듈 연계</strong>: 외부 근태.</li>
+ </ul></li>
+
+ <li><strong>인사고과·평가 시스템 운영 주기와 도구는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 평가 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 분기 평가 = SuccessFactors Performance 모듈.</li>
+ <li><strong>타 모듈 연계</strong>: ESS.</li>
+ </ul></li>
+
+ <li><strong>채용 관리 시스템(ATS)과 ERP 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 채용-입사 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 외부 ATS(잡코리아·사람인) 연계.</li>
+ <li><strong>타 모듈 연계</strong>: 외부 ATS.</li>
+ </ul></li>
+
+ <li><strong>교육·자격증 관리 시스템 운영 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: HRD 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 교육 시간 추적 = 인사 KPI 자동 산출.</li>
+ <li><strong>타 모듈 연계</strong>: 외부 LMS.</li>
+ </ul></li>
+
+ <li><strong>해외 주재원 — 이중 급여·세무 처리 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 글로벌 모빌리티.</li>
+ <li><strong>프로젝트 영향</strong>: 주재원 10명 이상 = Tax Equalization 자동화.</li>
+ <li><strong>타 모듈 연계</strong>: FI, 외부 세무 컨설팅.</li>
+ </ul></li>
+
+ <li><strong>스톡옵션·우리사주 운영과 회계 처리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-IFRS 1102호 주식기반보상.</li>
+ <li><strong>프로젝트 영향</strong>: 운영 시 = 외부 보상계리인 평가 연동.</li>
+ <li><strong>타 모듈 연계</strong>: FI.</li>
+ </ul></li>
+
+ <li><strong>전자결재 시스템과 ERP 권한 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 권한 통합.</li>
+ <li><strong>프로젝트 영향</strong>: 외부 전자결재(가비아·티맥스) 연계.</li>
+ <li><strong>타 모듈 연계</strong>: GRC, 외부 전자결재.</li>
+ </ul></li>
+
+ <li><strong>개인정보 보호(GDPR·개인정보보호법) 준수 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 컴플라이언스.</li>
+ <li><strong>프로젝트 영향</strong>: GDPR 적용(EU 자회사) = 데이터 마스킹·삭제 자동화.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈.</li>
+ </ul></li>
+
+ <li><strong>인사 KPI 5개 — 이탈률·근속·교육시간·다양성·만족도?</strong>
+ <ul>
+ <li><strong>의도</strong>: People Analytics.</li>
+ <li><strong>프로젝트 영향</strong>: KPI 자동 산출 = 임원진 가시성.</li>
+ <li><strong>타 모듈 연계</strong>: BI/Analytics.</li>
+ </ul></li>
+
+ <li><strong>월 급여 정산 시 회계팀과의 데이터 흐름은?</strong>
+ <ul>
+ <li><strong>의도</strong>: HCM-FI 통합.</li>
+ <li><strong>프로젝트 영향</strong>: 자동분개 미운영 = 매월 수기 분개 100건 이상.</li>
+ <li><strong>타 모듈 연계</strong>: FI(인건비 분개).</li>
+ </ul></li>
+
+ <li><strong>HR 분석(People Analytics) 도입 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 인사 데이터 활용도.</li>
+ <li><strong>프로젝트 영향</strong>: 미운영 = SuccessFactors People Analytics 권고.</li>
+ <li><strong>타 모듈 연계</strong>: BI.</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong></li>
+
+ <li><strong>노사관계·노조 협약 사항이 시스템에 반영되어야 하는지?</strong>
+ <ul>
+ <li><strong>의도</strong>: 노사 합의 룰 시스템화.</li>
+ <li><strong>프로젝트 영향</strong>: 노조 있음 = 협약 룰 별도 워크플로.</li>
+ <li><strong>타 모듈 연계</strong>: 급여, 근태.</li>
+ </ul></li>
+
+ <li><strong>인사팀 인원과 시스템 사용자 수는?</strong></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong></li>
+ </ol>
+

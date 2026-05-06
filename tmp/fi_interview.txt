@@ -1,0 +1,240 @@
+ <h4>10.6 FI 모듈 인터뷰 표준 질문 35개 — 재무회계</h4>
+ <ol>
+ <li><strong>현재 회계 시스템과 주요 모듈(GL·AR·AP·AM·Bank)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: As-Is 시스템 파악·마이그레이션 범위 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 더존Smart-A·KICPA 같은 SMB 패키지 = SAP FI 전환 마이그레이션 6~10개월.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈(GL 종착점), 마이그레이션 일정.</li>
+ </ul></li>
+
+ <li><strong>차트 오브 어카운츠(CoA) 구조와 계정 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: GL 설계의 첫 자리. 계정 수가 복잡도 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 계정 1,500개 이상 = CoA 재설계 권고. 의미 있는 계정 트리 신설.</li>
+ <li><strong>타 모듈 연계</strong>: CO(원가요소 매핑), 모든 모듈 OBYC.</li>
+ </ul></li>
+
+ <li><strong>K-IFRS 적용 여부와 K-GAAP 병행 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 다중 원장 설계 필요성.</li>
+ <li><strong>프로젝트 영향</strong>: 병행 운영 = Parallel Ledger 활성화, 자동분개 룰 두 배.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈, 외부감사.</li>
+ </ul></li>
+
+ <li><strong>외부감사인은 누구이며 KAM(핵심감사사항) 항목은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 회계 리스크 사전 파악·외부감사 협의 시점.</li>
+ <li><strong>프로젝트 영향</strong>: KAM 3~5건 = 컷오버 D-90 안에 외부감사 사전 미팅 필수.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈 정합성, IPO·M&amp;A 일정.</li>
+ </ul></li>
+
+ <li><strong>월·분기·반기·연 결산 일정과 마감 일수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: D+5 마감 가능성 진단.</li>
+ <li><strong>프로젝트 영향</strong>: As-Is D+12 → To-Be D+5 = ERP 가치의 가장 가시적 증명. 케이스 55.1 참조.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈 결산 일정.</li>
+ </ul></li>
+
+ <li><strong>결산 시 수기 분개(JE) 비중과 자동분개 비율은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자동화 수준 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화율 50% 이하 = OBYC 룰 전면 재설계, 95% 목표.</li>
+ <li><strong>타 모듈 연계</strong>: MM·SD·PP·HCM 자동분개.</li>
+ </ul></li>
+
+ <li><strong>발생주의 vs 현금주의 적용 영역 분리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 회계 기준 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 혼용 운영 = 외부감사 지적 위험. 명문화 필수.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈 분개 룰.</li>
+ </ul></li>
+
+ <li><strong>자동분개 룰(OBYC) 매핑 정확도는?</strong>
+ <ul>
+ <li><strong>의도</strong>: As-Is 자동화 수준.</li>
+ <li><strong>프로젝트 영향</strong>: OBYC 미설정 = 결산 D+12 → D+5 단축 불가능.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈.</li>
+ </ul></li>
+
+ <li><strong>외화 환산 — 매월 평균환율·기말환율 적용 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 다중 통화 결산 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 환율 룰 명문화 안 됨 = 베트남 법인 결산 차이 ±3%.</li>
+ <li><strong>타 모듈 연계</strong>: TR(환율 갱신), 31장 베트남.</li>
+ </ul></li>
+
+ <li><strong>재평가(Revaluation) 주기와 처리 자동화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외화 채권·채무 평가.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 미운영 = 결산 매월 추가 3일.</li>
+ <li><strong>타 모듈 연계</strong>: TR, AR/AP.</li>
+ </ul></li>
+
+ <li><strong>매출채권(AR) Aging 분석 주기와 충당금 설정은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 채권 관리·K-IFRS 1109호 손상 인식.</li>
+ <li><strong>프로젝트 영향</strong>: 충당금 룰 자동화 안 됨 = 외부감사 KAM 등재.</li>
+ <li><strong>타 모듈 연계</strong>: SD(매출), FSCM, 외부감사.</li>
+ </ul></li>
+
+ <li><strong>매입채무(AP) 결제 사이클과 어음 운영 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자금 흐름·DPO 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 어음 비중 30% 이상 = 어음 자동화 모듈 신설.</li>
+ <li><strong>타 모듈 연계</strong>: MM(매입), TR(자금 계획), 은행.</li>
+ </ul></li>
+
+ <li><strong>법인카드·소액 경비 처리 절차는?</strong>
+ <ul>
+ <li><strong>의도</strong>: SAP Concur·외부 경비 시스템 연계.</li>
+ <li><strong>프로젝트 영향</strong>: 수기 처리 = 매월 수백 시간 인력 낭비. Concur 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: HCM, 외부 경비 시스템.</li>
+ </ul></li>
+
+ <li><strong>고정자산(Asset) 관리 — 감가상각법·내용연수 정책은?</strong>
+ <ul>
+ <li><strong>의도</strong>: AM 모듈 설계.</li>
+ <li><strong>프로젝트 영향</strong>: 자산 1,000건 이상 = AM 모듈 활성화, 감가상각 자동화.</li>
+ <li><strong>타 모듈 연계</strong>: AM(자산), CO(감가비 배부).</li>
+ </ul></li>
+
+ <li><strong>리스 회계(K-IFRS 1116호) 처리 자동화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 리스 회계 정합성. 운용리스도 자산·부채 인식 의무.</li>
+ <li><strong>프로젝트 영향</strong>: 리스 계약 50건 이상 = SAP RE-FX 또는 외부 리스 시스템 필수.</li>
+ <li><strong>타 모듈 연계</strong>: AM, CO(리스 비용 배부), 외부감사.</li>
+ </ul></li>
+
+ <li><strong>금융상품 평가 — FVOCI·FVPL 분류 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-IFRS 1109호 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 금융상품 분류 부정확 = 손익 재계산 위험.</li>
+ <li><strong>타 모듈 연계</strong>: TR(금융상품), 외부감사.</li>
+ </ul></li>
+
+ <li><strong>충당부채·우발부채 인식 기준 명문화 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-IFRS 1037호 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 명문화 안 됨 = 외부감사 매년 지적.</li>
+ <li><strong>타 모듈 연계</strong>: 외부감사, 법무.</li>
+ </ul></li>
+
+ <li><strong>퇴직급여 회계(K-IFRS 1019호) 처리 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: DB·DC 분류·확정급여채무 계산.</li>
+ <li><strong>프로젝트 영향</strong>: 외부 보험계리인 평가 연 1회 자동 연동 필요.</li>
+ <li><strong>타 모듈 연계</strong>: HCM(퇴직금), 외부 보험계리.</li>
+ </ul></li>
+
+ <li><strong>이연법인세(Deferred Tax) 자동 계산 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 세무회계와 재무회계 차이 처리.</li>
+ <li><strong>프로젝트 영향</strong>: 수동 계산 = 결산 매분기 추가 5일. 자동화 권고.</li>
+ <li><strong>타 모듈 연계</strong>: 세무 시스템, 외부감사.</li>
+ </ul></li>
+
+ <li><strong>연결결산 범위와 내부거래 제거 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 연결결산 자동화. SAP FC·Group Reporting 활용.</li>
+ <li><strong>프로젝트 영향</strong>: 연결 자회사 5개 이상 = SAP FC 도입 별도 견적 5~10억.</li>
+ <li><strong>타 모듈 연계</strong>: SD/MM(IC 거래), 31장 베트남 통합.</li>
+ </ul></li>
+
+ <li><strong>다중 원장(Parallel Ledger) 운영 여부 — K-IFRS·VAS·Group?</strong>
+ <ul>
+ <li><strong>의도</strong>: 다중 회계기준 동시 운영.</li>
+ <li><strong>프로젝트 영향</strong>: 베트남 법인 운영 = K-IFRS·VAS 동시 = Parallel Ledger 필수.</li>
+ <li><strong>타 모듈 연계</strong>: CO, 31장 베트남.</li>
+ </ul></li>
+
+ <li><strong>외부감사 PBC 리스트와 준비 자료 표준화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외부감사 대응 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 표준화 안 됨 = 외부감사 매년 추가 인력 1~2명 투입.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈 자료 추출.</li>
+ </ul></li>
+
+ <li><strong>세무신고(법인세·부가세·원천세) 자동화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 세무 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 자동화 미운영 = 매월 신고 인력 2~3일 투입.</li>
+ <li><strong>타 모듈 연계</strong>: 세무, 외부 세무 시스템.</li>
+ </ul></li>
+
+ <li><strong>전자세금계산서 발급·수신 시스템 연계는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 국세청 전자세금계산서 의무.</li>
+ <li><strong>프로젝트 영향</strong>: 외부 ASP(더존·KICPA) 연계 필수.</li>
+ <li><strong>타 모듈 연계</strong>: SD(매출), MM(매입), 외부 ASP.</li>
+ </ul></li>
+
+ <li><strong>현금흐름표(CFS) 작성 자동화 수준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 직접법·간접법 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 수동 작성 = 결산 매월 추가 2일. 간접법 자동화 권고.</li>
+ <li><strong>타 모듈 연계</strong>: TR(자금), Group Reporting.</li>
+ </ul></li>
+
+ <li><strong>회계팀 인원 구성과 SoD(직무분리) 적용은?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-SOX 통제 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: SoD 위반 = K-SOX 통제 결함, GRC 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: GRC, 외부감사.</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 페인 포인트 발굴.</li>
+ </ul></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 핵심 요구사항 우선순위.</li>
+ </ul></li>
+
+ <li><strong>D+5 마감 가능성 — 현재 마감 일수와 단축 목표는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 결산 단축 목표 설정.</li>
+ <li><strong>프로젝트 영향</strong>: D+5 달성 = ERP 가치의 가장 가시적 증명. ROI 회수 핵심.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈, 케이스 55.1.</li>
+ </ul></li>
+
+ <li><strong>K-SOX(내부회계관리제도) 적용 통제 항목은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 통제 환경 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 통제 항목 50개 이상 = GRC 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: GRC, 외부감사.</li>
+ </ul></li>
+
+ <li><strong>외부감사 매년 지적 항목 Top 3는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 회계 리스크 우선 처리.</li>
+ <li><strong>프로젝트 영향</strong>: Top 3 = 컷오버 D-30 안에 우선 정리.</li>
+ <li><strong>타 모듈 연계</strong>: 외부감사인 협의.</li>
+ </ul></li>
+
+ <li><strong>IPO·M&amp;A 일정 — 회계 정합성 압박은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자본시장 일정과 ERP 일정 동기화.</li>
+ <li><strong>프로젝트 영향</strong>: IPO 2년 후 = 회계 정합성 100% 목표, 외부감사 사전 미팅 강화.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈, 외부감사.</li>
+ </ul></li>
+
+ <li><strong>베트남 법인 회계와 한국 본사 결산 일정 동기화는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 본사-자회사 결산 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 베트남 부가세 신고 D+20 vs 한국 D+5 = 동기화 룰 신설.</li>
+ <li><strong>타 모듈 연계</strong>: CO(이전가격), 31장 베트남.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마무리.</li>
+ </ul></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong>
+ <ul>
+ <li><strong>의도</strong>: 추가 인터뷰.</li>
+ </ul></li>
+ </ol>
+

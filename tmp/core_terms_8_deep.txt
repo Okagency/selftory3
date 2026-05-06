@@ -1,0 +1,458 @@
+<!-- ============================================================
+ 0장. 핵심 ERP 용어 8종 — 개념·정의·5단 깊이
+============================================================ -->
+<section id="ch0">
+ <h2 class="part">[0장] 핵심 ERP 용어 8종 — 개념을 완벽히 이해해야 어떤 ERP도 다룰 수 있다
+ <small>— SAP·Oracle·MS Dynamics·국산 ERP 어느 것이든 도구일 뿐 —</small>
+ </h2>
+ <blockquote class="story">
+ 12년 컨설팅에서 가장 자주 본 사고는 — 컨설턴트가 SAP 트랜잭션 코드는 외웠지만 그 트랜잭션이 다루는 대상의 본질은 모르는 자리다. KP26은 외워도 임율이 무엇인지 모르고, MD01은 누르면서 MRP의 산출 원리는 모른다. 시스템은 5년에 한 번씩 바뀌지만 — 임율·BOM·MRP·라우팅·워크센터·EBOM·MBOM·ECO·안전재고의 본질은 50년 동안 변하지 않았다.<br><br>
+ 0장은 그 8개 핵심 용어를 — 개념·본질·부서 동학·한국 특수 변수·도구로서의 ERP 5단으로 푼다. 이걸 완벽히 이해하면 SAP·Oracle·MS Dynamics·국산 ERP 어느 것을 만나도 도구로 다룰 수 있다. <strong>도구가 아니라 개념이 컨설턴트를 만든다.</strong>
+ </blockquote>
+
+ <!-- ============================================================
+ 0.1 BOM (Bill of Materials)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-bom">0.1 BOM (Bill of Materials) — 자재명세서</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>BOM이란 — 한 제품을 만들기 위해 필요한 모든 자재의 목록과 수량을 계층적으로 풀어놓은 표.</strong> 자전거 한 대를 만드는데 — 프레임 1개·바퀴 2개·핸들 1개·체인 1개·페달 2개·나사 32개가 필요하다는 식의 명세서. 그러나 단순 목록이 아니라 — 각 자재가 다시 더 작은 자재로 구성되는 <strong>다단 계층 구조</strong>다. 바퀴는 림 1개·스포크 36개·튜브 1개·타이어 1개로 다시 풀린다.</p>
+ <p><strong>BOM이 존재해야 하는 이유</strong> — 제품 한 개를 만들 때 어떤 자재가 얼마나 들어가는지 모르면, 자재 발주도·재고 계산도·원가 산출도·생산 스케줄도 다 못 한다. BOM은 제품과 자재를 잇는 <strong>유일한 다리</strong>다. BOM이 틀리면 회사의 모든 부서가 다른 숫자를 본다.</p>
+
+ <h4>2. 본질·원리·구성</h4>
+ <p><strong>BOM의 4가지 핵심 정보</strong>:</p>
+ <ul>
+ <li><strong>모(母) 자재 (Parent)</strong> — 만들어지는 제품 또는 반제품</li>
+ <li><strong>자(子) 자재 (Component)</strong> — 모자재를 만들기 위해 들어가는 부품</li>
+ <li><strong>소요량 (Quantity)</strong> — 모자재 1개당 자자재가 몇 개 들어가는가</li>
+ <li><strong>유효 일자 (Effectivity Date)</strong> — 이 BOM이 언제부터 언제까지 유효한가</li>
+ </ul>
+ <p><strong>BOM의 종류</strong>:</p>
+ <ul>
+ <li><strong>다단 BOM (Multi-level)</strong> — 자재가 다시 자재로 풀리는 계층 구조. 자동차는 보통 7~12단</li>
+ <li><strong>단단 BOM (Single-level)</strong> — 한 단계만. MRP 계산 시 한 단계씩만 풀어보는 자리</li>
+ <li><strong>Phantom BOM</strong> — 회계상 존재하지만 재고로 잡히지 않는 가상 자재. 즉시 분해되어 자자재로 직진. 다단을 줄이려는 자리</li>
+ <li><strong>Variant BOM</strong> — 같은 모자재인데 옵션에 따라 자재가 달라지는 자리. 자동차의 색상·옵션</li>
+ </ul>
+ <p><strong>핵심 함정</strong> — BOM은 평면 표가 아니라 <strong>시간이 들어간 살아있는 구조</strong>다. 같은 자전거의 BOM이 — 2025년 1월에는 체인 A를 쓰다가 2025년 6월부터 체인 B로 바뀐다. 유효 일자(From/To Effectivity)가 BOM의 절반이다. 유효 일자 없는 BOM은 — 작년 생산 분석 시 "이 자전거가 그때 어떻게 만들어졌는지" 못 묻는다.</p>
+
+ <h4>3. 부서간 동학 — 책임의 4자 갈등</h4>
+ <p>BOM은 한 제품에 4개 부서가 동시에 손대는 마스터입니다.</p>
+ <ul>
+ <li><strong>설계(R&amp;D)</strong>: "BOM의 구성은 도면에서 나온다, 우리 일" — 그러나 "양산성·단가는 우리 일이 아님"</li>
+ <li><strong>생산기술(ME)</strong>: "양산용 BOM은 우리가 만든다" — 그러나 "도면 변경 누락은 설계 책임"</li>
+ <li><strong>구매</strong>: "BOM에 단가는 우리가 입력" — 그러나 "구조는 우리 일이 아님"</li>
+ <li><strong>회계·원가</strong>: "BOM 기반 표준원가는 우리 산출" — 그러나 "BOM 정확성은 우리가 검증 못 함"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — 설계가 도면을 변경했지만 BOM에 반영 누락 → 양산 라인이 옛 BOM으로 자재 발주 → 신규 자재 결품으로 라인 정지. 12년 동안 본 사고 중 한 회사 — 이 한 자리에서 라인 6시간 정지·손실 8억. <strong>BOM 데이터 오너가 한 명(MBOM은 생산기술팀장, EBOM은 설계실장)으로 명시되지 않은 회사는 매년 이 사고가 반복됩니다.</strong></p>
+
+ <h4>4. 한국 특수 변수 3가지</h4>
+ <ul>
+ <li><strong>자동차 OEM의 PPAP 요구</strong>: 1차 협력사가 H자동차·K자동차에 납품 시 — BOM의 모든 자재에 대한 PPAP(Production Part Approval Process) 패키지를 제출해야 합니다. BOM 한 줄 변경 시 PPAP 재승인 — 평균 4~8주. 즉, BOM 변경의 자유도가 글로벌보다 낮음. ECO 워크플로 강도가 글로벌의 2~3배 필요</li>
+ <li><strong>한국 중소·중견 회사의 EBOM-MBOM 분리 미운영</strong>: 글로벌 회사는 EBOM(설계 BOM)과 MBOM(제조 BOM)이 명확히 분리되어 PLM·ERP에 각각 등록. 한국 중견의 80%는 — EBOM은 설계팀 엑셀, MBOM은 ERP. 두 시스템 동기화를 사람이 매주 수기로 함. <strong>EBOM-MBOM 자동화가 한국 ERP 도입의 가장 큰 가치 제안</strong></li>
+ <li><strong>K-IFRS 1002호 재고자산</strong>: BOM 기반 표준원가가 실제와 5% 이내 차이일 때만 재고 평가에 사용 가능. 7% 이상 차이 시 — 외부감사 지적 + Material Ledger 강제 도입. BOM 정합성이 단순 운영 문제가 아니라 <strong>회계 정합성 문제</strong></li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: CS01(BOM 등록)·CS02(변경)·CS03(조회)·CS12(다단 조회)·CS15(Where-Used 자재 사용처 조회)</li>
+ <li><strong>Oracle Fusion</strong>: Item Structure·Bill of Material 화면</li>
+ <li><strong>MS Dynamics 365</strong>: Bill of Materials·BOM Designer</li>
+ <li><strong>국산 ERP (더존·영림원·이카운트)</strong>: BOM 마스터·BOM 변경 화면</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>모자재·자자재·소요량·유효 일자</strong>. BOM 개념을 완벽히 이해한 컨설턴트는 어느 ERP의 BOM 화면을 만나도 30분 안에 적응합니다.</p>
+
+ <!-- ============================================================
+ 0.2 MRP (Material Requirements Planning)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-mrp">0.2 MRP (Material Requirements Planning) — 자재소요계획</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>MRP란 — "이번 달에 자전거 100대를 만들려면, 어떤 자재를 언제까지 얼마나 발주·생산해야 하는가"를 자동 계산하는 논리.</strong> 미래의 수요(생산 계획·고객 주문)에서 출발해서 — BOM을 따라 거꾸로 풀어, 각 자재의 발주 시점과 발주 수량을 도출하는 프로세스.</p>
+ <p><strong>MRP가 존재해야 하는 이유</strong> — 자전거 1만 종류·자재 5만 개를 사람이 매주 손으로 계산할 수 없습니다. 한 자전거 모델만 — 자재 50개·납기 10일·재고 다양·예약 다양. 사람의 머리로는 일주일 걸려야 풀 일을 컴퓨터가 1분에 푸는 — 그것이 MRP. <strong>MRP는 ERP의 가장 오래된 심장입니다 (1960년대 IBM이 개발).</strong></p>
+
+ <h4>2. 본질·원리·공식</h4>
+ <p><strong>MRP의 4가지 입력</strong>:</p>
+ <ul>
+ <li><strong>독립 수요 (Independent Demand)</strong> — 외부에서 들어오는 수요. 고객 주문·예측·생산 계획</li>
+ <li><strong>BOM</strong> — 한 제품 만드는 데 필요한 자재 구성</li>
+ <li><strong>재고 현황</strong> — 현재 창고에 있는 재고·발주된 미입고분·생산 중 분량</li>
+ <li><strong>리드타임</strong> — 자재마다 — 발주 후 입고까지 걸리는 시간</li>
+ </ul>
+ <p><strong>MRP의 출력</strong>:</p>
+ <ul>
+ <li><strong>구매요청 (PR·Purchase Requisition)</strong> — "자재 A를 5월 15일까지 100개 발주하라"</li>
+ <li><strong>계획 작업오더 (Planned Order)</strong> — "반제품 B를 5월 20일까지 50개 생산하라"</li>
+ <li><strong>재일정 권고 (Reschedule)</strong> — "기존 발주 일자를 앞당기거나 미루라"</li>
+ </ul>
+ <p><strong>MRP의 핵심 논리 — 5단계</strong>:</p>
+ <ol>
+ <li><strong>총 소요량 (Gross Requirement)</strong>: 미래 수요로부터 BOM을 풀어 — 각 자재의 총 필요량 산출</li>
+ <li><strong>순 소요량 (Net Requirement)</strong>: 총 소요량 − 가용 재고(현재 재고 + 미입고분)</li>
+ <li><strong>로트 사이즈 적용</strong>: 순 소요량을 — Lot Size 정책(LFL·EOQ·고정 등)에 따라 발주 단위로 묶기</li>
+ <li><strong>리드타임 역산</strong>: 필요 시점에서 리드타임만큼 거꾸로 빼서 — 발주 시점 도출</li>
+ <li><strong>BOM 다단 풀기 (Explosion)</strong>: 반제품 발주 → 그 반제품의 BOM을 또 풀어 — 자재 발주 → 다시 그 자재의 BOM을 풀고... 계속 반복</li>
+ </ol>
+ <p><strong>핵심 함정</strong> — MRP는 BOM·재고·리드타임의 정확성에 100% 의존합니다. 셋 중 하나가 틀리면 MRP는 쓰레기를 출력. <strong>"Garbage In, Garbage Out"</strong>의 가장 잔혹한 자리. 실제로 — MRP가 안 돌아가는 회사의 90%는 MRP 로직 문제가 아니라 마스터 정합성 문제.</p>
+
+ <h4>3. 부서간 동학 — 누가 MRP를 돌리는가</h4>
+ <ul>
+ <li><strong>생산기획</strong>: "MRP 결과는 우리 책임" — 그러나 "BOM·재고는 우리가 관리 못 함"</li>
+ <li><strong>구매</strong>: "MRP가 만든 PR을 우리가 발주" — 그러나 "MRP가 너무 자주 변경되면 공급사가 항의"</li>
+ <li><strong>영업</strong>: "고객 주문이 입력되면 MRP가 풀어야 한다" — 그러나 "MRP 결과로 납기를 못 맞추면 우리 책임은 아님"</li>
+ <li><strong>창고·재고관리</strong>: "재고 정확도는 우리" — 그러나 "MRP 결과 미회수는 우리 책임 아님"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — MRP가 매주 다른 결과를 내놓음 → 구매가 발주를 매주 변경 → 공급사가 "한국은 변덕스럽다"고 신뢰 잃음 → 공급사가 안전 마진을 리드타임에 더 얹음 → MRP는 그 부풀린 리드타임으로 다시 계산 → 안전재고 또 부풀림 → 운전자본 30% 과다. <strong>MRP의 안정성은 마스터 정합성과 부서간 신뢰의 합산 결과입니다.</strong></p>
+
+ <h4>4. 한국 특수 변수 3가지</h4>
+ <ul>
+ <li><strong>JIS(Just-in-Sequence) 발주 — 자동차 1차 협력사</strong>: H자동차·K자동차는 1차 협력사에 — 라인 작업 1~4시간 전에 발주를 보냅니다. 즉, MRP가 "주 단위"가 아니라 "시간 단위"로 돌아야 함. 글로벌 MRP 가이드의 주/일 단위와는 차원이 다른 자리</li>
+ <li><strong>한국 중소·중견의 MRP 미운영</strong>: 한국 중견의 60%는 MRP를 시스템에서 안 돌리고 — 자재 담당자가 엑셀로 매주 손계산. 이유는 단순 — 마스터 정합성이 70% 이하라 MRP 결과를 못 믿음. <strong>MRP 도입 = 마스터 정제 6개월 선행 작업이 필수</strong></li>
+ <li><strong>K-IFRS 1115호 매출인식과 MRP의 충돌</strong>: 매출이 출하 시점에 인식되는 게 아니라 "고객 통제권 이전 시점"에 인식되는 K-IFRS 1115호 — MRP의 출하 일자와 매출 인식 일자가 다를 수 있음. 이 차이가 결산 시 매출 정합성을 흔듭니다</li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: MD01(MRP 실행)·MD04(재고/소요 현황)·MD02(개별 자재 MRP)·MD06(MRP 결과 검토)</li>
+ <li><strong>Oracle Fusion</strong>: Plan Inputs·Material Plan·Supply Chain Planning</li>
+ <li><strong>MS Dynamics 365</strong>: Master Planning·Coverage Settings</li>
+ <li><strong>국산 ERP</strong>: MRP 실행·자재소요 화면</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>독립 수요·BOM·재고·리드타임 → PR·계획 작업오더</strong>. MRP의 5단계 논리를 완벽히 이해한 컨설턴트는 어느 ERP의 MRP 화면도 다룰 수 있습니다.</p>
+
+ <!-- ============================================================
+ 0.3 임율 (Activity Rate)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-rate">0.3 임율 (賃率·Activity Rate) — 시간의 가격</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>임율이란 — 한 시간의 작업을 돈으로 환산한 단가.</strong> 사람이 1시간 일하든 기계가 1시간 돌든 — 그 시간에 회사가 얼마를 부담하는지의 환산값. 임율은 <strong>"시간의 가격"</strong>입니다.</p>
+ <p>더 정확히는 — 회사가 한 시간 동안 그 자리(작업자·기계·라인)에 쏟아붓는 모든 비용(인건비·복리후생·감가·동력·간접비)을, 그 자리가 만들어내는 시간으로 나눈 값.</p>
+ <p><strong>임율이 존재해야 하는 이유</strong> — 회사는 자재만으로 제품을 못 만듭니다. 사람·기계·시간이 같이 들어갑니다. 자재비는 영수증 한 장이지만 사람·기계·시간은 매일 흘러가서 영수증이 없습니다. 그 영수증 없는 흐름을 시간 단위로 묶어 환산한 것이 임율입니다. <strong>자재비는 사진이고 임율은 영상입니다.</strong></p>
+
+ <h4>2. 본질·원리·공식</h4>
+ <p><strong>산출 공식</strong>: 임율 = 그 자리(비용중심점)의 기간 총 비용 ÷ 그 자리의 기간 총 가용 시간</p>
+ <p><strong>분자 (비용)</strong>:</p>
+ <ul>
+ <li>직접 인건비 — 그 자리 작업자 급여</li>
+ <li>간접 인건비 — 복리후생·4대보험 회사 부담·퇴직급여</li>
+ <li>설비 감가 — 그 자리 기계의 월 환산 감가</li>
+ <li>동력비 — 전기·가스·물·압축공기</li>
+ <li>유지보수 — 정비·소모품·예방보전</li>
+ <li>제조간접비 배부 — 공장장 급여·식당·청소·경비를 그 자리로 배부받은 몫</li>
+ </ul>
+ <p><strong>분모 (시간)</strong>:</p>
+ <ul>
+ <li>가용 시간 = 달력 시간 − 휴일 − 정비 − 식사·휴게 − 비가동 손실</li>
+ <li>분모 크게 잡으면 → 임율 낮아짐 (고정비 흡수 부족, 가격 경쟁력은 좋지만 미회수)</li>
+ <li>분모 작게 잡으면 → 임율 높아짐 (과다 임율, 영업 경쟁력 저하)</li>
+ <li><strong>분모 산정이 임율 정확도의 가장 큰 변수</strong></li>
+ </ul>
+ <p><strong>종류</strong>:</p>
+ <ul>
+ <li>직접 노무 임율 — 사람 시간에 부과</li>
+ <li>기계 임율 — 설비 시간에 부과</li>
+ <li>셋업 임율 — 셋업 1회당 부과</li>
+ <li>간접비 부담률 (Burden Rate) — % 형태로 직접비에 가산</li>
+ </ul>
+ <p><strong>핵심 함정</strong> — 임율은 <strong>추정 위의 추정</strong>. 분자도 예산(추정)·분모도 예산(추정). 둘 다 틀릴 수 있습니다. 그래서 <strong>계획 임율 vs 실제 임율</strong>이 항상 다르고, 그 차이가 가격 차이(Price Variance)로 매월 발생합니다.</p>
+
+ <h4>3. 부서간 동학 — 5자 갈등</h4>
+ <ul>
+ <li><strong>HR</strong>: "분자(인건비)는 우리 결정" — 그러나 "표준원가는 우리 일 아님"</li>
+ <li><strong>CO(원가관리)</strong>: "임율은 표준원가의 입력값, 우리 결정" — 그러나 "인건비 분자는 HR이"</li>
+ <li><strong>재무회계</strong>: "결과가 비용 분배에 들어가니 우리도 검증" — 그러나 "산출은 안 함"</li>
+ <li><strong>생산</strong>: "임율은 우리 KPI(원가율) 평가 기준" — 그러나 "산출에 발언권 약함"</li>
+ <li><strong>외부감사</strong>: "임율 산출 절차 통제 명문화 = K-SOX 충족 조건"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — HR이 임금 인상을 6월에 결정하고 CO에 통보 안 함 → CO는 1월 표준원가 그대로 적용 → 7~12월 표준 인건비와 실제 인건비 차이 발생 → 결산 시 차이배부 폭발 → 책임자 없음. <strong>임율 데이터 오너가 한 명(HR본부장+CFO 공동)으로 명시되지 않은 회사는 매년 이 사고가 반복됩니다.</strong></p>
+
+ <h4>4. 한국 특수 변수 4가지</h4>
+ <ul>
+ <li><strong>통상임금 판결 (대법원 2013)</strong>: 정기상여·복리후생수당이 통상임금에 포함 → 잔업·휴일근로 단가 상승 → 임율 분자 5~10% 상승 → 모든 표준원가 재산정</li>
+ <li><strong>주 52시간 (2018~)</strong>: 잔업 감소 → 분모(작업시간) 감소 → 시간당 단가 상승. 주 60시간 운영하던 회사가 52시간으로 줄면 임율 약 15% 상승</li>
+ <li><strong>최저임금 급상승 (2018·2019, 16.4%·10.9%)</strong>: 단순작업 비용중심점 임율 30~40% 급상승 → 영업 가격 경쟁력 위협</li>
+ <li><strong>K-IFRS 1019호 퇴직급여</strong>: DB(확정급여형) 운영 시 보험계리 평가에 따라 퇴직급여 비용 변동 → 매년 임율 분자 변동</li>
+ </ul>
+ <p><strong>이 4가지가 한국 ERP 컨설턴트의 진짜 가치입니다.</strong> 글로벌 가이드만 본 컨설턴트는 절대 모르는 자리.</p>
+
+ <h4>5. 도구로서의 ERP (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: KP26(임율 등록)·KSII(실제 임율 산출)·CK11N(표준원가)</li>
+ <li><strong>Oracle Fusion</strong>: Activity Rate Maintenance·Cost Pool</li>
+ <li><strong>MS Dynamics 365</strong>: Cost Roll-up·Activity Cost</li>
+ <li><strong>국산 ERP</strong>: 임율 마스터·표준원가 마스터</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>분자÷분모, 계획·실제 분리, 차이 자동 배부</strong>. 임율을 모르는 사람이 KP26을 외워봐야 무용지물이고, 임율을 완벽히 이해한 사람은 어느 ERP도 다룹니다.</p>
+
+ <!-- ============================================================
+ 0.4 라우팅 (Routing)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-routing">0.4 라우팅 (Routing) — 공정 흐름의 표준</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>라우팅이란 — 한 제품이 만들어지기 위해 거쳐야 하는 공정의 순서와 각 공정의 표준 시간을 정의한 표.</strong> 자전거 한 대가 만들어지려면 — ① 프레임 절단 (5분) → ② 용접 (12분) → ③ 도장 (45분 + 건조 4시간) → ④ 조립 (35분) → ⑤ 검사 (8분) 순서로 흐릅니다. 이 순서·시간을 한 표로 묶은 것이 라우팅.</p>
+ <p><strong>라우팅이 존재해야 하는 이유</strong> — BOM이 "무엇이 들어가는지"라면 라우팅은 "어떻게 만드는지". 두 마스터가 합쳐져야 — 자재 발주 + 작업 스케줄 + 표준 원가가 동시에 나옵니다. <strong>라우팅 없이는 표준원가도 못 산출하고, 생산 스케줄도 못 잡고, 능력 계획(CRP)도 못 합니다.</strong></p>
+
+ <h4>2. 본질·원리·구성</h4>
+ <p><strong>라우팅의 5가지 핵심 정보</strong>:</p>
+ <ul>
+ <li><strong>공정 (Operation)</strong> — 한 단계 작업. 절단·용접·도장·조립 등</li>
+ <li><strong>워크센터 (Work Center)</strong> — 그 공정이 수행되는 자리. 사람 + 기계 + 능력</li>
+ <li><strong>표준 시간 (Standard Time)</strong> — 그 공정이 평균적으로 걸리는 시간. 셋업 + 가공 + 정리로 분해</li>
+ <li><strong>순서 (Sequence)</strong> — 공정 간 흐름. 직렬·병렬 구분</li>
+ <li><strong>관계 (Relationship)</strong> — 다음 공정 시작 조건. 완전 종료·일부 종료·동시 시작</li>
+ </ul>
+ <p><strong>표준 시간의 3가지 분해</strong>:</p>
+ <ul>
+ <li><strong>셋업 시간 (Setup)</strong> — 그 작업을 시작하기 전 기계·치공구 준비 시간. 작업 수량과 무관 (1회 고정)</li>
+ <li><strong>가공 시간 (Run Time)</strong> — 1개당 실제 가공 시간. 작업 수량에 비례</li>
+ <li><strong>정리 시간 (Teardown)</strong> — 작업 후 정리. 보통 셋업에 포함</li>
+ </ul>
+ <p>예시 — 절단 공정의 표준 시간이 "셋업 30분 + 가공 1분/개"라면, 100개 작업 시 30 + 100 = 130분.</p>
+ <p><strong>핵심 함정</strong> — 라우팅의 표준 시간은 <strong>측정 시점에 박힌 사진</strong>입니다. 그러나 작업 방법은 매년 바뀝니다. 신규 치공구 도입·작업자 숙련·자동화 — 그러면 표준 시간이 자연히 빨라져야 합니다. 그런데 5년 동안 갱신 안 한 회사가 60%. 결과는 — 표준 시간과 실제 시간이 매년 5~10% 벌어져 표준원가가 부정확해지는 자리.</p>
+
+ <h4>3. 부서간 동학 — 책임의 떠넘김</h4>
+ <ul>
+ <li><strong>생산기술(ME)·산업공학(IE)</strong>: "표준 시간 산정은 우리" — 그러나 "분기 갱신은 부담, 우리는 신제품 양산화에 바쁨"</li>
+ <li><strong>생산</strong>: "현장 실제 시간은 우리가 안다" — 그러나 "측정 의무는 IE 일이지 우리가 시간 재고 있을 시간 없음"</li>
+ <li><strong>원가</strong>: "라우팅 시간은 표준원가의 입력값" — 그러나 "측정·갱신은 생산기술 책임"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — 라우팅 표준 시간이 5년 전 측정값. 그 사이 작업 방법이 3번 바뀜. 생산은 "비현실적인 표준"이라 매월 항의·원가는 차이로 매월 분개·생산기술은 "측정할 시간 없음"으로 빠짐. <strong>라우팅 표준 시간은 12년 컨설팅에서 가장 자주 갈등이 생기는 자리입니다.</strong> 측정 부담이 크고 KPI가 없기 때문.</p>
+
+ <h4>4. 한국 특수 변수 3가지</h4>
+ <ul>
+ <li><strong>주 52시간으로 인한 분모 변동</strong>: 잔업·특근이 줄면서 라우팅 표준 시간의 분모(가용 작업 시간)가 변동. 단순히 임율만 변하는 게 아니라 — 라우팅 자체의 능력 산정이 흔들림</li>
+ <li><strong>한국 중견의 표준 시간 미측정 문화</strong>: IE(산업공학) 부서를 따로 두지 않는 회사가 70%. 표준 시간 측정을 별도 인력 없이 — 생산기술 1~2명이 신제품 양산화하면서 같이 하다 보니 갱신이 5년 안 됨</li>
+ <li><strong>자동차 OEM 원가 검증의 한국 특수성</strong>: H자동차·K자동차는 1차 협력사의 단가 산출 근거를 라우팅 시간 단위로 검증. 라우팅이 부정확하면 — 단가 협상에서 OEM에 끌려가고 매년 단가 인하 압박 5~7%</li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: CA01(라우팅 등록)·CA02(변경)·CA03(조회)·CA51(공정별 부하 분석)</li>
+ <li><strong>Oracle Fusion</strong>: Operation·Work Definition</li>
+ <li><strong>MS Dynamics 365</strong>: Route·Operation</li>
+ <li><strong>국산 ERP</strong>: 라우팅·공정 마스터 화면</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>공정 순서·워크센터·표준 시간(셋업+가공)</strong>. 라우팅의 본질을 이해한 컨설턴트는 어느 ERP의 라우팅 화면도 다룹니다.</p>
+
+ <!-- ============================================================
+ 0.5 워크센터 (Work Center)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-wc">0.5 워크센터 (Work Center) — 능력의 단위</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>워크센터란 — 한 공정이 수행되는 물리적·논리적 자리. 사람 + 기계 + 능력의 묶음.</strong> 자전거 라인의 "용접 1조"·"도장 부스 A"·"조립 라인 3"·"검사대 B" — 이런 자리 하나하나가 워크센터.</p>
+ <p><strong>워크센터가 존재해야 하는 이유</strong> — 라우팅이 "어떻게 만드는지"의 순서라면, 워크센터는 그 작업이 실제로 일어나는 "어디서". 같은 공정도 — 어느 워크센터에서 하느냐에 따라 시간·임율·능력이 달라집니다. 그리고 회사의 <strong>능력 계획(CRP·Capacity Requirements Planning)</strong>이 워크센터 단위로 산정됩니다. 워크센터를 잘못 잡으면 — CRP는 그림이 됩니다.</p>
+
+ <h4>2. 본질·원리·구성</h4>
+ <p><strong>워크센터의 5가지 정보</strong>:</p>
+ <ul>
+ <li><strong>코드·이름</strong> — 그 자리의 식별</li>
+ <li><strong>능력 (Capacity)</strong> — 일일 가용 시간 (예: 8시간 × 2교대 × 5일 = 80시간/주)</li>
+ <li><strong>임율 (Activity Rate)</strong> — 그 자리의 시간당 단가 (사람·기계·간접비)</li>
+ <li><strong>가동률 (Utilization)</strong> — 가용 시간 중 실제 가동 비중 (보통 75~85%)</li>
+ <li><strong>대체 가능 워크센터 (Alternative)</strong> — 부하 초과 시 대신 사용 가능한 자리</li>
+ </ul>
+ <p><strong>능력의 3가지 계층</strong>:</p>
+ <ul>
+ <li><strong>이론 능력 (Theoretical)</strong> — 24시간 × 365일</li>
+ <li><strong>가용 능력 (Available)</strong> — 이론 능력 − 휴일 − 정비 − 식사·휴게</li>
+ <li><strong>실제 능력 (Effective)</strong> — 가용 능력 × 가동률 × 효율</li>
+ </ul>
+ <p><strong>핵심 함정 — 병목(Bottleneck) 식별의 부재</strong>. 같은 라인에 5개 공정이 있으면 — 5개 공정의 능력이 다릅니다. 한 공정만 능력이 부족하면 — 그 공정이 라인 전체의 처리량을 제한합니다 (TOC·Theory of Constraints). 그런데 한국 중견의 70%는 — 라인을 워크센터 1개로 통합 등록합니다. 결과 — 병목이 어디인지 모르고 CRP는 의미 없는 그림이 됩니다.</p>
+
+ <h4>3. 부서간 동학</h4>
+ <ul>
+ <li><strong>생산</strong>: "현장은 우리가 안다, 능력은 우리" — 그러나 "능력 데이터 매주 갱신은 우리 일 아님"</li>
+ <li><strong>생산기술</strong>: "공정 능력 산정은 우리 전문" — 그러나 "매주 갱신은 무의미"</li>
+ <li><strong>원가</strong>: "Capacity 검증은 우리가 못 함" — 그러나 "임율 산출에는 워크센터 능력이 분모"</li>
+ <li><strong>생산기획</strong>: "MRP·CRP 결과는 우리 책임" — 그러나 "워크센터 마스터는 우리 일 아님"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — 워크센터가 라인 단위 1개로 등록 → 병목 식별 안 됨 → CRP가 "라인 전체 능력 80%"이라 답 → 실제로는 병목 공정 1개가 100% 부하·다른 4개는 60% — CRP는 평균만 보여주고 진짜 부하를 못 보여줌. <strong>워크센터를 공정 단위로 분리하는 게 모든 능력 계획의 출발입니다.</strong></p>
+
+ <h4>4. 한국 특수 변수 2가지</h4>
+ <ul>
+ <li><strong>한국 중견의 워크센터 통합 등록 문화</strong>: 라인별 1개 워크센터로 통합 등록하는 회사가 70%. 이유는 단순 — 등록 부담을 줄이기 위함. 그러나 결과는 능력 계획의 무력화. 컨설턴트의 가치는 — 이 통합을 풀어 병목 단위로 분리하는 자리</li>
+ <li><strong>주 52시간과 워크센터 능력 재산정</strong>: 잔업·특근이 줄면서 워크센터의 일일 가용 시간이 변동. 한국 회사 모두가 — 2018년 이후 워크센터 능력 데이터를 재산정해야 했지만 — 갱신 안 한 회사가 절반 이상. CRP가 부정확해진 한 자리</li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: CR01(워크센터 등록)·CR02(변경)·CR03(조회)·CM01(능력 부하 분석)</li>
+ <li><strong>Oracle Fusion</strong>: Work Center·Resource</li>
+ <li><strong>MS Dynamics 365</strong>: Resource·Resource Group</li>
+ <li><strong>국산 ERP</strong>: 작업장·공정 마스터</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>코드·능력·임율·가동률·대체</strong>. 그리고 <strong>병목 식별</strong>이 모든 도구의 핵심.</p>
+
+ <!-- ============================================================
+ 0.6 EBOM·MBOM
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-bom2">0.6 EBOM·MBOM — BOM의 두 얼굴</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>EBOM (Engineering BOM·설계 BOM)</strong> — 설계자의 시각에서 본 BOM. <strong>"이 제품이 기능·성능·안전을 만족하려면 어떤 부품이 필요한가"</strong>의 답. 도면을 따라 부품을 모은 목록.</p>
+ <p><strong>MBOM (Manufacturing BOM·제조 BOM)</strong> — 생산자의 시각에서 본 BOM. <strong>"이 제품을 양산 라인에서 만들려면 어떤 부품을 어떤 순서로, 어떤 단위로 묶어 투입해야 하는가"</strong>의 답. 양산성·물류·포장이 반영된 목록.</p>
+ <p><strong>왜 둘로 나뉘는가</strong> — 같은 자전거가 — 설계자에게는 "프레임 1·바퀴 2·핸들 1·..."처럼 부품 단위로 보이지만, 생산자에게는 "프레임 모듈 1·휠셋 모듈 1·핸들바 키트 1·..."처럼 양산 단위로 묶여 보입니다. 설계는 부품을, 생산은 모듈을 본다.</p>
+
+ <h4>2. 본질·원리·차이</h4>
+ <p><strong>EBOM과 MBOM의 5가지 차이</strong>:</p>
+ <ul>
+ <li><strong>구성 단위</strong> — EBOM은 부품, MBOM은 양산 모듈·키트</li>
+ <li><strong>외주 가공 표시</strong> — EBOM은 자재만, MBOM은 외주가공 단계가 들어감</li>
+ <li><strong>포장재 포함</strong> — EBOM은 포장재 없음, MBOM은 포장 박스·라벨 포함</li>
+ <li><strong>대체 자재</strong> — EBOM은 단일 자재, MBOM은 대체 가능 자재 표시</li>
+ <li><strong>유효 일자 단위</strong> — EBOM은 도면 Rev 단위, MBOM은 양산 일자 단위</li>
+ </ul>
+ <p><strong>변환의 5가지 룰</strong> (EBOM → MBOM):</p>
+ <ol>
+ <li><strong>모듈화 (Modularization)</strong> — 부품 5개를 모듈 1개로 묶기</li>
+ <li><strong>외주 단계 삽입</strong> — 외주가공 공정을 BOM 사이에 추가</li>
+ <li><strong>포장재 추가</strong> — 박스·라벨·완충재</li>
+ <li><strong>대체 자재 매핑</strong> — 단종·결품 시 대체 가능한 자재 표시</li>
+ <li><strong>로스율 (Scrap Factor) 추가</strong> — 가공 손실분을 BOM에 반영</li>
+ </ol>
+ <p><strong>핵심 함정</strong> — EBOM과 MBOM의 동기화. 설계가 도면을 변경하면 EBOM이 변경되고, 그 변경이 MBOM에 자동 반영되어야 합니다. 그러나 한국 중견의 80%는 — EBOM은 설계팀 엑셀, MBOM은 ERP. 변환을 사람이 매주 수기로 합니다. <strong>그 사람이 휴가 가면 일주일 동안 MBOM이 안 갱신됩니다.</strong></p>
+
+ <h4>3. 부서간 동학</h4>
+ <ul>
+ <li><strong>설계</strong>: "EBOM은 우리, MBOM은 생산기술" — 그러나 "EBOM이 ERP에 안 들어가도 우리 책임 아님"</li>
+ <li><strong>생산기술</strong>: "MBOM은 우리, EBOM은 설계" — 그러나 "EBOM이 엑셀로 오면 우리가 매번 수기로 변환하는 부담은 큼"</li>
+ <li><strong>구매</strong>: "BOM에 단가 입력은 우리" — 그러나 "어느 BOM(EBOM·MBOM·둘 다)에 입력할지는 정의 안 됨"</li>
+ <li><strong>회계</strong>: "표준원가는 MBOM 기반" — 그러나 "MBOM 정확성은 우리가 검증 못 함"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — 설계가 EBOM 변경을 도면에는 반영했지만 ERP에 등록 안 함 → 생산기술이 옛 EBOM으로 MBOM 변환 → MBOM에 누락 → 양산 라인에서 신규 자재 결품 → 라인 정지. <strong>EBOM-MBOM 동기화 자동화는 한국 ERP 도입의 가장 큰 가치 제안 중 하나입니다.</strong> PLM-ERP 인터페이스 신설(견적 5~10억).</p>
+
+ <h4>4. 한국 특수 변수 2가지</h4>
+ <ul>
+ <li><strong>한국 중견의 PLM 미보유</strong>: 글로벌은 PLM(Windchill·Teamcenter·ENOVIA) 보유율 80%, 한국 중견은 30%. PLM이 없으면 EBOM은 자연히 엑셀로 굴러가고 — MBOM과의 분리·동기화 부담이 사람에게 떨어짐</li>
+ <li><strong>자동차 OEM의 도면 Rev 변경 빈도</strong>: H자동차·K자동차는 양산 중에도 도면 변경이 잦음(연 200~500건). EBOM이 매번 변경되니 MBOM도 매번 변환 필요. 사람이 따라가기 어려움 — PLM-ERP 자동화가 필수</li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP·PLM (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: CS01·CS02·CS03 (BOM 공통). EBOM·MBOM 분리는 BOM Usage 코드(1=생산·5=설계)로 구분</li>
+ <li><strong>PLM</strong>: PTC Windchill·Siemens Teamcenter·Dassault ENOVIA·Aras Innovator</li>
+ <li><strong>PLM-ERP 인터페이스</strong>: SAP의 BAPI_BOM_UPLOAD·IDoc BOMMAT01</li>
+ <li><strong>Oracle Fusion</strong>: Item Structure (Engineering·Manufacturing 분리)</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>설계 시각의 부품 목록 vs 생산 시각의 양산 단위 목록·둘의 자동 동기화</strong>.</p>
+
+ <!-- ============================================================
+ 0.7 ECO (Engineering Change Order)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-eco">0.7 ECO (Engineering Change Order) — 변경의 통제</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>ECO란 — 설계·BOM·라우팅·자재 마스터의 변경을 공식적으로 발의·검토·승인·반영·확인하는 표준 프로세스.</strong> "이 자전거의 체인을 A에서 B로 바꾼다"는 결정을 — 메일·구두·엑셀이 아니라 시스템 안에서 발의·관련 부서 검토·승인·BOM 반영·양산 적용 일자 결정·검증의 5단계로 처리하는 자리.</p>
+ <p><strong>ECO가 존재해야 하는 이유</strong> — 변경은 회사의 일상입니다. 자동차 1차 협력사는 연 200~500건 ECO 발생. 변경을 통제하지 않으면 — 옛 부품과 새 부품이 라인에 섞이고·이전 양산분과 신규 양산분이 동시에 시장에 나가고·고객 클레임에 어느 부품이 들어갔는지 추적 못 합니다. <strong>ECO는 변경의 카오스를 시스템 안으로 옮기는 자리입니다.</strong></p>
+
+ <h4>2. 본질·원리·5단계</h4>
+ <p><strong>ECO 표준 5단계</strong>:</p>
+ <ol>
+ <li><strong>ECR (Engineering Change Request)</strong> — 변경 요청. "이 부품을 바꿔야 합니다"의 발의</li>
+ <li><strong>ECN (Engineering Change Notice)</strong> — 변경 사항 분석·영향도 평가. Where-Used (어느 제품에 영향?)·재고 영향·고객 영향</li>
+ <li><strong>ECO (Engineering Change Order)</strong> — 변경 명령. 승인 + 적용 일자 결정 (From/To Effectivity)</li>
+ <li><strong>ECN 양산 반영</strong> — BOM·라우팅·자재 마스터에 반영</li>
+ <li><strong>ECO Verification</strong> — 양산 적용 후 검증. 실제 라인에 적용됐는가</li>
+ </ol>
+ <p><strong>핵심 — Effectivity Date (유효 일자)</strong>:</p>
+ <ul>
+ <li>From Date — 새 BOM이 적용되기 시작하는 일자</li>
+ <li>To Date — 옛 BOM이 적용 중단되는 일자</li>
+ <li>두 일자 사이에 옛 양산분과 새 양산분이 동시에 흐름</li>
+ <li>Effectivity Date 관리가 ECO의 정합성 핵심</li>
+ </ul>
+ <p><strong>핵심 함정</strong> — ECO 사이클타임. 발의에서 양산 적용까지가 14일이 표준이지만, 60일 이상 걸리는 회사가 30%. 그 사이 BOM에는 옛 버전과 새 버전이 혼재 — 어느 것이 진짜인지 모릅니다. <strong>ECO 사이클타임이 60일 이상이면 BOM 정합성 70% 이하 보장.</strong></p>
+
+ <h4>3. 부서간 동학</h4>
+ <ul>
+ <li><strong>설계</strong>: "ECO 발의는 우리" — 그러나 "양산 적용 검증은 생산"</li>
+ <li><strong>생산기술</strong>: "MBOM 반영은 우리" — 그러나 "도면 변경 누락은 설계 책임"</li>
+ <li><strong>구매</strong>: "신규 자재 발주는 우리" — 그러나 "옛 자재 잔여 재고 처리는 누구?"</li>
+ <li><strong>품질</strong>: "변경 후 품질 검증은 우리" — 그러나 "사전 영향도 분석은 설계"</li>
+ <li><strong>영업·고객 지원</strong>: "고객에 변경 통보는 우리" — 그러나 "통보 시점은 누가 결정?"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — 옛 자재 잔여 재고 처리의 책임자 부재. 설계가 "신규로 바꾸자"고 ECO 승인 → 구매는 신규 발주 → 옛 자재 5천 개가 창고에 남음 → 처리 책임자 없음 → 6개월 후 재고 평가 시 폐기 처리·손실 2억. <strong>ECO 워크플로에 "옛 자재 잔여 재고 처분 결정자"를 명시 안 한 회사는 매년 데드 스톡이 누적됩니다.</strong></p>
+
+ <h4>4. 한국 특수 변수 2가지</h4>
+ <ul>
+ <li><strong>자동차 OEM의 PPAP 재승인 부담</strong>: 1차 협력사가 H자동차·K자동차에 납품 중인 부품의 ECO를 발의하면 — PPAP(Production Part Approval Process) 재승인이 필수. 평균 4~8주 추가. ECO 사이클타임이 글로벌의 2~3배. <strong>한국 1차 협력사의 ECO 워크플로는 PPAP 일정과 동기화되어야 합니다</strong></li>
+ <li><strong>한국 중견의 ECO 워크플로 미운영</strong>: 한국 중견의 70%는 ECO를 메일·구두·엑셀로 처리. 시스템 워크플로 미운영. 결과 — Effectivity Date 관리 부재, BOM 정합성 70% 이하, 컷오버 시 마스터 정제 12주 추가. <strong>ERP 도입의 가장 큰 가치 중 하나가 ECO 워크플로의 시스템화</strong></li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP·PLM (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: CC01(ECO 등록)·CC02(변경)·CC03(조회). ECM(Engineering Change Management) 모듈</li>
+ <li><strong>PLM 측</strong>: Windchill Change·Teamcenter Change Manager·ENOVIA Change Action</li>
+ <li><strong>PLM-ERP 동기화</strong>: ECO가 PLM에서 발의 → ERP의 BOM·라우팅 자동 반영</li>
+ <li><strong>Oracle Fusion</strong>: Engineering Change Order·Item Lifecycle</li>
+ <li><strong>국산 ERP</strong>: 설계변경·BOM 변경 워크플로</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>ECR → ECN → ECO → 반영 → 검증의 5단계·Effectivity Date 관리·잔여 재고 처분 책임 명시</strong>.</p>
+
+ <!-- ============================================================
+ 0.8 안전재고 (Safety Stock)
+ ============================================================ -->
+ <h3 class="chapter" id="ch0-ss">0.8 안전재고 (Safety Stock) — 위험과 운전자본의 균형</h3>
+
+ <h4>1. 개념·정의</h4>
+ <p><strong>안전재고란 — 수요 변동·공급 지연으로 인한 결품을 방지하기 위해, 평균 소요량 외에 추가로 보유하는 재고.</strong> "평균 한 달에 100개 쓰는 자재인데, 갑자기 120개 쓸 수도 있고 공급사가 일주일 늦을 수도 있으니 — 30개를 추가로 쟁여 둔다"의 그 30개.</p>
+ <p><strong>안전재고가 존재해야 하는 이유</strong> — 미래의 수요는 항상 변동·공급도 항상 변동. 둘 다 평균만 믿고 발주하면 — 평균 위로 변동이 발생하는 절반의 시간에 결품 발생. 결품 한 번이 — 라인 정지·고객 클레임·신뢰 손실로 이어짐. 안전재고는 그 위험을 돈으로 막는 <strong>"보험"</strong>입니다. 그러나 보험료(보관비·금융비)가 매월 나갑니다. <strong>위험과 운전자본의 균형이 안전재고의 본질입니다.</strong></p>
+
+ <h4>2. 본질·원리·공식</h4>
+ <p><strong>안전재고 산출 공식</strong>:</p>
+ <p><strong>안전재고 = Z(서비스레벨) × σ(수요 표준편차) × √(리드타임)</strong></p>
+ <ul>
+ <li><strong>Z(서비스레벨)</strong> — 결품 허용 확률. 95% 서비스레벨 = Z 1.65 / 99% = Z 2.33 / 99.9% = Z 3.09</li>
+ <li><strong>σ(수요 표준편차)</strong> — 과거 수요의 변동성. 주별·월별 표준편차</li>
+ <li><strong>√(리드타임)</strong> — 리드타임의 제곱근 (분산이 시간에 비례하므로 표준편차는 √시간에 비례)</li>
+ </ul>
+ <p><strong>예시</strong> — 자재 A — 주 평균 100개·표준편차 20개·리드타임 4주·서비스레벨 95% (Z=1.65):</p>
+ <p>안전재고 = 1.65 × 20 × √4 = 1.65 × 20 × 2 = <strong>66개</strong></p>
+ <p><strong>서비스레벨 결정의 트레이드오프</strong>:</p>
+ <ul>
+ <li>95% (월 1.5일 결품) — 일반 자재 / 안전재고 비교적 적음</li>
+ <li>99% (월 0.3일 결품) — 핵심 자재 / 안전재고 1.4배</li>
+ <li>99.9% (월 0.03일 결품) — 미션 크리티컬 / 안전재고 1.9배</li>
+ </ul>
+ <p><strong>핵심 함정</strong> — 한국 회사의 90%는 안전재고를 <strong>"경험으로"</strong> 결정합니다. "이 정도면 안 떨어지더라"의 감각. 결과 — 안전재고가 평균보다 50~100% 부풀려져 있고, 운전자본이 30% 과다. 공식 기반 재산정 시 <strong>평균 25% 감소·매년 운전자본 5~10억 절감</strong>이 가능한 자리.</p>
+
+ <h4>3. 부서간 동학</h4>
+ <ul>
+ <li><strong>생산기획</strong>: "안전재고는 우리 결정" — 그러나 "변동성 데이터는 영업"</li>
+ <li><strong>영업</strong>: "수요 변동 정보는 우리" — 그러나 "안전재고 산출은 우리 일 아님"</li>
+ <li><strong>구매</strong>: "리드타임은 우리" — 그러나 "보수적으로 길게 입력하는 게 안전"</li>
+ <li><strong>회계</strong>: "운전자본 영향은 우리가 측정" — 그러나 "재고 결정 권한 없음"</li>
+ </ul>
+ <p><strong>가장 자주 일어나는 꼬임</strong> — 구매가 자기 안전을 위해 리드타임을 보수적으로 길게 입력 → 안전재고 공식의 √리드타임이 부풀려짐 → 안전재고 부풀림 → 운전자본 과다 → 회계는 매월 보관비·금융비로 손실. <strong>리드타임 정확도가 안전재고 정확도의 절반입니다.</strong> 공급사별 실측 리드타임의 90퍼센타일을 사용해야 정확.</p>
+
+ <h4>4. 한국 특수 변수 2가지</h4>
+ <ul>
+ <li><strong>자동차 OEM JIS 발주의 안전재고 압박</strong>: H자동차·K자동차의 1~4시간 전 발주는 — 안전재고를 거의 0으로 운영해야 가능. 그러나 결품 시 라인 정지 페널티가 시간당 수억. 결과 — 1차 협력사는 엄청난 위험과 엄청난 운전자본 사이에서 매일 균형을 잡아야 함</li>
+ <li><strong>한국 중소·중견의 안전재고 부풀림 문화</strong>: "결품이 무서워서 무조건 많이 쟁인다"의 문화. 안전재고 = 평균 소요량의 100~200%로 운영하는 회사가 흔함. 공식 기반 재산정 = 운전자본 절감 매년 수억 — ERP 도입의 직접 ROI 자리</li>
+ </ul>
+
+ <h4>5. 도구로서의 ERP (참고)</h4>
+ <ul>
+ <li><strong>SAP S/4HANA</strong>: 자재 마스터의 MRP View(MRP1·MRP2)에서 Safety Stock 필드. MD04·MD06에서 안전재고 영향 분석</li>
+ <li><strong>Oracle Fusion</strong>: Item·Safety Stock Method</li>
+ <li><strong>MS Dynamics 365</strong>: Item Coverage·Minimum Stock</li>
+ <li><strong>국산 ERP</strong>: 자재 마스터·안전재고 필드</li>
+ </ul>
+ <p>도구는 다르지만 본질은 하나 — <strong>Z × σ × √리드타임 공식·서비스레벨 결정·리드타임 정확도</strong>. 안전재고 공식을 이해한 컨설턴트는 어느 ERP에서도 운전자본 절감의 가치를 만들어냅니다.</p>
+
+ <!-- ============================================================
+ 0장 마무리
+ ============================================================ -->
+ <div class="keypoint">
+ <div class="keypoint-title">0장 핵심</div>
+ <p>BOM·MRP·임율·라우팅·워크센터·EBOM·MBOM·ECO·안전재고 — 8개 핵심 ERP 용어를 5단(개념·본질·부서동학·한국특수·도구)으로 풀었다. 이 8개를 완벽히 이해하면 SAP·Oracle·MS Dynamics·국산 ERP 어느 것을 만나도 도구로 다룰 수 있다.<br><br>
+ 도구는 5년에 한 번씩 바뀌지만 — 개념은 50년 동안 변하지 않는다. 시스템 트랜잭션 코드 100개를 외운 컨설턴트보다 — 8개 개념을 완벽히 이해한 컨설턴트가 12년 후 살아남는다. <strong>도구가 아니라 개념이 컨설턴트를 만든다.</strong><br><br>
+ 본문 1장부터의 한성정밀 사례·민준의 18개월·서책임의 한마디들은 — 이 8개 개념이 부서·인물·갈등·결정 안에서 어떻게 살아 움직이는지의 18개월짜리 영상이다. 0장이 사진이라면 1장부터는 영상.</p>
+ </div>
+</section>
+
+<hr class="pageline">
+

@@ -1,0 +1,254 @@
+ <h4>10.4 MM 모듈 인터뷰 표준 질문 35개 — 자재·구매</h4>
+
+ <p>각 질문에는 — 클라이언트가 "이 질문을 왜 하시는데요?"라고 반문할 때 컨설턴트가 즉시 답할 수 있는 의도·프로젝트 영향·타 모듈 연계를 같이 적었다. 인터뷰 전 사전 학습 자료.</p>
+
+ <ol>
+ <li><strong>주요 자재 카테고리(원자재·반제품·완제품·소모품·포장재) 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자재 마스터 설계의 첫 자리. 카테고리별 비중으로 자재유형(Material Type) ROH/HALB/FERT/HIBE/VERP 분류 룰을 사전 설계.</li>
+ <li><strong>프로젝트 영향</strong>: 원자재 비중 60% = 매입 운송비 자본화·외주가공 사급 룰·재고 회전율 KPI 최우선. 완제품 비중 60% = CO-PA·MTO 시나리오·매출 인식이 최우선. 18개월 일정 가중치 결정.</li>
+ <li><strong>타 모듈 연계</strong>: PP(BOM·라우팅 자재 분류), FI(매입원가 자본화·재고 평가), CO(차이분석 5종), SD(매출원가 자동분개), WM(창고 보관 룰).</li>
+ <li><strong>외부감사</strong>: K-IFRS 1002호 카테고리별 평가법 일관성 명문화 의무.</li>
+ </ul></li>
+
+ <li><strong>자재 코드 체계와 코드 부여 룰은? (의미 코드 vs 일련번호)</strong>
+ <ul>
+ <li><strong>의도</strong>: 한국 제조업 약 60%가 의미 코드(접두사·중간 분류·일련번호) 사용. SAP는 일련번호 권장. 어느 쪽으로 갈지 결정 필요.</li>
+ <li><strong>프로젝트 영향</strong>: 의미 코드 유지 시 — 마이그레이션에 추가 4~6주, 코드 변환 매핑 테이블 신설. 일련번호 전환 시 — 사용자 저항 큼, 변화관리 비용 증가. 양쪽 다 컷오버 일정에 영향.</li>
+ <li><strong>타 모듈 연계</strong>: PP(BOM 부품 코드 동기화), SD(고객 측 코드 매핑), 외부 EDI(거래처 EDI 표준 코드).</li>
+ <li><strong>실무 함정</strong>: 자재 코드 중복 — 한성정밀 4,800개 중 약 320개 중복 흔함. Cross-Plant Material Status로 정리 필요.</li>
+ </ul></li>
+
+ <li><strong>자재 마스터 등록·변경 권한과 승인 절차는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마스터 거버넌스(MDG) 설계의 핵심. 권한 분리 안 되면 — 한 사람이 등록·변경 모두 가능 → SoD(직무분리) 위반.</li>
+ <li><strong>프로젝트 영향</strong>: 거버넌스 수립 안 한 회사는 — 컷오버 후 6개월 안에 자재 마스터 정합성 70% 이하로 추락. 재구축 비용 평균 2~3억.</li>
+ <li><strong>타 모듈 연계</strong>: K-SOX(내부회계관리제도) 통제 항목, FI 외부감사 KAM, IT 권한 관리(GRC).</li>
+ <li><strong>외부감사</strong>: SoD 위반은 외부감사 지적 1순위.</li>
+ </ul></li>
+
+ <li><strong>월 평균 발주(PO) 건수와 평균 PO 라인 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 시스템 부하 산정·인터페이스 처리량·라이선스 산정의 기초.</li>
+ <li><strong>프로젝트 영향</strong>: 월 PO 5,000건 이상 = SAP HANA 인프라 사이징 변경. EDI 비중 높으면 인터페이스 미들웨어 추가.</li>
+ <li><strong>타 모듈 연계</strong>: FI(자동분개 OBYC 룰 부하), WM(입고 처리 부하), MES(인터페이스 트랜잭션 수).</li>
+ </ul></li>
+
+ <li><strong>발주 유형 비중은? (정상·외주가공·재공급·소모품·서비스)</strong>
+ <ul>
+ <li><strong>의도</strong>: PO Document Type 설계. 외주가공(Subcontracting) 비중 높으면 사급재 추적 자동화 필수.</li>
+ <li><strong>프로젝트 영향</strong>: 외주가공 30% 이상 = MM-PP 통합 시나리오 추가 설계, 이동유형 541/543 자동화.</li>
+ <li><strong>타 모듈 연계</strong>: PP(외주공정 라우팅), FI(외주 단가 분개), CO(외주 차이분석).</li>
+ </ul></li>
+
+ <li><strong>발주 승인 한도는 직급별로 어떻게 정해져 있나?</strong>
+ <ul>
+ <li><strong>의도</strong>: 워크플로 설계의 기초. 한도 명문화 안 된 회사는 — 시스템화 자체가 어려움.</li>
+ <li><strong>프로젝트 영향</strong>: 승인 한도 5단계 이상 = 워크플로 설계 추가 4주, 변화관리 압박 증가.</li>
+ <li><strong>타 모듈 연계</strong>: HCM(직급·조직구조), GRC(권한), 전자결재 시스템(외부 연계).</li>
+ </ul></li>
+
+ <li><strong>매입 시 3-Way Match(PO·GR·Invoice) 적용 비율은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 매입 자동화 수준 측정. 3-Way Match 적용률 = 자동분개 가능 비율.</li>
+ <li><strong>프로젝트 영향</strong>: 적용률 30% 이하 = 결산 D+5 달성 어려움. 자동분개 룰 신설로 70% 이상 목표.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매입채무 AP 자동 생성), WM(GR 시점), CO(매입 차이 PRD).</li>
+ <li><strong>외부감사</strong>: 매입 분개의 정합성 — KAM 등재 빈도 높음.</li>
+ </ul></li>
+
+ <li><strong>매입 가격 변동 추적 방식은? (정보레코드·계약·견적)</strong>
+ <ul>
+ <li><strong>의도</strong>: 가격 변동성 관리. 변동성 높은 자재(원유·금속·환율 영향) = 정보레코드 갱신 주기 짧게.</li>
+ <li><strong>프로젝트 영향</strong>: 가격 변동 ±10%/월 = 표준원가 갱신 주기 분기 → 월로 단축. CK40N(Costing Run) 부하 증가.</li>
+ <li><strong>타 모듈 연계</strong>: CO(표준원가 갱신), FI(매입 가격 차이 PRD).</li>
+ </ul></li>
+
+ <li><strong>외주가공 사급재 관리 — Subcontracting 비중과 정산 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외주가공 자동화의 가장 중요한 자리. 사급재 추적 안 되면 — 자재 분실·중복 청구 발생.</li>
+ <li><strong>프로젝트 영향</strong>: 외주가공 비중 20% 이상 = SAP MM Subcontracting BOM 설계 필수, 이동유형 541(사급 출고)·543(외주품 입고) 룰 명문화.</li>
+ <li><strong>타 모듈 연계</strong>: PP(외주공정 BOM), FI(외주 단가 분개), CO(외주 차이 추적), WM(사급재 창고 분리).</li>
+ </ul></li>
+
+ <li><strong>긴급 구매(Emergency PO) 빈도와 처리 절차는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 표준 프로세스의 예외 빈도 측정. 긴급 구매가 월 30% 이상 = 표준 프로세스 자체에 문제 있음.</li>
+ <li><strong>프로젝트 영향</strong>: 긴급 PO 비중 높으면 — MRP 안전재고 룰 재설계, 공급사 SLA 재협상 필요.</li>
+ <li><strong>타 모듈 연계</strong>: PP(MRP 안전재고), FI(긴급 구매 단가 차이), QM(긴급 입고 검사 면제 룰).</li>
+ </ul></li>
+
+ <li><strong>공급업체 평가 기준 5가지는? (품질·납기·가격·서비스·재무)</strong>
+ <ul>
+ <li><strong>의도</strong>: 공급업체 평가 시스템(SLM, Supplier Lifecycle Mgmt) 도입 필요성 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 평가 기준 명문화 안 됨 = SLM 모듈 도입 권고. 추가 견적 1.5~3억.</li>
+ <li><strong>타 모듈 연계</strong>: QM(공급사 품질 KPI), FI(공급사 신용평가), 외부 신용평가 시스템 연계.</li>
+ </ul></li>
+
+ <li><strong>주요 공급업체 수와 단일 공급(Single Source) 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 공급망 리스크 측정. 단일 공급 30% 이상 = 공급망 위험 관리(SRM) 강화.</li>
+ <li><strong>프로젝트 영향</strong>: 단일 공급 자재 = 안전재고 룰 차등 설정, 대체 공급사 사전 등록.</li>
+ <li><strong>타 모듈 연계</strong>: PP(MRP 안전재고), CO(공급망 단가 시뮬), FI(공급사 신용한도).</li>
+ </ul></li>
+
+ <li><strong>입고(Goods Receipt) 검수 절차와 부적합 처리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: GR 자동화 수준과 QM 통합 정도 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 검수 수동 비중 높음 = MM-QM 통합 인터페이스 신설 필요.</li>
+ <li><strong>타 모듈 연계</strong>: QM(입고 검사 자동 생성), WM(GR 후 창고 이동), FI(부적합 시 매입 청구 보류).</li>
+ </ul></li>
+
+ <li><strong>재고 평가법은? (표준원가·이동평균·FIFO·실제)</strong>
+ <ul>
+ <li><strong>의도</strong>: SAP Price Control(S/V) 결정의 핵심. 자재유형별 평가법 매트릭스 사전 설계.</li>
+ <li><strong>프로젝트 영향</strong>: 평가법 변경은 운영 중 어려움 — 도입 시점에 결정해야. 잘못 결정 시 마이그레이션 비용 평균 3억.</li>
+ <li><strong>타 모듈 연계</strong>: CO(차이분석 7종), FI(재고 평가), 결산 룰.</li>
+ <li><strong>외부감사</strong>: K-IFRS 1002호 평가법 일관성 검증.</li>
+ </ul></li>
+
+ <li><strong>월말 재고 실사 주기와 차이 처리 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 재고 정합성 관리 수준 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 실사 차이 ±2% 이상 = 마스터 정합성 문제. 컷오버 전 정제 필수.</li>
+ <li><strong>타 모듈 연계</strong>: WM(실사 트랜잭션), FI(차이 분개), 외부감사 정합성 검증.</li>
+ </ul></li>
+
+ <li><strong>안전재고 정책 — 자재별 차등인가 일괄인가?</strong>
+ <ul>
+ <li><strong>의도</strong>: MRP 안전재고 룰 설계. 일괄 정책 = 재고 비효율 누적, 차등 정책 = 룰 복잡도 증가.</li>
+ <li><strong>프로젝트 영향</strong>: 일괄 → 차등 전환 시 마스터 데이터 정제 4~6주.</li>
+ <li><strong>타 모듈 연계</strong>: PP(MRP 안전재고 필드), CO(재고 운전자본 시뮬).</li>
+ </ul></li>
+
+ <li><strong>재고 회전율과 데드 스톡(Dead Stock) 관리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 운전자본 효율성 측정. 데드 스톡 비중 = 회사 재고 관리 성숙도.</li>
+ <li><strong>프로젝트 영향</strong>: ERP 도입 후 회전율 6 → 8.5 목표 = 운전자본 50~80억 절감 가능.</li>
+ <li><strong>타 모듈 연계</strong>: CO(재고 KPI 대시보드), FI(데드 스톡 충당금 설정).</li>
+ </ul></li>
+
+ <li><strong>VMI(Vendor Managed Inventory) 운영 자재가 있나?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외부 공급사 시스템과의 연계 필요성 측정.</li>
+ <li><strong>프로젝트 영향</strong>: VMI 자재 있음 = EDI 인터페이스 추가, 공급사 시스템 연계 별도 견적.</li>
+ <li><strong>타 모듈 연계</strong>: PP(MRP 면제 룰), FI(소유권 이전 시점), 외부 VMI 시스템.</li>
+ </ul></li>
+
+ <li><strong>매입 부대비용(운송·하역·보험·관세) 처리 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-IFRS 1002호 매입원가 정합성 검증의 핵심. 50.8 매입 운송비 섹션 참조.</li>
+ <li><strong>프로젝트 영향</strong>: 부대비용 비용 처리 시 = 외부감사 KAM 등재 위험. 자본화 자동화 비용 추가.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매입 분개 OBYC), CO(자재 단가 정확성), 51장 표준원가.</li>
+ </ul></li>
+
+ <li><strong>수입 매입의 인코텀즈 적용 비율은? (FOB·CIF·EXW 등)</strong>
+ <ul>
+ <li><strong>의도</strong>: 수입 거래의 위험 이전 시점 명확화. 매출/매입 인식 시점 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 인코텀즈별 자동분개 룰 분리 — 평균 5~8 룰 신설.</li>
+ <li><strong>타 모듈 연계</strong>: SD(수출 거래), FI(매출 인식 시점 K-IFRS 1115호), 무역 시스템 연계.</li>
+ </ul></li>
+
+ <li><strong>FTA 활용 비중과 원산지 증명 발급 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 관세 비용 절감 자동화 수준. 한-베트남 FTA C/O Form VK 등.</li>
+ <li><strong>프로젝트 영향</strong>: FTA 활용률 50% 이하 = 매년 수억 관세 손실. SAP GTS Preference 자동화 권고.</li>
+ <li><strong>타 모듈 연계</strong>: SD(수출 거래), 관세사 시스템 연계, FI(관세 분개).</li>
+ </ul></li>
+
+ <li><strong>매입 결제 조건(Payment Terms) 표준은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자금 흐름·운전자본 관리. DPO(Days Payable Outstanding) 핵심.</li>
+ <li><strong>프로젝트 영향</strong>: 결제 조건 표준화 = 자금 계획 정확도 향상, DPO +10일 가능.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매입채무 AP), TR(자금 계획), CO(운전자본 KPI).</li>
+ </ul></li>
+
+ <li><strong>매입 회계분개 자동화 비율과 OBYC 설정 상태는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 결산 단축의 핵심. OBYC 설정 정확도 = 자동분개 비율.</li>
+ <li><strong>프로젝트 영향</strong>: OBYC 자동화 95% 이상 목표. 수동 분개 비율 = 결산 야근 시간.</li>
+ <li><strong>타 모듈 연계</strong>: FI(GL 분개 자동), CO(원가 계정 매핑), 외부감사 정합성.</li>
+ </ul></li>
+
+ <li><strong>구매팀 인원 구성과 시스템 사용자 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 라이선스 산정·교육 대상 인원 파악.</li>
+ <li><strong>프로젝트 영향</strong>: 사용자 수 × 라이선스 단가 = 연 라이선스 비용. Key User 양성 인원 산정.</li>
+ <li><strong>타 모듈 연계</strong>: HCM(조직구조), 변화관리(교육 대상자).</li>
+ </ul></li>
+
+ <li><strong>발주처~입고처~결제처 분리(SoD)는 어떻게?</strong>
+ <ul>
+ <li><strong>의도</strong>: 부정 방지 통제 측정. SoD 위반 = K-SOX 통제 결함.</li>
+ <li><strong>프로젝트 영향</strong>: 권한 매트릭스 신설 4~6주. GRC 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: GRC(권한 통제), FI(외부감사 K-SOX), HCM(조직구조).</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 진짜 페인 포인트(Pain Point) 발굴. As-Is 진단의 핵심.</li>
+ <li><strong>프로젝트 영향</strong>: 답답함 5가지가 새 시스템의 5대 가치 제안이 됨. 변화관리 ADKAR Awareness 단계 자료.</li>
+ <li><strong>타 모듈 연계</strong>: 모든 모듈 To-Be 설계의 입력값.</li>
+ </ul></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 핵심 요구사항 우선순위 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 3가지가 RFP·제안서·UAT Sign-off의 핵심 기준이 됨.</li>
+ <li><strong>타 모듈 연계</strong>: PMO(요구사항 추적), UAT 시나리오 설계.</li>
+ </ul></li>
+
+ <li><strong>월말 결산 시 구매팀이 회계팀에 제출하는 자료는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 월결산 마감일·자료 흐름 파악. D+5 마감 가능성 진단.</li>
+ <li><strong>프로젝트 영향</strong>: 수동 자료 5건 이상 = 자동화 인터페이스 신설 필요.</li>
+ <li><strong>타 모듈 연계</strong>: FI(결산 일정), CO(차이 정산).</li>
+ </ul></li>
+
+ <li><strong>구매·외주·소모품 3종 PO의 처리 차이점은?</strong>
+ <ul>
+ <li><strong>의도</strong>: PO Document Type별 분기 처리 룰 설계.</li>
+ <li><strong>프로젝트 영향</strong>: PO Type별 워크플로 분리 — 평균 6~8 Document Type 운영.</li>
+ <li><strong>타 모듈 연계</strong>: PP(외주가공), FI(소모품 즉시 비용 처리), CO(원가 추적).</li>
+ </ul></li>
+
+ <li><strong>EDI 거래 비중과 주요 거래처는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외부 인터페이스 부하·표준 결정.</li>
+ <li><strong>프로젝트 영향</strong>: EDI 거래 30% 이상 = SAP PI/PO 도입 또는 SAP Cloud Integration 필수. 인터페이스 견적 5~10억.</li>
+ <li><strong>타 모듈 연계</strong>: SD(수주 EDI), FI(매입 EDI), 외부 VAN 사업자 연계.</li>
+ </ul></li>
+
+ <li><strong>베트남 법인의 매입과 한국 본사의 매입 차이점은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 본사-자회사 통합 거버넌스 설계.</li>
+ <li><strong>프로젝트 영향</strong>: 차이점 5건 이상 = Group Reporting 룰 별도 설계 필요. 31장 베트남 출장 매핑 207건과 직결.</li>
+ <li><strong>타 모듈 연계</strong>: FI(다중 차트 K-IFRS·VAS), CO(이전가격), TR(다중 통화).</li>
+ </ul></li>
+
+ <li><strong>매입 단가 협상 사이클(연간·분기·수시)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 가격 변동성과 표준원가 갱신 주기 동기화.</li>
+ <li><strong>프로젝트 영향</strong>: 협상 사이클 = 표준원가 갱신 주기 권고. 분기 협상 → 분기 갱신.</li>
+ <li><strong>타 모듈 연계</strong>: CO(표준원가), FI(가격 차이 분개).</li>
+ </ul></li>
+
+ <li><strong>K-IFRS 매입원가 정합성 — 외부감사 지적 이력은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 회계 리스크 사전 파악. 지적 이력 = ERP 도입의 정당화 근거.</li>
+ <li><strong>프로젝트 영향</strong>: 매년 지적 항목 = 컷오버 D-30 안에 우선 처리. 외부감사인 사전 동의 권고.</li>
+ <li><strong>타 모듈 연계</strong>: FI(외부감사 KAM), CO(원가 정합성), 50.8 매입 운송비 처리.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong>
+ <ul>
+ <li><strong>의도</strong>: 인터뷰 마무리 — 클라이언트가 추가 정보 제공할 기회.</li>
+ <li><strong>프로젝트 영향</strong>: 보통 이 질문에서 가장 중요한 정보가 나옴 (현재 시스템에 안 보이는 자리).</li>
+ </ul></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong>
+ <ul>
+ <li><strong>의도</strong>: 추가 인터뷰 대상자 확보. Boss-Manager-Worker 3계층 인터뷰 표준.</li>
+ <li><strong>프로젝트 영향</strong>: 추가 인터뷰 5~10명 확보 = 60건 인터뷰 계획의 정합성 향상.</li>
+ </ul></li>
+ </ol>
+

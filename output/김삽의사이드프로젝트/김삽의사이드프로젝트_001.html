@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>김삽의 사이드프로젝트</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Noto Serif KR', serif;
+    line-height: 2;
+    font-size: 17px;
+    overflow-x: hidden;
+  }
+
+  .cover {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '>';
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 300px;
+    color: rgba(255, 60, 60, 0.03);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: blink 1.5s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: #fff;
+    text-shadow: 0 0 80px rgba(255, 60, 60, 0.3);
+    z-index: 1;
+  }
+
+  .cover .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+    z-index: 1;
+  }
+
+  .cover .spec {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    color: #555;
+    margin-top: 40px;
+    text-align: center;
+    line-height: 1.8;
+    z-index: 1;
+  }
+
+  .cover .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #333;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .chapter {
+    padding: 120px 0;
+    border-bottom: 1px solid #1a1a1a;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .chapter.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .chapter-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: #ff3c3c;
+    margin-bottom: 50px;
+    letter-spacing: -1px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  .dialogue {
+    color: #ccc;
+    padding-left: 0;
+  }
+
+  .yell {
+    color: #ff3c3c;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .thought {
+    color: #888;
+    font-style: italic;
+  }
+
+  .punch {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin: 40px 0;
+    padding: 20px 0;
+    border-left: 3px solid #ff3c3c;
+    padding-left: 20px;
+  }
+
+  .quiet {
+    color: #555;
+    font-size: 15px;
+  }
+
+  .gap {
+    height: 60px;
+  }
+
+  .idea-box {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 30px 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  .idea-box .label {
+    color: #ff3c3c;
+    font-weight: 700;
+  }
+
+  .idea-box .strike {
+    text-decoration: line-through;
+    color: #444;
+  }
+
+  .stat {
+    font-family: 'JetBrains Mono', monospace;
+    color: #ff3c3c;
+    font-size: 15px;
+  }
+
+  .mrr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: #00ff88;
+    text-align: center;
+    margin: 40px 0;
+    text-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+  }
+
+  .book-list {
+    list-style: none;
+    padding: 0;
+    margin: 30px 0;
+  }
+
+  .book-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    color: #aaa;
+  }
+
+  .book-list li span {
+    color: #666;
+    margin-right: 8px;
+  }
+
+  .email-box {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 30px 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    color: #c9d1d9;
+  }
+
+  .email-box .subject {
+    color: #58a6ff;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .kakao {
+    max-width: 400px;
+    margin: 30px 0;
+  }
+
+  .kakao .msg {
+    margin-bottom: 8px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .kakao .msg .name {
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .kakao .msg.kim .name { color: #ff3c3c; }
+  .kakao .msg.jung .name { color: #58a6ff; }
+
+  .quote-block {
+    background: #111;
+    border-left: 3px solid #444;
+    padding: 20px 24px;
+    margin: 30px 0;
+    font-style: italic;
+    color: #999;
+    line-height: 2.2;
+  }
+
+  .git-log {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 40px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #8b949e;
+    line-height: 2;
+    overflow-x: auto;
+  }
+
+  .git-log .hash { color: #ff7b72; }
+  .git-log .comment { color: #c9d1d9; }
+
+  .ending {
+    text-align: center;
+    padding: 120px 0;
+    color: #333;
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .signal {
+    display: inline-block;
+    animation: signal 3s infinite;
+  }
+
+  @keyframes signal {
+    0%, 33% { color: #fff; }
+    34%, 66% { color: #ff3c3c; }
+    67%, 100% { color: #3c6eff; }
+  }
+
+  .separator {
+    text-align: center;
+    padding: 60px 0;
+    color: #222;
+    font-size: 24px;
+    letter-spacing: 20px;
+  }
+
+  .review {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    color: #888;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .review em {
+    color: #58a6ff;
+    font-style: normal;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>김삽의 사이드프로젝트</h1>
+  <div class="subtitle">runtime: 20 years &mdash; return: undefined</div>
+  <div class="spec">
+    김삽(44세). SI 개발자. 경력 20년.<br>
+    연봉 4,800. 빚 7,200. 차이 마이너스 2,400.
+  </div>
+  <div class="scroll-hint">scroll down &darr;</div>
+</div>
+
+<div class="container">
+
+<!-- 1 -->
+<div class="chapter">
+  <div class="chapter-title">제1장 &mdash; 이력서</div>
+  <p>김삽(44세). SI 개발자. 경력 20년.</p>
+  <p>이력서에 쓸 수 있는 것: <span class="stat">Java, Oracle, Spring, 인내심.</span></p>
+  <p>이력서에 쓸 수 없는 것: <span class="stat">열정, 비전, 미래, 통장 잔고.</span></p>
+  <div class="gap"></div>
+  <p class="dialogue">아내가 물었다. "올해 보너스는?"</p>
+  <p class="dialogue">"없어."</p>
+  <p class="dialogue">"작년에도 없었잖아."</p>
+  <p class="dialogue">"응."</p>
+  <p class="dialogue">"재작년에도."</p>
+  <p class="dialogue">"응."</p>
+  <p class="dialogue">"결혼하고 한 번도 없었잖아."</p>
+  <p class="dialogue">"...응."</p>
+  <p class="dialogue">"그럼 왜 매년 물어보게 만들어?"</p>
+  <p class="dialogue">"희망을 주려고."</p>
+  <div class="gap"></div>
+  <p class="punch">접시가 날아왔다.</p>
+</div>
+
+<!-- 2 -->
+<div class="chapter">
+  <div class="chapter-title">제2장 &mdash; 사이드</div>
+  <p>점심시간. 삼겹살집. 동기 정태가 말했다.</p>
+  <p class="dialogue">"야, 나 사이드프로젝트 하나 했는데 월 200 들어온다."</p>
+  <p>김삽의 젓가락이 공중에서 멈췄다.</p>
+  <p class="dialogue">"...뭐?"</p>
+  <p class="dialogue">"SaaS. 쇼핑몰 재고 추적 서비스."</p>
+  <p class="dialogue">"그게 돈이 돼?"</p>
+  <p class="dialogue">"외국 놈들이 긁어가. 달러로."</p>
+  <p>김삽은 소주를 들이켰다.</p>
+  <p class="thought">200만원. 한 달에. 자면서.</p>
+  <div class="gap"></div>
+  <p>그날 밤 김삽은 유튜브를 켰다. "사이드프로젝트로 월 천만원 버는 법."</p>
+  <p class="quiet">영상 길이: 47분. 광고: 12개. 결론: "일단 시작하세요."</p>
+  <p class="yell">"...아 씹."</p>
+  <p>하지만 잠이 안 왔다.</p>
+</div>
+
+<!-- 3 -->
+<div class="chapter">
+  <div class="chapter-title">제3장 &mdash; 아이디어</div>
+  <p>다음 날. 김삽은 노트를 펼쳤다.</p>
+  <div class="idea-box">
+    <p><span class="label">아이디어 #1:</span> AI로 이력서 자동 생성</p>
+    <p class="strike">&rarr; 검색해봄. 4,200개 이미 있음. 포기.</p>
+    <p><span class="label">아이디어 #2:</span> 반려동물 건강관리 앱</p>
+    <p class="strike">&rarr; 금붕어는 3일 만에 죽었음. 포기.</p>
+    <p><span class="label">아이디어 #3:</span> 중년 남성을 위한 탈모 커뮤니티</p>
+    <p class="strike">&rarr; 아직 탈모가 아님. 하지만 이마가 넓어지고 있음. 보류.</p>
+    <p><span class="label">아이디어 #4:</span> ...</p>
+  </div>
+  <p>노트가 비었다.</p>
+  <div class="gap"></div>
+  <p class="dialogue">아내가 뒤에서 봤다. "뭐 해?"</p>
+  <p class="dialogue">"아이디어 짜는 중."</p>
+  <p class="dialogue">"밥이나 해."</p>
+  <p class="dialogue">"나 지금 인생을 바꾸려는 중이야."</p>
+  <p class="punch">"12년째 같은 말 하고 있어."</p>
+  <p class="thought">반박할 수 없었다.</p>
+</div>
+
+<!-- 4 -->
+<div class="chapter">
+  <div class="chapter-title">제4장 &mdash; 운명</div>
+  <p>토요일 오후. 김삽은 카페에 앉아 노트북을 열었다.</p>
+  <p>옆자리에 20대 초반 남자가 앉아있었다. 맥북 프로. 에어팟. 파타고니아 조끼.</p>
+  <p>화면에 뭔가가 보였다. 대시보드. 그래프가 올라가고 있었다.</p>
+  <p>김삽이 힐끗 봤다.</p>
+  <div class="mrr">MRR: $12,400</div>
+  <p>월 반복 매출 만 이천 사백 달러. 한화 약 1,600만원.</p>
+  <p>20대가. 파타고니아 조끼를 입고. 카페에서.</p>
+  <p>김삽의 20년 경력 연봉이 월 400인데, 이 새끼는 카페에서 노트북 하나로 1,600을 벌고 있었다.</p>
+  <div class="gap"></div>
+  <p>김삽은 화장실에 갔다. 거울을 봤다.</p>
+  <p class="thought">주름. 다크서클. 늘어진 볼살. 흰머리.</p>
+  <p class="dialogue">"이게 20년의 결과물이냐."</p>
+  <p class="quiet">변기가 자동으로 물을 내렸다. 마치 김삽의 20년을 흘려보내듯.</p>
+</div>
+
+<!-- 5 -->
+<div class="chapter">
+  <div class="chapter-title">제5장 &mdash; 결심</div>
+  <p>그날 밤. 김삽은 결심했다.</p>
+  <p class="dialogue">"나도 한다."</p>
+  <p class="dialogue">아내가 드라마를 보다가 말했다. "뭘?"</p>
+  <p class="dialogue">"사이드프로젝트."</p>
+  <p class="dialogue">"아, 그래."</p>
+  <p class="dialogue">"이번엔 진짜야."</p>
+  <p class="dialogue">"아, 그래."</p>
+  <p class="dialogue">"왜 그렇게 무관심해?"</p>
+  <p>"2019년에도 그랬고, 2021년에도 그랬고, 2023년에도 그랬어. 2024년에는 도메인을 세 개 샀다가 다 버렸잖아."</p>
+  <p class="dialogue">"이번엔 다르다고."</p>
+  <p class="dialogue">"뭐가 달라?"</p>
+  <p class="punch">"이번엔 진짜 빚이 급해."</p>
+  <p>처음으로 아내가 TV를 끄고 돌아봤다.</p>
+  <p class="dialogue">"...얼마나 급한데?"</p>
+  <p class="dialogue">"이자가 월 87만원."</p>
+  <p class="dialogue">"...뭐?"</p>
+  <p class="dialogue">"신용대출 금리가 올랐어."</p>
+  <p>아내의 얼굴이 <span class="signal">하얘졌다. 이어서 빨개졌다. 이어서 파래졌다.</span></p>
+  <p class="thought">신호등이었다.</p>
+  <div class="gap"></div>
+  <p class="dialogue">"김삽."</p>
+  <p class="dialogue">"응."</p>
+  <p class="dialogue">"해."</p>
+  <p class="dialogue">"응?"</p>
+  <p class="yell">"사이드프로젝트 해. 당장."</p>
+  <p class="punch">생애 최초의 승인이었다.</p>
+</div>
+
+<!-- 6 -->
+<div class="chapter">
+  <div class="chapter-title">제6장 &mdash; 기술 스택</div>
+  <p>김삽은 Java 개발자였다.</p>
+  <p>하지만 사이드프로젝트 세계에서 Java는 공룡이었다.</p>
+  <p>유튜브에서 본 것: <span class="stat">React, Next.js, Tailwind, Supabase, Vercel, Prisma.</span></p>
+  <p>하나도 모른다.</p>
+  <p>김삽이 아는 것: <span class="stat">JSP, jQuery, Oracle, SVN.</span></p>
+  <p class="yell">SVN. SVN.</p>
+  <p>2024년에 SVN을 쓰는 회사에 다니고 있었다.</p>
+  <p>김삽은 울고 싶었다.</p>
+  <div class="gap"></div>
+  <p>하지만 울 시간에 유튜브를 한 편 더 봤다. "React 1시간 완성."</p>
+  <p>3시간 걸렸다.</p>
+  <p>결과물: 화면에 <span class="stat">"Hello World"</span> 하나.</p>
+  <p class="thought">"...20년 경력이 헬로 월드라니."</p>
+  <div class="gap"></div>
+  <p>새벽 2시. 아내가 나왔다. "아직도 안 자?"</p>
+  <p class="dialogue">"거의 다 했어."</p>
+  <p class="quiet">화면에 Hello World가 떠 있었다.</p>
+  <p class="dialogue">"...이게 뭐야?"</p>
+  <p class="dialogue">"시작이야."</p>
+  <p class="dialogue">"이게?"</p>
+  <p class="dialogue">"만리장성도 벽돌 하나부터 시작했어."</p>
+  <p class="punch">"그건 인부가 백만 명이었잖아."</p>
+  <p class="dialogue">"...자러 갈게."</p>
+</div>
+
+<!-- 7 -->
+<div class="chapter">
+  <div class="chapter-title">제7장 &mdash; MVP</div>
+  <p>2주가 지났다. 김삽은 퇴근 후 매일 3시간씩 코딩했다.</p>
+  <p>결과물: 로그인 화면 하나.</p>
+  <div class="gap"></div>
+  <p class="dialogue">"3시간 중에 유튜브 몇 시간?" &mdash; 정태</p>
+  <p class="dialogue">"...1시간 반."</p>
+  <p class="dialogue">"코딩은?"</p>
+  <p class="dialogue">"30분."</p>
+  <p class="dialogue">"나머지 1시간은?"</p>
+  <p class="dialogue">"스택오버플로우에서 에러 검색."</p>
+  <p>정태가 한숨을 쉬었다. "야, ChatGPT한테 시켜."</p>
+  <div class="gap"></div>
+  <p>김삽은 ChatGPT를 열었다.</p>
+  <p class="dialogue">"쇼핑몰 재고 추적 대시보드 만들어줘."</p>
+  <p class="quiet">30분 후. 로그인, 대시보드, 그래프, 알림 기능까지 다 나왔다.</p>
+  <div class="gap"></div>
+  <p>김삽은 모니터를 봤다. 그리고 20년 경력을 생각했다. 그리고 AI를 생각했다.</p>
+  <p class="thought">"...아."</p>
+  <p>김삽은 이날 처음으로 자신의 직업에 대해 존재론적 위기를 느꼈다.</p>
+  <p class="punch">하지만 느낄 시간이 없었다. 이자가 월 87만원이니까.</p>
+</div>
+
+<!-- 8 -->
+<div class="chapter">
+  <div class="chapter-title">제8장 &mdash; 런칭</div>
+  <p>한 달 후. MVP가 완성됐다.</p>
+  <p>서비스 이름: <strong style="color:#00ff88">StockSniff</strong> &mdash; 경쟁사 재고를 킁킁 맡는다.</p>
+  <p>로고: 코가 큰 강아지. 김삽이 직접 그렸다. 개 같았다. 진짜 개니까 맞긴 한데, 미친 개 같았다.</p>
+  <p class="dialogue">아내가 봤다. "이거 광견병 걸린 거 아냐?"</p>
+  <p class="dialogue">"...디자인은 나중에 하자."</p>
+  <div class="gap"></div>
+  <p>Reddit에 올렸다. r/SideProject.</p>
+  <p class="quiet">올리고 30분. 반응 없음. 1시간. 반응 없음. 3시간. 반응 없음.</p>
+  <p>잤다.</p>
+  <p>아침에 일어나서 봤다.</p>
+  <p class="stat">업보트: 1. 댓글: 0.</p>
+  <p class="thought">그 업보트 1은 본인이었다.</p>
+  <div class="gap"></div>
+  <p class="punch">김삽은 회사 화장실에서 울었다. 소리 없이.</p>
+</div>
+
+<!-- 9 -->
+<div class="chapter">
+  <div class="chapter-title">제9장 &mdash; 피봇</div>
+  <p class="dialogue">"야, 포기할 거야?" &mdash; 정태</p>
+  <p class="dialogue">"...아직."</p>
+  <p class="dialogue">"그럼 피봇해."</p>
+  <p class="dialogue">"피봇이 뭐야?"</p>
+  <p class="punch">"방향을 틀어. 안 되는 걸 계속 하는 건 근성이 아니라 미련이야."</p>
+  <div class="gap"></div>
+  <p>밤에 유튜브를 켰다. 이번엔 다른 게 눈에 들어왔다.</p>
+  <p class="yell">"AI로 소설 써서 월 500만원 번 후기"</p>
+  <p>월 30권. 한 권에 $2.99.</p>
+  <p class="thought">30권 &times; $2.99 &times; ... 아 몰라. 암튼 많다.</p>
+  <p class="dialogue">"이거다."</p>
+  <p>김삽은 StockSniff를 접고 AI 소설 사업을 시작했다.</p>
+</div>
+
+<!-- 10 -->
+<div class="chapter">
+  <div class="chapter-title">제10장 &mdash; 소설</div>
+  <p>김삽이 AI한테 첫 주문을 넣었다.</p>
+  <p class="dialogue">"40대 중년 남성이 주인공인 로맨스 소설 써줘."</p>
+  <div class="quote-block">
+    민수(44)는 오늘도 피곤했다. 야근을 마치고 집에 돌아왔을 때, 현관문 앞에 여자가 서 있었다. "오빠, 나 기억해?" 민수의 심장이 뛰었다. 20년 전 첫사랑이었다.
+  </div>
+  <p class="punch">"...이게 로맨스냐. 이건 공포물이지."</p>
+  <p class="thought">40대 남자 앞에 20년 전 첫사랑이 갑자기 나타나면, 설레는 게 아니라 무서운 거다. 뭔 일이 있는 거다.</p>
+  <div class="gap"></div>
+  <p class="dialogue">"40대 중년 남성이 우연히 대박을 치는 이야기 써줘."</p>
+  <div class="quote-block">
+    김삽은 복권을 샀다. 당첨됐다. 10억.<br><br>
+    세금 떼니 6억이었다. 빚 갚으니 없었다.<br><br>
+    다음 날 회사를 갔다.<br><br>
+    "김 대리, 이거 오늘까지야."<br><br>
+    "네."
+  </div>
+  <p class="punch">AI가 현실을 너무 잘 알고 있었다.</p>
+</div>
+
+<!-- 11 -->
+<div class="chapter">
+  <div class="chapter-title">제11장 &mdash; 킨들</div>
+  <p>그래도 김삽은 소설 10권을 만들어서 아마존 킨들에 올렸다.</p>
+  <ol class="book-list">
+    <li><span>1.</span> 야근 후의 로맨스</li>
+    <li><span>2.</span> SQL이 우리를 연결했다</li>
+    <li><span>3.</span> 서버실의 비밀</li>
+    <li><span>4.</span> 당신의 쿼리에 반했습니다</li>
+    <li><span>5.</span> 인덱스 없는 사랑</li>
+    <li><span>6.</span> 트랜잭션 롤백: 이혼 직전의 이야기</li>
+    <li><span>7.</span> 404 Not Found: 내 청춘</li>
+    <li><span>8.</span> 빚과 나 사이</li>
+    <li><span>9.</span> NULL인 내 통장</li>
+    <li><span>10.</span> 커밋할 수 없는 감정</li>
+  </ol>
+  <p>올린 지 한 달. 총 판매: <span class="stat">3권.</span></p>
+  <p class="quiet">그 중 2권은 정태가 샀다. 1권은 김삽 본인.</p>
+  <p>수익: <span class="stat">$8.97</span>. 아마존 수수료 떼고: <span class="stat">$2.69</span>. 한화: <span class="stat">3,500원.</span></p>
+  <p>김삽은 그 돈으로 편의점에서 삼각김밥을 샀다.</p>
+  <p class="punch">참치마요. 인생은 참치마요 같다. 겉은 그럴듯한데 속은 별거 없다.</p>
+</div>
+
+<!-- 12 -->
+<div class="chapter">
+  <div class="chapter-title">제12장 &mdash; 반전</div>
+  <p>어느 날. 메일이 왔다.</p>
+  <div class="email-box">
+    <div class="subject">Subject: Partnership Inquiry &mdash; Your book "404 Not Found: My Youth"</div>
+    <p>"Your book has a unique voice that resonates with the global developer community. We'd like to discuss a publishing deal."</p>
+  </div>
+  <p>미국 출판사였다.</p>
+  <p>김삽의 손이 떨렸다.</p>
+  <div class="kakao">
+    <div class="msg kim"><span class="name">김삽:</span> 야 미국 출판사에서 연락 왔어</div>
+    <div class="msg jung"><span class="name">정태:</span> ㅋㅋㅋㅋㅋ 스팸이지</div>
+    <div class="msg kim"><span class="name">김삽:</span> 아닌 것 같은데</div>
+    <div class="msg jung"><span class="name">정태:</span> 보내봐</div>
+    <div class="msg jung"><span class="name">정태:</span> 야</div>
+    <div class="msg jung"><span class="name">정태:</span> 이거 진짜 출판사다</div>
+    <div class="msg jung"><span class="name">정태:</span> 뉴욕에 있는 데</div>
+    <div class="msg kim"><span class="name">김삽:</span> ...진짜?</div>
+    <div class="msg jung"><span class="name">정태:</span> 직원 200명짜리</div>
+  </div>
+  <div class="gap"></div>
+  <p>김삽은 화장실에 갔다. 거울을 봤다.</p>
+  <p class="thought">주름. 다크서클. 흰머리. 하지만 이번엔 다르게 보였다.</p>
+  <p class="dialogue">"...404 Not Found: 내 청춘?"</p>
+  <p>AI가 쓴 건데. 아이디어는 김삽이 냈지만, 쓴 건 AI였다.</p>
+  <p class="thought">이게 내 것이 맞나?</p>
+  <p class="quiet">변기가 또 자동으로 물을 내렸다. 근데 이번엔 김삽의 20년이 아니라 김삽의 자격지심을 흘려보내는 것 같았다.</p>
+</div>
+
+<!-- 13 -->
+<div class="chapter">
+  <div class="chapter-title">제13장 &mdash; 계약</div>
+  <p>줌 미팅. 상대: Sarah(30대, 뉴욕, 편집장).</p>
+  <p class="thought">김삽은 양복을 입었다. 상의만. 하의는 추리닝이었다. 줌이니까.</p>
+  <p class="dialogue">"Mr. Kim, your writing style is... refreshing."</p>
+  <p class="quiet">통역 앱이 말했다. "당신의 글쓰기 스타일은 신선합니다."</p>
+  <p class="dialogue">"Thank you."</p>
+  <p class="thought">김삽이 아는 영어는 이게 전부였다.</p>
+  <div class="gap"></div>
+  <p>계약 조건: 선인세 <span class="stat">$5,000</span>. 인세 <span class="stat">15%</span>. 시리즈 3권.</p>
+  <p>$5,000. 한화 약 650만원. 빚 7,200만원에 비하면 코딱지였다.</p>
+  <p>하지만 김삽의 눈에서 물이 났다.</p>
+  <p class="punch">20년 동안 보너스 한 번 못 받은 남자가, AI가 쓴 소설로 선인세를 받는다. 인생은 대체 뭐냐.</p>
+</div>
+
+<!-- 14 -->
+<div class="chapter">
+  <div class="chapter-title">제14장 &mdash; 고백</div>
+  <p class="dialogue">"나, 미국 출판사에서 계약했어."</p>
+  <p class="dialogue">"뭐?"</p>
+  <p class="dialogue">"소설."</p>
+  <p class="dialogue">"AI가 썼는데 니가 계약을?"</p>
+  <p class="dialogue">"아이디어는 내 거야."</p>
+  <p class="dialogue">"아이디어가 뭔데?"</p>
+  <p class="dialogue">"40대 개발자가 복권 당첨됐는데 빚 갚으니까 없어지는 이야기."</p>
+  <p class="dialogue">"..."</p>
+  <p class="punch">"그거 우리 이야기잖아."</p>
+  <p class="dialogue">"복권은 안 샀지만."</p>
+  <p class="dialogue">"빚 갚으면 없어지는 건 똑같잖아."</p>
+  <p class="dialogue">"...그래서 울림이 있대."</p>
+  <div class="gap"></div>
+  <p>아내가 처음으로 웃었다. 결혼 후 처음 보는 종류의 웃음이었다.</p>
+  <p class="thought">울면서 웃는 거.</p>
+  <p class="dialogue">"김삽."</p>
+  <p class="dialogue">"응."</p>
+  <p class="yell">"잘했어."</p>
+  <p>김삽도 울었다. 둘이 거실에서 울었다.</p>
+  <p class="quiet">TV에서 로또 추첨이 나오고 있었다.</p>
+</div>
+
+<!-- 15 -->
+<div class="chapter">
+  <div class="chapter-title">제15장 &mdash; 두 번째 책</div>
+  <p>출판사가 두 번째 책을 요청했다.</p>
+  <p>제목: <strong style="color:#fff">커밋할 수 없는 감정</strong></p>
+  <p>이번엔 AI한테 시키지 않았다. 직접 썼다.</p>
+  <p class="quiet">매일 밤 12시부터 새벽 3시까지. 퇴근하고 밥 먹고 아이 재우고.</p>
+  <div class="gap"></div>
+  <p>20년간 SI를 전전하면서 느낀 것들. 갑한테 욕먹은 것들. 야근하면서 먹은 편의점 도시락들. 후배가 잘려나가는 걸 봤을 때의 죄책감. 연봉이 안 오를 때의 자괴감. 그래도 출근하는 이유. 그래도 코딩하는 이유.</p>
+  <p class="punch">이유 같은 건 없었다는 것. 그냥 했다는 것. 그게 20년이 됐다는 것.</p>
+  <div class="gap"></div>
+  <p>아내가 새벽에 나왔다. 김삽의 화면을 봤다.</p>
+  <div class="quote-block">
+    "커밋 메시지에는 항상 이유를 쓴다. 'fixed bug', 'refactored code', 'added feature'. 하지만 인생의 커밋에는 이유가 없다. 그냥 했다. 그게 쌓여서 여기까지 왔다. git log를 찍어보면 대단한 건 하나도 없다. 그런데 그게 전부다."
+  </div>
+  <p class="dialogue">"이거 AI가 쓴 거야?"</p>
+  <p class="dialogue">"아니. 내가 쓴 거야."</p>
+  <p class="dialogue">"..."</p>
+  <p class="dialogue">"이번엔 진짜 내가."</p>
+  <p>아내가 김삽의 어깨를 안았다.</p>
+  <p class="punch">"이게 네 첫 번째 책이다."</p>
+</div>
+
+<!-- 16 -->
+<div class="chapter">
+  <div class="chapter-title">제16장 &mdash; 출간</div>
+  <p>《커밋할 수 없는 감정》이 출간됐다.</p>
+  <p class="stat">아마존 개발자 에세이 카테고리 1위. 해커뉴스 1위.</p>
+  <div style="margin: 30px 0;">
+    <div class="review"><em>"This is the most honest book about being a developer I've ever read."</em></div>
+    <div class="review"><em>"I cried on the subway reading this."</em></div>
+    <div class="review"><em>"Finally someone wrote what we all feel but can't say."</em></div>
+  </div>
+  <p>한국어 번역이 나왔다. 교보문고 IT 에세이 1위.</p>
+  <div class="gap"></div>
+  <p class="dialogue">팀장이 물었다. "김 대리, 이거 니가 쓴 거야?"</p>
+  <p class="dialogue">"...네."</p>
+  <p class="dialogue">"여기 나오는 '10년 동안 야근수당 한 번도 못 받은 K대리'가 혹시..."</p>
+  <p class="dialogue">"소설입니다."</p>
+  <p class="dialogue">"근데 우리 프로젝트 산출물 양식이 표지에 있는 것 같은데."</p>
+  <p class="punch">"...소설입니다."</p>
+</div>
+
+<!-- 17 -->
+<div class="chapter">
+  <div class="chapter-title">제17장 &mdash; 퇴사</div>
+  <p>인세가 들어오기 시작했다. <span class="stat">월 300 &rarr; 500 &rarr; 800 &rarr; 1,200.</span></p>
+  <p class="dialogue">"김삽. 이제 회사 그만둬도 되지 않아?" &mdash; 아내</p>
+  <div class="gap"></div>
+  <p class="thought">20년. 매일 아침 8시 30분 출근. 야근. 주말근무. 명절 장애대응. 연봉 인상률 2%. 보너스 0원.</p>
+  <p>하지만.</p>
+  <p class="dialogue">"아직."</p>
+  <p class="dialogue">"왜?"</p>
+  <p class="dialogue">"세 번째 책을 쓰려면 소재가 필요해."</p>
+  <p class="dialogue">"소재?"</p>
+  <p class="dialogue">"회사."</p>
+  <p>아내가 이해했다.</p>
+  <p class="punch">김삽의 고통이 돈이 되고 있었다. 자본주의의 가장 아름다운 형태였다.</p>
+</div>
+
+<!-- 18 -->
+<div class="chapter">
+  <div class="chapter-title">제18장 &mdash; 세 번째 책</div>
+  <p>세 번째 책 제목: <strong style="color:#fff">git blame: 누구의 잘못인가</strong></p>
+  <p>중년 개발자 5명이 각자의 커리어를 돌아보는 옴니버스.</p>
+  <div class="idea-box">
+    <p>1화: SVN을 고집하다 해고된 아키텍트</p>
+    <p>2화: AI에게 자리를 뺏긴 주니어</p>
+    <p>3화: 창업했다가 3억 날린 시니어</p>
+    <p>4화: 외주만 20년 돌린 프리랜서</p>
+    <p>5화: 그 모든 걸 지켜본 김삽</p>
+  </div>
+  <p>5화를 쓸 때 김삽은 울었다.</p>
+  <div class="quote-block">
+    "나는 20년 동안 한 번도 주인공이었던 적이 없다. 항상 옆에 있었다. 누가 승진하면 축하했고, 누가 잘리면 위로했고, 누가 창업하면 응원했다. 나는 언제나 조연이었다. 그게 불만이었냐고? 아니. 그게 나였다. 조연이 없으면 주인공도 없다. 나는 그걸 20년 만에 깨달았다."
+  </div>
+  <p>출간 후. <span class="stat">뉴욕타임스 에세이 부문 3위.</span></p>
+  <p>김삽은 그 기사를 프린트해서 회사 책상 서랍에 넣었다. 아무한테도 안 보여줬다.</p>
+  <p class="punch">대신 오늘도 갑이 던진 버그를 잡았다.</p>
+</div>
+
+<div class="separator">&middot; &middot; &middot;</div>
+
+<!-- epilogue -->
+<div class="chapter">
+  <div class="chapter-title">에필로그 &mdash; 보너스</div>
+  <p>연말. 팀장이 김삽을 불렀다.</p>
+  <p class="dialogue">"김 대리. 올해 보너스 나왔다."</p>
+  <p class="dialogue">"...네?"</p>
+  <p class="dialogue">"50만원."</p>
+  <p>20년 만의 첫 보너스. <span class="stat">50만원.</span></p>
+  <p>김삽은 웃었다.</p>
+  <div class="gap"></div>
+  <div class="kakao">
+    <div class="msg kim"><span class="name">김삽:</span> 야 오늘 삼겹살 간다</div>
+    <div class="msg jung"><span class="name">정태:</span> ㅇㅇ 니가 쏴</div>
+    <div class="msg kim"><span class="name">김삽:</span> 보너스 나왔다</div>
+    <div class="msg jung"><span class="name">정태:</span> ㅋㅋㅋㅋㅋ 드디어?</div>
+    <div class="msg kim"><span class="name">김삽:</span> 20년 만에</div>
+    <div class="msg jung"><span class="name">정태:</span> 얼마?</div>
+    <div class="msg kim"><span class="name">김삽:</span> 50</div>
+    <div class="msg jung"><span class="name">정태:</span> 50만원?</div>
+    <div class="msg jung"><span class="name">정태:</span> ㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>
+    <div class="msg jung"><span class="name">정태:</span> 야 그래도 축하한다</div>
+    <div class="msg kim"><span class="name">김삽:</span> 근데 있잖아</div>
+    <div class="msg kim"><span class="name">김삽:</span> 고마워</div>
+    <div class="msg jung"><span class="name">정태:</span> 뭐가</div>
+    <div class="msg kim"><span class="name">김삽:</span> 그때 삼겹살집에서 사이드프로젝트 하라고 한 거</div>
+    <div class="msg kim"><span class="name">김삽:</span> 그 한마디가 내 인생을 바꿨어</div>
+    <div class="msg jung"><span class="name">정태:</span> ...</div>
+    <div class="msg jung"><span class="name">정태:</span> 야</div>
+    <div class="msg jung"><span class="name">정태:</span> 나 요즘 좀 힘든데</div>
+    <div class="msg kim"><span class="name">김삽:</span> 왜</div>
+    <div class="msg jung"><span class="name">정태:</span> 사이드프로젝트 접었어 ㅋㅋ</div>
+    <div class="msg jung"><span class="name">정태:</span> 월 200 들어오던 거 구글이 똑같은 거 무료로 내놔서 망했어</div>
+    <div class="msg kim"><span class="name">김삽:</span> ...</div>
+    <div class="msg jung"><span class="name">정태:</span> ㅋㅋㅋ 인생</div>
+    <div class="msg kim"><span class="name">김삽:</span> 삼겹살 내가 쏠게</div>
+    <div class="msg kim"><span class="name">김삽:</span> 소주도</div>
+    <div class="msg kim"><span class="name">김삽:</span> 2차도</div>
+    <div class="msg jung"><span class="name">정태:</span> 야 보너스 50만원인데</div>
+    <div class="msg kim"><span class="name">김삽:</span> 인세 들어왔어</div>
+    <div class="msg jung"><span class="name">정태:</span> 아 맞다 니 이제 부자지</div>
+    <div class="msg kim"><span class="name">김삽:</span> 부자는 무슨 빚이 아직 4천이야</div>
+    <div class="msg jung"><span class="name">정태:</span> ㅋㅋㅋㅋㅋ</div>
+    <div class="msg kim"><span class="name">김삽:</span> ㅋㅋㅋㅋ</div>
+  </div>
+  <div class="gap"></div>
+  <p>그날 밤. 삼겹살집에서 소주 다섯 병을 비웠다.</p>
+  <p class="dialogue">"야, 네 번째 책은 뭐야?" &mdash; 정태</p>
+  <p class="dialogue">"아직 모르겠어."</p>
+  <p class="dialogue">"소재 없어?"</p>
+  <p class="punch">"소재는 매일 생겨. 우리가 살아있으니까."</p>
+  <p class="dialogue">"야, 그거 책에 써."</p>
+  <p class="dialogue">"쓸게."</p>
+  <p class="dialogue">"제목은?"</p>
+  <p class="dialogue">"《push --force: 되돌릴 수 없는 것들에 대하여》"</p>
+  <p class="dialogue">"...좋다."</p>
+  <div class="gap"></div>
+  <p>두 남자는 삼겹살을 구웠다. 연기가 올라갔다. 환풍기가 돌아갔다.</p>
+  <p class="thought">20년의 연기가 빠져나가는 것 같았다. 아닌가. 그냥 삼겹살 연기였다.</p>
+  <p class="punch">인생은 삼겹살 같다. 기름이 많고, 타기 쉽고, 혼자 먹으면 슬프다.<br>하지만 같이 먹으면. 뭐. 괜찮다.</p>
+</div>
+
+<!-- git log -->
+<div class="chapter">
+  <div class="git-log">
+    <span class="hash">a1b2c3d</span> <span class="comment">born (44 years ago)</span><br>
+    <span class="hash">e4f5a6b</span> <span class="comment">graduated (no honors)</span><br>
+    <span class="hash">c7d8e9f</span> <span class="comment">first job (SI developer)</span><br>
+    <span class="hash">0a1b2c3</span> <span class="comment">married (love? survival?)</span><br>
+    <span class="hash">d4e5f6a</span> <span class="comment">debt (7,200만원)</span><br>
+    <span class="hash">b7c8d9e</span> <span class="comment">side project (failed)</span><br>
+    <span class="hash">f0a1b2c</span> <span class="comment">side project 2 (AI novels)</span><br>
+    <span class="hash">3d4e5f6</span> <span class="comment">first book (AI wrote it)</span><br>
+    <span class="hash">a7b8c9d</span> <span class="comment">second book (I wrote it)</span><br>
+    <span class="hash">e0f1a2b</span> <span class="comment">third book (we wrote it)</span><br>
+    <span class="hash">c3d4e5f</span> <span class="comment">bonus (500,000원, after 20 years)</span><br>
+    <span class="hash">6a7b8c9</span> <span class="comment">삼겹살 with 정태</span><br>
+    <span class="hash">???????</span> <span class="comment">...</span><br>
+  </div>
+  <p style="text-align:center; color:#333; margin-top:40px; font-family:'JetBrains Mono',monospace; font-size:14px;">
+    commit 13은 아직 안 썼다.<br>
+    내일 쓸 거다.<br>
+    아마.
+  </p>
+</div>
+
+</div>
+
+<div class="ending">
+  &mdash; fin &mdash;
+</div>
+
+<script>
+  const chapters = document.querySelectorAll('.chapter');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  chapters.forEach(ch => observer.observe(ch));
+</script>
+
+</body>
+</html>

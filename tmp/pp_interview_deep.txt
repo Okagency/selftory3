@@ -1,0 +1,237 @@
+ <h4>10.3 PP 모듈 인터뷰 표준 질문 35개 — 생산 (시니어의 진짜 답)</h4>
+
+ <p>각 질문 — 표면 답이 아니라 12년차 시니어가 12년 동안 본 진짜 함정·진짜 신호·다음 물어야 할 질문을 같이 적었다. 네이버에 안 나오는 자리.</p>
+
+ <ol>
+ <li><strong>한성정밀 주요 제품군은 몇 가지이며, 양산형/주문형 비중은?</strong>
+ <ul>
+ <li><strong>표면 의도</strong>: 제품 카테고리 파악.</li>
+ <li><strong>진짜 신호</strong>: 양산형 80% + 주문형 20%로 답하면 — 보통 거짓말이다. 실제로는 양산형 50% + 주문형 50%인데 영업이 "우리는 양산이 주력"이라고 자존심으로 답하는 자리가 많다. 진짜 비중은 — 작년 SO 데이터에서 '단일 고객 단일 품목 1회 수주'를 세야 나온다. 이 차이가 MTS·MTO·ETO 시나리오 비중을 흔든다.</li>
+ <li><strong>다음 물어야 할 것</strong>: "최근 1년 SO 라인을 한 번 같이 봐도 될까요? 양산·주문 분류를 직접 검증해 보고 싶어서요."</li>
+ <li><strong>프로젝트 영향</strong>: 잘못 설계 시 — UAT 단계에서 "이 시나리오로는 우리 일이 안 된다" 폭발. 재설계 6~8주, 추가 비용 4~6억.</li>
+ </ul></li>
+
+ <li><strong>월 평균 작업오더 발행 건수는?</strong>
+ <ul>
+ <li><strong>표면 의도</strong>: 시스템 부하 산정.</li>
+ <li><strong>진짜 신호</strong>: 작업오더 건수보다 — <strong>'평균 작업오더 1건당 BOM 라인 수'</strong>가 진짜 신호. 5라인 = 단순. 50라인 이상 = 다단계 BOM, 외주가공·반제품 복잡도 폭발. 컷오버 마이그레이션 부하 결정.</li>
+ <li><strong>다음 물어야 할 것</strong>: "월말에 작업오더 미종결(WIP) 평균 잔여 건수는요?" — WIP 잔여가 발행 건수의 30% 이상이면 결산 시 재공품 평가 정합성 깨짐.</li>
+ <li><strong>프로젝트 영향</strong>: WIP 정합성 = D+5 결산 가능성과 직결.</li>
+ </ul></li>
+
+ <li><strong>생산방식은 (MTS·MTO·ETO·ATO) 어느 것이 주축?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 답이 한 가지로 깔끔하게 나오면 — 의심하라. 한국 1차 협력사의 80%는 <strong>'고객별로 방식이 다르다'</strong>가 진짜 답. H자동차는 MTO, K자동차는 MTS, 해외 OEM은 ETO. 시나리오를 한 가지로 설계하면 — 한 고객에서 무너진다.</li>
+ <li><strong>다음 물어야 할 것</strong>: "주요 고객 5곳 각각의 발주 패턴을 한 번 같이 봐도 될까요? 시나리오를 고객별로 분리할지 결정해야 해서요."</li>
+ <li><strong>프로젝트 영향</strong>: 시나리오 분리 = SD-PP 통합 매트릭스 5x3 = 15개 시나리오 신설.</li>
+ </ul></li>
+
+ <li><strong>BOM 다단 계층은 평균 몇 단계? 최대는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 평균 3단계 / 최대 7단계가 답으로 나오면 — 정상. 그러나 <strong>'최대 12단계 이상'</strong>이 나오면 — Phantom Assembly로 분류된 자리가 있다는 뜻. Phantom 비중이 30% 이상이면 MRP 폭발(Explosion) 시간이 평소의 3배.</li>
+ <li><strong>다음 물어야 할 것</strong>: "Phantom Assembly로 잡힌 BOM이 몇 % 인가요? 그 자리들 한 번 같이 봐도 될까요?"</li>
+ <li><strong>프로젝트 영향</strong>: Phantom 처리 잘못하면 — 원가 차이 분석 시 Quantity Variance가 끊임없이 발생. CO 모듈에서 풀 수 없음.</li>
+ </ul></li>
+
+ <li><strong>BOM 등록·변경은 누가, 어떤 승인 절차로?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "설계팀이 등록, 생산팀이 승인"이 답으로 나오면 — 거의 모든 회사의 표면 답. 실제로 물어야 할 것은 — <strong>"긴급 변경(Emergency BOM Change) 시 승인 우회 빈도"</strong>. 월 5건 이상 = BOM 정합성 70% 이하. 컷오버 시 마스터 정제 12주 추가.</li>
+ <li><strong>다음 물어야 할 것</strong>: "지난 1년 긴급 BOM 변경 건수와 사유 카테고리 자료를 받을 수 있을까요?"</li>
+ <li><strong>프로젝트 영향</strong>: BOM 정합성이 컷오버 D-30의 가장 큰 변수.</li>
+ </ul></li>
+
+ <li><strong>설계변경(ECO)은 연 몇 건이며, 평균 처리 기간은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 연 ECO 200건 + 평균 처리 14일이 표면 답. 진짜 신호는 — <strong>"ECO 발의 → 양산 적용까지 실제 사이클타임"</strong>. 이게 60일 이상이면 — 그 사이 적용된 변경분과 적용 안 된 변경분이 BOM에 혼재. ECO 적용 일자 관리 자체가 안 되는 자리.</li>
+ <li><strong>다음 물어야 할 것</strong>: "ECO 적용 일자(Effectivity Date) 관리 — From/To 일자를 BOM에 직접 박나요, 별도 테이블인가요?"</li>
+ <li><strong>프로젝트 영향</strong>: ECO 정합성 = SAP ECM 모듈 활성화 결정.</li>
+ </ul></li>
+
+ <li><strong>EBOM과 MBOM이 분리되어 있는가? 통합인가?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "통합"이라고 답하면 — 80%는 거짓말. 실제로는 설계팀의 EBOM 엑셀과 생산팀의 MBOM ERP가 따로 굴러간다. 두 개를 사람이 매주 수기 동기화. 그 자리가 — ERP 도입의 가장 큰 가치 제안.</li>
+ <li><strong>다음 물어야 할 것</strong>: "PLM의 EBOM과 ERP의 MBOM을 동기화하는 사람이 있나요? 매주 몇 시간 걸리시나요?"</li>
+ <li><strong>프로젝트 영향</strong>: EBOM-MBOM 자동화 = PLM-ERP 인터페이스 견적 5~10억의 핵심 정당화.</li>
+ </ul></li>
+
+ <li><strong>라우팅은 표준화되어 있는가? 작업장별 표준 시간은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "표준화돼 있다"가 답이면 — Standard Time이 언제 측정됐는지 물어라. 5년 이상 안 갱신된 회사가 60%. 표준원가-실제원가 차이가 매년 누적되는 진짜 원인.</li>
+ <li><strong>다음 물어야 할 것</strong>: "표준 시간 마지막 측정 일자가 언제인가요? 작업 방법(IE)이 그 사이 바뀌었나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 표준 시간 재측정 4~6주 추가. 안 하면 표준원가 신뢰도 0.</li>
+ </ul></li>
+
+ <li><strong>워크센터(작업장) 구성과 능력 산정 방식은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "라인별 1개 워크센터"가 답이면 — 능력 산정 부정확. 실제로는 같은 라인에 — <strong>병목 공정 1개 + 비병목 5개</strong>가 섞여 있어서 워크센터 구분이 필요. 병목 공정 식별 안 한 회사 = CRP(Capacity Requirements Planning) 의미 없음.</li>
+ <li><strong>다음 물어야 할 것</strong>: "라인 안에서 가장 자주 멈추는 공정 1~2개를 식별해 두셨나요? Bottleneck이라는 단어로 운영하시나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 병목 식별 = TOC(Theory of Constraints) 적용 = 생산 처리량 15~30% 향상 가능.</li>
+ </ul></li>
+
+ <li><strong>MRP 사이클은 일/주/월 단위?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "주 1회"가 답이면 — 정상. "일 1회"가 답이면 — Net Change MRP 운영, 인프라 부하 큼. "월 1회"가 답이면 — 안전재고로 버티는 회사, 데드 스톡 누적.</li>
+ <li><strong>다음 물어야 할 것</strong>: "MRP 결과를 누가 검토하고 PR(구매요청)으로 확정하나요? 자동인가 수동인가?"</li>
+ <li><strong>프로젝트 영향</strong>: 자동 PR 변환율 = ERP 가치 측정의 핵심 KPI.</li>
+ </ul></li>
+
+ <li><strong>Lot Size 정책은? (LFL·EOQ·POQ·고정)</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "고정 Lot"이 답으로 나오면 — 90% 회사. 그러나 자재별로 EOQ 적용해야 할 자재가 30%는 섞여 있다. 일괄 정책으로는 운전자본 5~10% 손실.</li>
+ <li><strong>다음 물어야 할 것</strong>: "자재별로 셋업 비용·재고 보관 비용이 다른데, 모두 같은 Lot Size를 쓰나요? EOQ 적용 검토해 본 적 있나요?"</li>
+ <li><strong>프로젝트 영향</strong>: Lot Size 차등 적용 = 운전자본 절감 매년 수억.</li>
+ </ul></li>
+
+ <li><strong>안전재고 정책과 산정 근거는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "경험으로 정함"이 답이면 — 100% 정상. 그러나 <strong>수요 변동의 표준편차 × 서비스레벨 Z값 × √리드타임</strong> 공식으로 재산정하면 — 평균 안전재고 25% 감소 가능. 운전자본 대규모 절감.</li>
+ <li><strong>다음 물어야 할 것</strong>: "수요 변동성 데이터(주별·월별 표준편차)를 가지고 계신가요? 안전재고 공식 기반 재산정에 동의하시나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 안전재고 재산정 프로젝트 별도 견적 1~2억.</li>
+ </ul></li>
+
+ <li><strong>외주공정 비중과 외주 자재 사급 방식은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 외주 비중 30% 이상 + 사급재 추적 수기 = <strong>SAP Subcontracting BOM 미운영</strong>. 매월 사급재 재고 정합성이 깨짐. 외주업체 청구서와 자사 출고 기록이 매번 불일치.</li>
+ <li><strong>다음 물어야 할 것</strong>: "외주업체에 사급한 자재의 월말 잔여 재고는 어떻게 확인하시나요? 외주업체 시스템과 우리 시스템이 동기화되나요?"</li>
+ <li><strong>프로젝트 영향</strong>: Subcontracting BOM 자동화 = MM-PP 통합 시나리오 핵심.</li>
+ </ul></li>
+
+ <li><strong>생산실적 집계는 자동(MES)/수동/혼합?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "MES 자동"이 답이면 — MES-ERP 인터페이스 안정성과 시차를 물어라. <strong>실시간 vs 배치(시간 단위) vs 일 1회</strong>가 결산 D+5 가능성과 직결.</li>
+ <li><strong>다음 물어야 할 것</strong>: "MES → ERP 송신 시 실패율이 어느 정도인가요? 실패 시 재처리 절차는?"</li>
+ <li><strong>프로젝트 영향</strong>: 32장 MES 인터페이스 안정성 = 컷오버 D-1 War Room의 핵심 점검.</li>
+ </ul></li>
+
+ <li><strong>실적 집계 주기는? (시간 단위·교대 단위·일 단위)</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 일 단위가 답이면 — 시간별 OEE(Overall Equipment Effectiveness) 측정 불가. 교대 단위 이상이어야 OEE 의미 있음.</li>
+ <li><strong>다음 물어야 할 것</strong>: "OEE를 측정하시나요? 측정 주기와 책임자는?"</li>
+ <li><strong>프로젝트 영향</strong>: OEE 자동화 = MES + Fiori 대시보드 신설.</li>
+ </ul></li>
+
+ <li><strong>불량 처리 프로세스 — 부적합·재작업·폐기 구분은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 구분 명문화 안 됨 = 불량 비용이 매출원가에 그냥 흡수. 진짜 불량률을 모르는 회사. 품질 비용(COQ) 분석 불가.</li>
+ <li><strong>다음 물어야 할 것</strong>: "불량 → 재작업 vs 폐기 결정을 누가 하나요? 재작업 횟수 한계는?"</li>
+ <li><strong>프로젝트 영향</strong>: 불량 분개 자동화 = QM-CO 통합.</li>
+ </ul></li>
+
+ <li><strong>로스율(Scrap %) 관리 — 표준 vs 실제 차이는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 표준 Scrap이 BOM에 박혀 있나요? 안 박혔으면 — 차이분석 시 Quantity Variance가 끊임없이 발생.</li>
+ <li><strong>다음 물어야 할 것</strong>: "BOM의 Scrap Factor 필드를 쓰고 계신가요? 표준 Scrap %는 누가 정하나요?"</li>
+ <li><strong>프로젝트 영향</strong>: Scrap Factor 정확화 = 표준원가 신뢰도 직결.</li>
+ </ul></li>
+
+ <li><strong>작업오더 종결(Confirmation) 시점·기준은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 작업오더가 90일 이상 미종결로 남는 비율을 물어라. 30% 이상 = 결산 정합성 무너짐. WIP 평가 부정확.</li>
+ <li><strong>다음 물어야 할 것</strong>: "월말에 미종결 오더가 평균 몇 건이고, 처리 책임자는 누구인가요?"</li>
+ <li><strong>프로젝트 영향</strong>: 미종결 오더 처리 자동화 = 결산 D+5 가능성.</li>
+ </ul></li>
+
+ <li><strong>표준원가 vs 실제원가 차이는 평균 몇 %?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: ±5% 이내 = 표준원가 결산 OK. 7% 이상 = 외부감사 지적 위험. K-IFRS 1002호 '실제와 유사한 경우' 조건. 51.0 참조.</li>
+ <li><strong>다음 물어야 할 것</strong>: "지난 12개월 차이 트렌드 자료를 받을 수 있을까요? 방향성이 있나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 차이 7% 이상 = Material Ledger 검토 필수.</li>
+ </ul></li>
+
+ <li><strong>생산 KPI 5개 — OEE·납기준수·재고회전·불량률·원가율?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: KPI 5개를 즉답하면 — 성숙한 회사. 답을 못 하면 — 생산팀이 KPI 없이 굴러간다는 신호. ADKAR 변화관리 강화 필요.</li>
+ <li><strong>다음 물어야 할 것</strong>: "임원진이 매월 보는 생산 보고서 한 부 받을 수 있을까요?"</li>
+ <li><strong>프로젝트 영향</strong>: KPI 미정의 = Fiori 대시보드 설계 어려움.</li>
+ </ul></li>
+
+ <li><strong>생산계획 주기와 책임자는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 책임자 1명이면 정상. 2~3명이 같은 계획을 동시에 짜는 회사가 있다 — 계획 충돌. 컷오버 시 누구의 데이터를 마스터로 가져갈지 충돌.</li>
+ <li><strong>다음 물어야 할 것</strong>: "최종 생산계획 확정자는 누구인가요? 그 사람의 결정이 시스템에 자동 반영되나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 생산계획 단일화 = MPS 안정성.</li>
+ </ul></li>
+
+ <li><strong>S&amp;OP 회의는 운영되는가? 어떤 부서가 참여?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: "운영한다"가 답이면 — 회의록 한 부 보여달라. 회의록이 없으면 = 운영 안 됨. 표면만 있는 회사. ERP 도입 후 S&amp;OP 정착이 18개월 추가 과제.</li>
+ <li><strong>다음 물어야 할 것</strong>: "최근 3개월 S&amp;OP 회의록을 받을 수 있을까요? 합의된 숫자가 실행으로 이어지나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 40장 S&amp;OP 정착이 안정화의 마지막 자리.</li>
+ </ul></li>
+
+ <li><strong>Capacity 부족 시 의사결정 — 외주·잔업·납기조정 우선순위는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 우선순위 명문화 안 됨 = 매번 즉흥 결정. CRP 의미 없음.</li>
+ <li><strong>다음 물어야 할 것</strong>: "지난 분기 Capacity 부족 사례를 한 두 건 들어볼 수 있을까요? 어떻게 결정하셨나요?"</li>
+ <li><strong>프로젝트 영향</strong>: 의사결정 룰 명문화 = 워크플로 신설.</li>
+ </ul></li>
+
+ <li><strong>긴급 작업오더(Hot Order) 처리 빈도와 우선순위?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: Hot Order 비중 20% 이상 = 표준 프로세스가 깨진 회사. ERP로 가도 같은 패턴 반복.</li>
+ <li><strong>다음 물어야 할 것</strong>: "Hot Order가 발생하는 진짜 원인이 영업의 무리한 약속인가요, 자재 결품인가요, 설계 변경인가요?"</li>
+ <li><strong>프로젝트 영향</strong>: Hot Order 원인 식별 = 변화관리 ADKAR 강화 자료.</li>
+ </ul></li>
+
+ <li><strong>PLM 시스템 보유 여부, 도면관리 방식은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: PLM 미보유 + CAD 다종 = 도면 정합성 70% 이하. PLM 도입 권고.</li>
+ <li><strong>다음 물어야 할 것</strong>: "도면 한 장의 최신 Rev를 확인하는 데 평균 몇 분 걸리나요?"</li>
+ <li><strong>프로젝트 영향</strong>: PLM 신규 도입 = 별도 견적 5~15억.</li>
+ </ul></li>
+
+ <li><strong>품질검사와 생산오더의 연계는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 입고 검사가 자동 생성 안 됨 = QM-PP 통합 미운영.</li>
+ <li><strong>다음 물어야 할 것</strong>: "검사 결과가 생산오더 진행에 자동 반영되나요? 부적합 시 자동 차단되나요?"</li>
+ <li><strong>프로젝트 영향</strong>: QM-PP 통합 = 부적합 자재의 양산 투입 차단.</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 5가지 답이 추상적이면 — 사용자가 시스템에 적응한 상태. 답이 구체적이면 — 진짜 페인 포인트. 새 시스템 가치 제안의 기초.</li>
+ <li><strong>다음 물어야 할 것</strong>: "그 답답함이 매일 발생하나요? 매주? 매월?"</li>
+ </ul></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 3가지 답이 — UAT Sign-off의 핵심 기준이 됨. 시스템적 답(예: "Fiori 대시보드") vs 업무적 답(예: "재고 정확도") 비율로 사용자 성숙도 측정.</li>
+ </ul></li>
+
+ <li><strong>현재 가장 시간 많이 잡아먹는 수작업 5가지는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 수작업 5가지 = 자동화 ROI의 가장 직접적 산정 근거. 시간당 인건비 × 자동화율 × 12개월 = 연간 절감액.</li>
+ <li><strong>다음 물어야 할 것</strong>: "이 수작업을 안 하면 그 시간으로 무엇을 하시겠습니까?"</li>
+ </ul></li>
+
+ <li><strong>월말 결산 시 생산팀이 회계팀에 제출하는 자료 목록은?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 자료 5건 이상 = 자동화 인터페이스 신설 ROI 분명. 회계팀 야근 60% 감소의 직접 자료.</li>
+ </ul></li>
+
+ <li><strong>생산팀 인원 구성과 시스템 사용자 수는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 라이선스 산정 + Key User 양성 인원 결정.</li>
+ </ul></li>
+
+ <li><strong>베트남공장 생산방식이 한국과 다른 점 3가지는?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 차이 3가지 답이 — 본사-자회사 통합 거버넌스의 핵심. 31장 베트남 출장 합의 헌장 5조항의 입력값.</li>
+ </ul></li>
+
+ <li><strong>천안공장 MES 운영 방식과 만족도?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 만족도 낮으면 = MES-ERP 통합 시 MES 측 저항. 변화관리 강화.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 이 질문에서 가장 중요한 답이 자주 나옴. 사용자가 던지는 한 마디가 100개 질문보다 깊을 수 있다.</li>
+ </ul></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong>
+ <ul>
+ <li><strong>진짜 신호</strong>: 추가 인터뷰 대상자 명단 확보 + 인물 간 관계도 파악.</li>
+ </ul></li>
+ </ol>
+

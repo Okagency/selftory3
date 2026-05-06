@@ -1,0 +1,243 @@
+ <h4>10.5 SD 모듈 인터뷰 표준 질문 35개 — 영업·물류</h4>
+ <ol>
+ <li><strong>주요 고객 카테고리(OEM·대리점·직판·해외수출) 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 고객 마스터 설계와 매출 인식 시점 결정의 기초.</li>
+ <li><strong>프로젝트 영향</strong>: OEM 비중 70% 이상 = EDI 수주 자동화·납기 KPI 강화. 해외수출 30% 이상 = 다중 통화·인코텀즈·FTA 우선.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매출 인식 K-IFRS 1115호), CO(고객별 마진 CO-PA), TR(다중 통화), 무역(GTS·FTA).</li>
+ </ul></li>
+
+ <li><strong>고객 마스터 등록 절차와 신용한도 부여 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마스터 거버넌스(MDG)와 신용 통제 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 신용한도 룰 명문화 안 됨 = FSCM(Financial Supply Chain Mgmt) 도입 권고. 추가 견적 2~3억.</li>
+ <li><strong>타 모듈 연계</strong>: FI(AR 신용평가), FSCM, 외부 신용평가사 연계.</li>
+ </ul></li>
+
+ <li><strong>월 평균 수주(SO) 건수와 평균 SO 라인 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 시스템 부하·라이선스 산정.</li>
+ <li><strong>프로젝트 영향</strong>: 월 SO 5,000건 이상 = HANA 인프라 사이징, EDI 미들웨어 부하 증가.</li>
+ <li><strong>타 모듈 연계</strong>: WM(출하 부하), FI(매출 분개 부하).</li>
+ </ul></li>
+
+ <li><strong>주요 판매 방식(MTS·MTO·BTO·ETO)의 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 생산-영업 시나리오 설계의 기초.</li>
+ <li><strong>프로젝트 영향</strong>: MTO 50% 이상 = SO-PR-PO 통합 시나리오 추가, ATP 룰 강화.</li>
+ <li><strong>타 모듈 연계</strong>: PP(MRP 트리거), MM(자재 발주 자동), CO(주문별 원가 추적).</li>
+ </ul></li>
+
+ <li><strong>고객별 가격 정책 — 정가·할인·계약가·VIP 차등 운영은?</strong>
+ <ul>
+ <li><strong>의도</strong>: Pricing Procedure 설계의 핵심. 가격 조건 수가 복잡도 결정.</li>
+ <li><strong>프로젝트 영향</strong>: 가격 조건 20개 이상 = Pricing Procedure 신설 4~6주, UAT 검증 강화.</li>
+ <li><strong>타 모듈 연계</strong>: CO(고객별 마진 정확성), FI(매출 분개).</li>
+ <li><strong>외부감사</strong>: 가격 일관성 — KAM 등재 가능.</li>
+ </ul></li>
+
+ <li><strong>가격 결정 권한은 누구에게? 영업 사원·팀장·임원 한도는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 워크플로 설계와 부정 통제.</li>
+ <li><strong>프로젝트 영향</strong>: 권한 한도 명문화 안 됨 = K-SOX 통제 결함. 워크플로 신설.</li>
+ <li><strong>타 모듈 연계</strong>: GRC(권한), HCM(직급), 전자결재.</li>
+ </ul></li>
+
+ <li><strong>견적(Quotation)에서 수주(Order)로 전환되는 평균 비율은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 영업 효율 측정. 전환율이 낮으면 — 견적 단계 자동화 ROI 약함.</li>
+ <li><strong>프로젝트 영향</strong>: 전환율 30% 이하 = CPQ(Configure Price Quote) 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: CRM(영업 파이프라인), CO(견적 단계 마진).</li>
+ </ul></li>
+
+ <li><strong>판매 사이클 — 견적부터 청구까지 평균 며칠?</strong>
+ <ul>
+ <li><strong>의도</strong>: O2C(Order-to-Cash) 사이클 KPI.</li>
+ <li><strong>프로젝트 영향</strong>: 사이클 30일 이상 = 자동화 단축 목표 15일. 운전자본 효과 매년 수십억.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매출채권 DSO), TR(자금 계획), CO(O2C KPI).</li>
+ </ul></li>
+
+ <li><strong>ATP(Available to Promise) 응답 가능 비율은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 재고-주문 통합 가시성 측정.</li>
+ <li><strong>프로젝트 영향</strong>: ATP 응답률 70% 이하 = SAP gATP(Global ATP) 도입 권고. APO·IBP 연계.</li>
+ <li><strong>타 모듈 연계</strong>: PP(생산능력), MM(재고), WM(출하 가용성).</li>
+ </ul></li>
+
+ <li><strong>출하(Delivery) 통합 처리 — 부분 출하·일괄 출하 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: WM·운송 자동화 수준 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 부분 출하 30% 이상 = Delivery Split 룰 신설, 운송비 정산 복잡도 증가.</li>
+ <li><strong>타 모듈 연계</strong>: WM(출하 처리), TM(운송), FI(매출 인식 시점).</li>
+ </ul></li>
+
+ <li><strong>운송업체 관리와 운송비 정산 방식은?</strong>
+ <ul>
+ <li><strong>의도</strong>: TM(Transportation Mgmt) 도입 필요성 측정.</li>
+ <li><strong>프로젝트 영향</strong>: 운송업체 30곳 이상 = SAP TM 도입 권고. 견적 별도 5~10억.</li>
+ <li><strong>타 모듈 연계</strong>: WM(출하), FI(운송비 분개), 외부 TMS 연계.</li>
+ </ul></li>
+
+ <li><strong>인코텀즈(FOB·CIF·EXW) 적용 거래 비율은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 수출 위험 이전 시점 명확화.</li>
+ <li><strong>프로젝트 영향</strong>: 인코텀즈 4종 이상 운영 = 매출 인식 룰 분리, OBYC 자동분개 룰 신설.</li>
+ <li><strong>타 모듈 연계</strong>: FI(K-IFRS 1115호 통제 이전), MM(수입 대칭), 무역.</li>
+ </ul></li>
+
+ <li><strong>수출 거래 — 신용장(L/C)·D/A·D/P·T/T 결제 방식 비중은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 자금 회수 위험과 무역 자동화 수준.</li>
+ <li><strong>프로젝트 영향</strong>: L/C 비중 30% 이상 = 무역 시스템(SAP GTS·외부 K-Trade) 연계 필수.</li>
+ <li><strong>타 모듈 연계</strong>: TR(외환·환헷지), FI(수출 매출채권), 은행 연계.</li>
+ </ul></li>
+
+ <li><strong>반품·교환·환불 처리 절차와 월 발생 건수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: Returns Management 자동화 수준.</li>
+ <li><strong>프로젝트 영향</strong>: 반품률 5% 이상 = 반품 시나리오 별도 설계, QM 통합.</li>
+ <li><strong>타 모듈 연계</strong>: QM(반품 검사), FI(반품 분개), CO(반품 비용 추적).</li>
+ </ul></li>
+
+ <li><strong>매출 인식 시점 — 출하 vs 입고 vs Sign-off?</strong>
+ <ul>
+ <li><strong>의도</strong>: K-IFRS 1115호 통제 이전 시점 정합성. 외부감사 1순위.</li>
+ <li><strong>프로젝트 영향</strong>: 인식 시점 부정확 = 매출 재공시 위험. 자동화 룰 신설 필수.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매출 분개 자동), 외부감사 KAM.</li>
+ </ul></li>
+
+ <li><strong>매출 할인·리베이트·판매 장려금 운영 룰은?</strong>
+ <ul>
+ <li><strong>의도</strong>: Rebate Agreement 설계.</li>
+ <li><strong>프로젝트 영향</strong>: 리베이트 매출의 5% 이상 = SD Rebate 모듈 활성화, 누적 충당금 자동화.</li>
+ <li><strong>타 모듈 연계</strong>: FI(리베이트 충당금), CO(고객별 순매출).</li>
+ </ul></li>
+
+ <li><strong>고객 신용한도 초과 시 처리 절차는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 신용 통제 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 한도 초과 자동 차단 = 매출채권 불량률 30% 감소 가능.</li>
+ <li><strong>타 모듈 연계</strong>: FSCM(신용 관리), FI(AR Aging).</li>
+ </ul></li>
+
+ <li><strong>매출채권 회수 사이클(DSO)과 관리 주기는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 운전자본 효율성.</li>
+ <li><strong>프로젝트 영향</strong>: DSO 60일 → 45일 단축 = 운전자본 매출 4,800억 × 0.04 ≈ 192억 절감.</li>
+ <li><strong>타 모듈 연계</strong>: FI(AR), TR(자금 계획), CO(운전자본 KPI).</li>
+ </ul></li>
+
+ <li><strong>해외 수출 — 다중 통화 처리와 환차손 관리는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 환율 변동 위험 관리.</li>
+ <li><strong>프로젝트 영향</strong>: 환차손 매년 영업이익의 1~3% = 환헷지 자동화 권고.</li>
+ <li><strong>타 모듈 연계</strong>: TR(환헷지), FI(환차 분개), 무역.</li>
+ </ul></li>
+
+ <li><strong>SD-FI Inter-company billing 적용 거래는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 본사-자회사 거래 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: IC 거래 월 100건 이상 = IDoc INVOIC02 자동화 필수.</li>
+ <li><strong>타 모듈 연계</strong>: FI(연결결산 IC 제거), CO(이전가격), 다중 회사코드.</li>
+ </ul></li>
+
+ <li><strong>판매 KPI 5개 — 매출·마진·OTIF·DSO·반품률 외?</strong>
+ <ul>
+ <li><strong>의도</strong>: 영업 성과 측정 기준.</li>
+ <li><strong>프로젝트 영향</strong>: KPI 명문화 안 됨 = Fiori 대시보드 설계 어려움. 임원진 대시보드 항목 결정.</li>
+ <li><strong>타 모듈 연계</strong>: CO(KPI 자동 계산), Analytics.</li>
+ </ul></li>
+
+ <li><strong>영업팀 KPI와 매출 인식 시점 충돌은 없나?</strong>
+ <ul>
+ <li><strong>의도</strong>: 영업 KPI 부풀리기 방지.</li>
+ <li><strong>프로젝트 영향</strong>: 충돌 있으면 = 영업팀 저항 발생. 변화관리 강화.</li>
+ <li><strong>타 모듈 연계</strong>: HCM(인사평가), FI(매출 인식).</li>
+ </ul></li>
+
+ <li><strong>견적 단계 가격 검증 자동화 비율은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 가격 결정 정확성.</li>
+ <li><strong>프로젝트 영향</strong>: 수동 비율 50% 이상 = CPQ 도입 권고.</li>
+ <li><strong>타 모듈 연계</strong>: CO(원가 기반 가격), CRM.</li>
+ </ul></li>
+
+ <li><strong>주요 고객별 EDI 운영(IDoc·EDIFACT)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 외부 인터페이스 부하·표준 결정.</li>
+ <li><strong>프로젝트 영향</strong>: EDI 거래 30% 이상 = SAP PI/PO 또는 Cloud Integration 필수.</li>
+ <li><strong>타 모듈 연계</strong>: FI(매출 EDI), 외부 VAN 사업자.</li>
+ </ul></li>
+
+ <li><strong>고객 클레임 처리 시스템(Complaint Management)은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 8D Report·고객 응대 자동화.</li>
+ <li><strong>프로젝트 영향</strong>: 클레임 시스템 미운영 = QM 모듈 통합 권고.</li>
+ <li><strong>타 모듈 연계</strong>: QM(부적합 처리), CRM, FI(보상 분개).</li>
+ </ul></li>
+
+ <li><strong>현재 시스템에서 가장 답답한 5가지는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 페인 포인트 발굴.</li>
+ <li><strong>프로젝트 영향</strong>: 5가지가 새 시스템 핵심 가치 제안. ADKAR Awareness 자료.</li>
+ </ul></li>
+
+ <li><strong>새 시스템에서 반드시 되어야 하는 3가지는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 핵심 요구사항 우선순위.</li>
+ <li><strong>프로젝트 영향</strong>: 3가지가 UAT Sign-off 기준.</li>
+ </ul></li>
+
+ <li><strong>매출 인식 시점이 K-IFRS 1115호와 정합한지 검증되었나?</strong>
+ <ul>
+ <li><strong>의도</strong>: 회계 정합성 사전 검증.</li>
+ <li><strong>프로젝트 영향</strong>: 미검증 = 외부감사 사전 미팅 필수, 컷오버 D-30 안에 정합.</li>
+ <li><strong>타 모듈 연계</strong>: FI(외부감사 KAM), 외부감사인 협의.</li>
+ </ul></li>
+
+ <li><strong>월말 결산 시 영업팀이 회계팀에 제출하는 자료는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 결산 자료 흐름·D+5 가능성.</li>
+ <li><strong>프로젝트 영향</strong>: 수동 자료 5건 이상 = 자동화 인터페이스 신설.</li>
+ <li><strong>타 모듈 연계</strong>: FI(결산 일정).</li>
+ </ul></li>
+
+ <li><strong>영업팀 인원 구성과 시스템 사용자 수는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 라이선스·교육 인원.</li>
+ <li><strong>프로젝트 영향</strong>: 사용자 수 × 단가 = 라이선스 비용. Key User 양성 인원 결정.</li>
+ <li><strong>타 모듈 연계</strong>: HCM, 변화관리.</li>
+ </ul></li>
+
+ <li><strong>베트남 매출과 한국 본사 매출의 분리 정합성은?</strong>
+ <ul>
+ <li><strong>의도</strong>: 본사-자회사 매출 정합성.</li>
+ <li><strong>프로젝트 영향</strong>: 차이 5% 이상 = Group Reporting 룰 별도 설계.</li>
+ <li><strong>타 모듈 연계</strong>: FI(다중 차트), CO(이전가격), TR(다중 통화).</li>
+ </ul></li>
+
+ <li><strong>주요 고객 협상 사이클(연간 단가 갱신)과 KPI는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 영업 단가 변동성과 표준원가 동기화.</li>
+ <li><strong>프로젝트 영향</strong>: 연간 단가 협상 = 표준원가 갱신 동기화.</li>
+ <li><strong>타 모듈 연계</strong>: CO(표준원가).</li>
+ </ul></li>
+
+ <li><strong>고객 수익성 분석(CO-PA) 운영 여부는?</strong>
+ <ul>
+ <li><strong>의도</strong>: 다차원 마진 분석 도입 수준.</li>
+ <li><strong>프로젝트 영향</strong>: CO-PA 미운영 = Operating Concern 신규 설계, Characteristic 12개 결정.</li>
+ <li><strong>타 모듈 연계</strong>: CO(53장 CO-PA), Analytics.</li>
+ </ul></li>
+
+ <li><strong>혹시 빼먹은 질문이 있을까요?</strong>
+ <ul>
+ <li><strong>의도</strong>: 마무리 — 추가 정보 발굴.</li>
+ </ul></li>
+
+ <li><strong>이 주제로 누구를 더 만나야 할까요?</strong>
+ <ul>
+ <li><strong>의도</strong>: 추가 인터뷰 대상자 확보.</li>
+ </ul></li>
+ </ol>
+

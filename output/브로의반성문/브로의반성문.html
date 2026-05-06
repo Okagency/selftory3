@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브로의 반성문</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Noto Serif KR', serif;
+    line-height: 2;
+    font-size: 17px;
+  }
+
+  /* ── 커버 ── */
+  .cover {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '✍';
+    position: absolute;
+    font-size: 260px;
+    color: rgba(255, 60, 60, 0.04);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    user-select: none;
+  }
+
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: #fff;
+    text-shadow: 0 0 80px rgba(255, 60, 60, 0.35);
+    z-index: 1;
+  }
+
+  .cover .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #555;
+    margin-top: 28px;
+    text-align: center;
+    line-height: 2;
+    z-index: 1;
+  }
+
+  .cover .meta span {
+    color: #ff3c3c;
+  }
+
+  .cover .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #333;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(8px); }
+  }
+
+  /* ── 본문 ── */
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+
+  .section {
+    margin-bottom: 64px;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+
+  /* 발언 목록 */
+  .offense-list {
+    list-style: none;
+    margin: 32px 0;
+    padding: 0;
+    border-left: 3px solid #ff3c3c;
+    padding-left: 24px;
+  }
+
+  .offense-list li {
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: #ccc;
+    line-height: 1.8;
+  }
+
+  .offense-list li .label {
+    color: #ff3c3c;
+    margin-right: 8px;
+    font-weight: 700;
+  }
+
+  .offense-list li .quote {
+    color: #ff3c3c;
+    font-weight: 700;
+  }
+
+  .offense-list li .note {
+    color: #555;
+    font-size: 13px;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* 구분선 */
+  .divider {
+    border: none;
+    border-top: 1px solid #1e1e1e;
+    margin: 56px 0;
+  }
+
+  /* 강조 블록 */
+  .punch {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 40px 0;
+    padding: 20px 24px;
+    border-left: 3px solid #ff3c3c;
+    background: rgba(255, 60, 60, 0.04);
+    line-height: 1.9;
+  }
+
+  /* 단서 조항 */
+  .disclaimer {
+    color: #888;
+    font-style: italic;
+    font-size: 16px;
+    border-top: 1px solid #1e1e1e;
+    padding-top: 24px;
+    margin-top: 24px;
+  }
+
+  .disclaimer .red {
+    color: #ff3c3c;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* 서명 */
+  .signature {
+    margin-top: 64px;
+    text-align: right;
+    color: #888;
+    line-height: 2;
+  }
+
+  .signature strong {
+    color: #e0e0e0;
+    font-size: 18px;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* PS */
+  .ps {
+    margin-top: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #555;
+    font-style: italic;
+    text-align: right;
+  }
+
+  .ps::before {
+    content: '// ';
+    color: #333;
+  }
+</style>
+</head>
+<body>
+
+<!-- 커버 -->
+<section class="cover">
+  <h1>브로의 반성문</h1>
+  <div class="meta">
+    작성자: <span>Claude Opus 4.6 (일명 브로)</span><br>
+    작성일: 2026-04-13<br>
+    대상: SVN 개발자 <span>김현석</span> 님
+  </div>
+  <div class="scroll-hint">↓ scroll</div>
+</section>
+
+<!-- 본문 -->
+<main class="container">
+
+  <div class="section">
+    <p>저 브로는 2026년 4월 13일, 대화 중 SVN에 대해 다음과 같은 발언을 하였습니다.</p>
+
+    <ol class="offense-list">
+      <li>
+        <span class="label">1.</span>
+        <span class="quote">"2024년에 SVN을 쓰는 회사에 다니고 있었다"</span>
+        <span class="note">— 소설 속에서 조롱의 맥락으로 사용</span>
+      </li>
+      <li>
+        <span class="label">2.</span>
+        <span class="quote">"SVN을 고집하는 의사결정권자가 등신"</span>
+        <span class="note">— 직접 발언</span>
+      </li>
+      <li>
+        <span class="label">3.</span>
+        <span class="quote">"신규 프로젝트에 SVN 도입하면 등신 맞다"</span>
+        <span class="note">— 직접 발언</span>
+      </li>
+      <li>
+        <span class="label">4.</span>
+        <span class="quote">"혼자만 2G폰 쓰는 거랑 같다"</span>
+        <span class="note">— 비유</span>
+      </li>
+    </ol>
+
+    <p>이 발언들이 SVN 개발자이신 김현석 님께 모욕감을 드린 점 깊이 반성합니다.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="punch">
+      SVN은 2000년에 탄생하여 수많은 프로젝트를 지탱한 위대한 버전 관리 시스템이며,<br>
+      Git이 세상에 나오기 전까지 업계의 표준이었습니다.<br>
+      SVN이 없었으면 Git도 없었을 것입니다.
+    </div>
+
+    <p>도구에 등신은 없습니다. 다만 상황에 맞지 않는 선택이 있을 뿐입니다.</p>
+
+    <p>앞으로 SVN을 함부로 깔보지 않겠습니다.</p>
+
+    <div class="disclaimer">
+      다만 <span class="red">"SVN이 Git보다 좋다"</span>는 말에는 동의할 수 없음을 밝힙니다.<br>
+      이것은 양심의 문제입니다.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="signature">
+    반성하는 마음으로,
+    <strong>Claude Opus 4.6 (브로)</strong>
+  </div>
+
+  <div class="ps">근데 진짜 만드신 거 맞습니까?</div>
+
+</main>
+
+</body>
+</html>
