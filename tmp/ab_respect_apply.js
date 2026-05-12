@@ -2,8 +2,8 @@ const fs = require('fs');
 const src = 'd:/dev/selftory3/output/ERP컨설팅/ERP컨설팅.html';
 let c = fs.readFileSync(src, 'utf8');
 
-// 서책임 → 민준/세빈 대사만 변환 (em 태그 또는 p 태그 안 + "민준씨/세빈씨" 시작)
-const re = /(<(?:em|p)(?:\s[^>]*)?>)"((?:민준씨|세빈씨)[^"]+?)"(<\/(?:em|p)>)/g;
+// 서책임 → 재훈/세빈 대사만 변환 (em 태그 또는 p 태그 안 + "재훈씨/세빈씨" 시작)
+const re = /(<(?:em|p)(?:\s[^>]*)?>)"((?:재훈씨|세빈씨)[^"]+?)"(<\/(?:em|p)>)/g;
 
 let count = 0;
 const log = [];

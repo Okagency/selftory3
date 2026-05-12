@@ -83,7 +83,7 @@ $js = @"
 
 $result = $result -replace '</head>', "$css`r`n</head>"
 $result = $result -replace '</body>', "$js`r`n</body>"
-$result = $result -replace 'ERP 컨설팅 가이드 — 민준의 18개월', 'ERP 컨설팅 가이드 — 민준의 18개월 [모바일 전자책판]'
+$result = $result -replace 'ERP 컨설팅 가이드 — 재훈의 18개월', 'ERP 컨설팅 가이드 — 재훈의 18개월 [모바일 전자책판]'
 
 $result | Set-Content $mobileEbook -Encoding UTF8 -NoNewline
 Write-Host "모바일 전자책판 별도 생성: $mobileEbook"

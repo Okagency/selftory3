@@ -108,7 +108,7 @@ $ebookJs = @"
 $c = $c -replace '</body>', "$ebookJs`r`n</body>"
 
 # 책 제목에 [전자책] 표시
-$c = $c -replace 'ERP 컨설팅 가이드 — 민준의 18개월', 'ERP 컨설팅 가이드 — 민준의 18개월 [전자책판]'
+$c = $c -replace 'ERP 컨설팅 가이드 — 재훈의 18개월', 'ERP 컨설팅 가이드 — 재훈의 18개월 [전자책판]'
 
 $c | Set-Content $ebook -Encoding UTF8 -NoNewline
 Write-Host "전자책판 생성: $ebook"

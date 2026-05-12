@@ -28,7 +28,7 @@ $newContent = @"
 
  <p>다음 날.</p>
 
- <p>"민준씨 — 어젯밤 사진, 지워주세요."</p>
+ <p>"재훈씨 — 어젯밤 사진, 지워주세요."</p>
 "@
 
 $result = $c.Substring(0, $startIdx) + $newContent + " " + $c.Substring($endIdx)
