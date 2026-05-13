@@ -258,3 +258,38 @@ S2(공급망컨설팅) 전체 챕터 적용 스크립트: tmp/label_chapters_s2.
 
 저장: localStorage. 마지막 본 위치도 자동 저장(파일 재오픈 시 그 위치부터).
 
+
+[표 작성 규칙]
+
+목적: 모바일·태블릿에서 본문 표가 좌우 스크롤 없이 화면 폭에 맞춰 자동 줄바꿈되도록 한다. 폰에서도 정보 손실 없이 읽힌다.
+
+표준 CSS (768px 이하 미디어쿼리):
+- table             : display:table; width:100%; max-width:100%; font-size:12.5px; margin:14px 0; table-layout:auto;
+- table th, table td: white-space:normal; word-break:keep-all; overflow-wrap:break-word; vertical-align:top; line-height:1.5; padding:6px 8px;
+
+핵심 룰:
+1. white-space:normal           셀 내용이 화면 폭에 맞춰 자동 줄바꿈
+2. word-break:keep-all          한글 단어 단위로만 줄바꿈 (글자 중간 X)
+3. overflow-wrap:break-word     긴 영문·코드도 줄바꿈 허용
+4. vertical-align:top           행 높이 늘어나도 위 정렬 유지
+5. display:table + width:100%   기존 display:block (스크롤 모드) 대신 표준 테이블
+
+예외 — nowrap 유지가 필요한 표:
+- 시리얼 룰·데이터 모델·코드 매핑 등 모노스페이스가 자연스러운 표
+- class="nowrap-table" 부여 → 모바일에서 좌우 스크롤 유지
+- 표준 CSS의 .nowrap-table 룰이 자동 적용
+
+flow·ledger 박스는 별개:
+- white-space:pre · overflow-x:auto · 모노스페이스 폰트
+- 모바일에서도 좌우 스크롤 유지 (다이어그램 형태가 더 자연스러움)
+
+작성 시 체크:
+- 표 컬럼 5개 이상이면 모바일 행 높이가 늘어남 — 컬럼 축소 또는 nowrap-table 고려
+- 한 셀 내용이 영문 단어 1개로 매우 길면 break-word로 자동 줄바꿈
+- 표 헤더와 본문 컬럼 수 일치 확인
+- 표 직전·직후 hr.scene·p 적절히 배치 (행간)
+
+기존 표 일괄 적용:
+- 모바일 CSS만 수정하면 전체 표 자동 적용
+- 본문 table 태그 수정 불필요 (예외 클래스만 필요시 부여)
+
