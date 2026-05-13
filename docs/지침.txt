@@ -261,22 +261,33 @@ S2(공급망컨설팅) 전체 챕터 적용 스크립트: tmp/label_chapters_s2.
 
 [표 작성 규칙]
 
-목적: 모바일·태블릿에서 본문 표가 좌우 스크롤 없이 화면 폭에 맞춰 자동 줄바꿈되도록 한다. 폰에서도 정보 손실 없이 읽힌다.
+목적: 모바일·태블릿에서 본문 표가 좌우 스크롤 없이·잘림 없이 화면 폭에 맞춰 자동 줄바꿈되도록 한다. 폰에서도 정보 손실 없이 읽힌다.
 
 표준 CSS (768px 이하 미디어쿼리):
-- table             : display:table; width:100%; max-width:100%; font-size:12.5px; margin:14px 0; table-layout:auto;
-- table th, table td: white-space:normal; word-break:keep-all; overflow-wrap:break-word; vertical-align:top; line-height:1.5; padding:6px 8px;
+- table             : display:table; width:100%; max-width:100%; font-size:12px; margin:14px 0; table-layout:fixed; border-collapse:collapse;
+- table th, table td: padding:5px 6px; white-space:normal; word-break:break-word; overflow-wrap:anywhere; -ms-word-break:break-all; vertical-align:top; line-height:1.45; min-width:0;
 
-핵심 룰:
-1. white-space:normal           셀 내용이 화면 폭에 맞춰 자동 줄바꿈
-2. word-break:keep-all          한글 단어 단위로만 줄바꿈 (글자 중간 X)
-3. overflow-wrap:break-word     긴 영문·코드도 줄바꿈 허용
-4. vertical-align:top           행 높이 늘어나도 위 정렬 유지
-5. display:table + width:100%   기존 display:block (스크롤 모드) 대신 표준 테이블
+380px 이하 추가:
+- table             : font-size:11px;
+- table th, table td: padding:4px 4px;
+- body              : padding:8px 8px 280px;  (가용 공간 확보)
+
+핵심 룰 (잘림·스크롤 동시 차단):
+1. table-layout:fixed           컬럼 폭 균등 분배·셀 내용 따라 폭 늘어나지 않음
+2. width:100% + max-width:100%  화면 폭에 맞춤
+3. overflow-wrap:anywhere       한글·영문·코드 어디서나 줄바꿈 (단어 중간도)
+4. word-break:break-word        보조 — 단어 단위 줄바꿈 우선
+5. min-width:0                  셀이 콘텐츠 폭 따라 늘어남 방지 (핵심!)
+6. vertical-align:top           행 높이 늘어나도 위 정렬 유지
+7. border-collapse:collapse     테두리 깔끔
+
+table-layout 선택:
+- fixed (기본·권장)  → 컬럼 균등 분배·강제 줄바꿈·잘림 차단
+- auto (예외)        → 셀 내용 따라 자동 폭. 모바일에서 화면 폭 초과 시 잘림 발생
 
 예외 — nowrap 유지가 필요한 표:
 - 시리얼 룰·데이터 모델·코드 매핑 등 모노스페이스가 자연스러운 표
-- class="nowrap-table" 부여 → 모바일에서 좌우 스크롤 유지
+- class="nowrap-table" 부여 → 모바일에서 좌우 스크롤 유지·table-layout:auto
 - 표준 CSS의 .nowrap-table 룰이 자동 적용
 
 flow·ledger 박스는 별개:
@@ -284,12 +295,51 @@ flow·ledger 박스는 별개:
 - 모바일에서도 좌우 스크롤 유지 (다이어그램 형태가 더 자연스러움)
 
 작성 시 체크:
-- 표 컬럼 5개 이상이면 모바일 행 높이가 늘어남 — 컬럼 축소 또는 nowrap-table 고려
-- 한 셀 내용이 영문 단어 1개로 매우 길면 break-word로 자동 줄바꿈
+- 표 컬럼 5개 이상이면 모바일 셀 폭이 좁아져 행 높이 늘어남 — 컬럼 축소 또는 nowrap-table 고려
+- 한 셀에 매우 긴 영문 단어·URL이 있으면 overflow-wrap:anywhere로 자동 줄바꿈 (전역 룰)
 - 표 헤더와 본문 컬럼 수 일치 확인
 - 표 직전·직후 hr.scene·p 적절히 배치 (행간)
 
 기존 표 일괄 적용:
 - 모바일 CSS만 수정하면 전체 표 자동 적용
 - 본문 table 태그 수정 불필요 (예외 클래스만 필요시 부여)
+
+핵심 검증 — 잘림·스크롤 모두 없어야:
+- 폰(360·390·414px)에서 표가 화면에 모두 보임 (잘리지 않음)
+- 좌우 드래그 시 페이지 스크롤 안 됨 (overflow-x:hidden 전역 룰)
+- 표 자체 좌우 스크롤도 없음 (nowrap-table 제외)
+
+
+[모바일 좌우 스크롤 차단 룰]
+
+목적: 폰에서 본문 영역에 좌우 스크롤이 발생하지 않게 한다. 좌우 스크롤은 모바일 가독성을 크게 떨어뜨린다.
+
+전역 CSS (HTML 상단 style 안에 박음):
+- html, body { overflow-x: hidden; max-width: 100%; }
+- * { box-sizing: border-box; }
+- img, svg, video, iframe { max-width: 100%; height: auto; }
+- pre, code { max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+- body { word-break: keep-all; overflow-wrap: break-word; }
+
+차단 원리:
+1. html·body overflow-x:hidden     자식이 화면 폭 넘어도 페이지 자체는 스크롤 X
+2. box-sizing:border-box           padding이 width에 포함 — 박스 모델 안정
+3. img·svg·iframe max-width:100%   미디어가 화면 폭 절대 안 넘음
+4. word-break:keep-all             한글 단어 단위 줄바꿈 (글자 중간 X)
+5. overflow-wrap:break-word        긴 영문·URL·코드도 자동 줄바꿈
+6. table 처리                       [표 작성 규칙] 참조 (display:table + keep-all)
+7. flow·ledger 박스                 overflow-x:auto — 박스 내부만 스크롤·페이지 X
+
+자주 발생하는 원인 6종:
+- 인라인 SVG의 고정 width 속성 → viewBox만 두고 width 속성 제거 또는 max-width:100%
+- base64 이미지가 매우 큰 픽셀 → img max-width:100% (전역 룰로 차단)
+- 긴 영문 단어·URL·인증서 번호 → overflow-wrap:break-word (전역 룰로 차단)
+- 표지 영역의 absolute positioned 요소가 부모 박스 폭 초과 → 부모에 overflow:hidden 또는 자식 위치 조정
+- table nowrap → [표 작성 규칙]으로 처리
+- 인라인 style의 min-width 또는 고정 width → 사용 자제·max-width로 대체
+
+검증 방법:
+- 브라우저 개발자 도구 → 모바일 시뮬레이션 (360px·390px·414px)
+- 실 폰에서 좌우 드래그 시도 → 스크롤 안 되면 OK
+- 좌우 스크롤 발견 시 — 페이지 가장 큰 요소부터 max-width 점검
 
