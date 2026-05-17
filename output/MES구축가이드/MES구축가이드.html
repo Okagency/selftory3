@@ -831,6 +831,85 @@ A4 노트 1권 + 4색 볼펜
 
  <hr class="scene">
 
+ <h4>1.4.1 공정별 품질 이슈 순위 · MES 관점 중요도 <em style="color:#8b3a2a;font-size:13px;font-weight:normal;">(저자 분류)</em></h4>
+
+ <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#1.5.1</div>
+
+ <p>SMT 라인의 9단계 중 어느 공정이 품질 이슈를 가장 많이 일으키는가, 그리고 MES 관점에서 어느 공정의 데이터가 가장 중요한가는 다른 답을 갖는다. 두 순위를 분리해서 본다.</p>
+
+ <h5>품질 이슈 발생도 순위 (저자 분류 · 자동차 SMT 라인 기준)</h5>
+
+ <p>"이 공정에서 발생한 불량이 후공정으로 흘러 NG로 잡히는 비율"을 기준으로 한다. 업계 통상 NG의 약 60~70%가 인쇄·마운터·리플로우 3개 공정에서 발생.</p>
+
+ <table>
+ <thead><tr><th>순위</th><th>공정</th><th>주요 이슈</th><th>NG 비중</th><th>발견 시점</th></tr></thead>
+ <tbody>
+ <tr><td>1위</td><td><strong>솔더 페이스트 인쇄</strong></td><td>페이스트 부족·과다·위치 어긋남·스텐실 막힘</td><td>30~40%</td><td>SPI에서 즉시 또는 AOI까지 흘러감</td></tr>
+ <tr><td>2위</td><td><strong>마운터 (Pick &amp; Place)</strong></td><td>Feeder mix-up·픽업 실패·위치 어긋남·회전 오류·tombstoning</td><td>20~30%</td><td>AOI·X-Ray 또는 ICT/FCT</td></tr>
+ <tr><td>3위</td><td><strong>리플로우 오븐</strong></td><td>온도 프로파일 이탈·N2 농도 변동·솔더 미용해·과열 손상</td><td>10~15%</td><td>잠재 결함(필드 클레임) · 일부는 AOI</td></tr>
+ <tr><td>4위</td><td>AOI 검사 자체</td><td>false call (정상 → NG 오판) · real defect escape (NG → 정상 오판)</td><td>5~10%</td><td>VRS 재판정·OEM 클레임</td></tr>
+ <tr><td>5위</td><td><strong>MSD 부품 관리</strong> (공정 아닌 자재)</td><td>흡습 부품 노출 초과·베이킹 누락</td><td>3~5%</td><td>잠재 결함 (6개월~2년 후 필드)</td></tr>
+ <tr><td>6위</td><td>X-Ray 검사</td><td>BGA 보이드 미발견·브리지 미발견</td><td>2~4%</td><td>잠재 결함</td></tr>
+ <tr><td>7위</td><td>ICT/FCT</td><td>측정 지그 불량·시험 시퀀스 오류</td><td>1~3%</td><td>즉시 (재시험)</td></tr>
+ <tr><td>8위</td><td>SPI</td><td>SPI 자체 측정 오류 (false call 위주)</td><td>1~2%</td><td>SPI 자체 또는 VRS</td></tr>
+ <tr><td>9위</td><td>로더·언로더</td><td>보드 손상·Fiducial 인식 실패</td><td>&lt; 1%</td><td>즉시</td></tr>
+ </tbody>
+ </table>
+
+ <p>상위 3공정(인쇄·마운터·리플로우)이 NG의 약 65%를 만든다. <strong>품질 개선의 80%가 이 3공정에서 나온다</strong>는 업계 통상.</p>
+
+ <p>주의 — 위 비중은 일반 자동차 SMT 라인 기준 평균. 클라이언트별 실측은 11장 As-Is 진단(11.5 NG Pareto)에서 확정. 신모델 양산 초기는 마운터·리플로우 이슈가 일시적으로 크고, 양산 안정기에는 인쇄가 가장 큰 영역.</p>
+
+ <hr class="scene">
+
+ <h5>MES 관점 중요도 순위 (저자 분류)</h5>
+
+ <p>"이 공정의 데이터가 MES에 얼마나 무게 있게 들어와야 하는가"를 기준으로 한다. 품질 이슈 발생도와 다르다. MES는 단순 NG 집계가 아니라 <strong>시리얼 단위 추적성·자동차 OEM 요구·MES 확장 가치</strong>를 종합한다.</p>
+
+ <table>
+ <thead><tr><th>순위</th><th>공정</th><th>MES 중요도 핵심</th><th>본문 참조</th></tr></thead>
+ <tbody>
+ <tr><td>1위</td><td><strong>마운터 (Pick &amp; Place)</strong></td><td>Feeder Setup 검증 (mix-up 차단)·시리얼별 부품 lot 매핑·MSD 노출 추적·픽업 실패율 — <strong>IATF 16949 추적성 1순위 + 자동차 OEM PPAP 직접 요구</strong></td><td>1.2·1.3·4.3</td></tr>
+ <tr><td>2위</td><td><strong>SPI</strong></td><td>인쇄 품질 100% 검사 → SPC 자동·Cpk·PPAP Initial Process Studies 직접 산출. 자동차 OEM 표준 100% 검사 영역</td><td>1.4 ③</td></tr>
+ <tr><td>3위</td><td><strong>AOI</strong></td><td>판정 데이터 + VRS 재판정 Loop 학습 (SMT 확장 7기능 중 핵심). false call·real defect escape 양쪽 KPI 관리</td><td>1.4 ⑥·4.3</td></tr>
+ <tr><td>4위</td><td><strong>리플로우 프로파일</strong></td><td>존별 온도·TAL·N2 농도 추적 → PPAP 직접 산출·OEM 감사 데이터. 잠재 결함 차단</td><td>1.4 ⑤·4.3</td></tr>
+ <tr><td>5위</td><td><strong>X-Ray</strong></td><td>BGA 100% 검사·보이드 측정. 자동차 OEM 일부는 X-Ray 100% 의무. 데이터 양은 적지만 추적성에 중요</td><td>1.4 ⑦</td></tr>
+ <tr><td>6위</td><td><strong>ICT / FCT</strong></td><td>회로 노드별 측정값·Cpk·기능 검사. PPAP Dimensional Results 9·11번 직접 산출</td><td>1.4 ⑧⑨</td></tr>
+ <tr><td>7위</td><td>솔더 페이스트 인쇄</td><td>인쇄기 자체 데이터(스퀴지·스텐실·페이스트 lot)는 SPI와 묶여 처리. 인쇄기 직접 인터페이스는 보조</td><td>1.4 ②</td></tr>
+ <tr><td>8위</td><td>로더·언로더</td><td>보드 시리얼 부여 시작점·라인 흐름. 단순하지만 추적성의 출발점</td><td>1.4 ①</td></tr>
+ <tr><td>9위</td><td>(MSD 부품 관리)</td><td>공정 아닌 자재 관리. MES 자재 모듈 영역. SMT 확장 7기능 중 #2 ★</td><td>1.3·4.3</td></tr>
+ </tbody>
+ </table>
+
+ <h5>두 순위의 차이가 의미하는 것</h5>
+
+ <table>
+ <thead><tr><th>공정</th><th>품질 이슈 순위</th><th>MES 중요도</th><th>차이 의미</th></tr></thead>
+ <tbody>
+ <tr><td>솔더 페이스트 인쇄</td><td><strong>1위 (최대 NG)</strong></td><td>7위</td><td>NG는 인쇄에서 시작되지만 MES가 잡는 데이터는 SPI(2위)에서. 인쇄기 자체는 보조 데이터원.</td></tr>
+ <tr><td>마운터</td><td>2위</td><td><strong>1위</strong></td><td>NG 비중도 크고 MES가 잡아야 할 데이터(Feeder·시리얼·MSD)도 가장 무거움.</td></tr>
+ <tr><td>SPI</td><td>8위 (자체 NG 적음)</td><td><strong>2위</strong></td><td>SPI는 NG를 만드는 공정이 아니라 NG를 발견하는 공정. 발견 데이터의 가치가 매우 큼.</td></tr>
+ <tr><td>리플로우</td><td>3위</td><td>4위</td><td>비슷한 비중. 단 잠재 결함이라 PPAP·OEM 감사 영향 큼.</td></tr>
+ <tr><td>MSD 부품</td><td>5위</td><td>9위 (공정 외)</td><td>MES 자재 모듈로 분리 관리. 공정 인터페이스 아님.</td></tr>
+ </tbody>
+ </table>
+
+ <div class="keypoint">
+ <div class="keypoint-title">두 순위를 종합한 MES 도입 우선순위 (저자 권고)</div>
+ <ol>
+ <li><strong>① 마운터 인터페이스 + Feeder Setup 검증</strong> — 품질 2위 + MES 1위 = 최우선. ROI 즉시.</li>
+ <li><strong>② SPI 100% 검사 + SPC</strong> — 인쇄 NG의 30~40%를 SPI가 잡아낸다. MES SPC 자동화로 OEM PPAP 즉시 산출.</li>
+ <li><strong>③ AOI 판정 + VRS Loop 학습</strong> — 검사 자체 품질 개선. false call 5% 미만 유지가 KPI.</li>
+ <li><strong>④ MSD 노출 시간 자동 추적</strong> — 잠재 결함 차단. 분기 1회 폐기 비용 회수.</li>
+ <li><strong>⑤ 리플로우 프로파일링</strong> — PPAP·OEM 감사 직접 영향. 자동차 OEM 1차 필수.</li>
+ <li>⑥ X-Ray·ICT·FCT — 측정 데이터 추적성 통합.</li>
+ <li>⑦ 인쇄기·로더·언로더 — 보조 데이터.</li>
+ </ol>
+ <p style="margin-top:10px;">5장 RFP 분석·6장 견적에서 클라이언트 우선순위를 받을 때 이 순서를 기본 골격으로 제시. 클라이언트 실측 11.5 NG Pareto에 따라 일부 조정.</p>
+ </div>
+
+ <hr class="scene">
+
  <h4>1.5 양면 실장 (Double-Sided SMT)</h4>
 
  <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#1.6</div>
@@ -1130,6 +1209,127 @@ A4 노트 1권 + 4색 볼펜
 
  <p>OEM 1차 협력 모델에서는 EBOM이 PLM에 등록되고, MBOM이 ERP에 등록되고, MES가 ERP의 MBOM을 받아 라인에 배포한다. <strong>EBOM ↔ MBOM ↔ MES BOM의 3단 매핑이 깨지면 부품을 다 가지고도 못 만든다.</strong> 14개월 프로젝트의 4부(설계 단계)에서 가장 시간이 많이 걸리는 영역 중 하나가 이 BOM 매핑이다. <a href="#ch16">16장 마스터데이터 설계</a>에서 자세히 다룬다.</p>
 
+ <h5>예시 — 자동차 블랙박스 메인 PCBA 1대의 EBOM·MBOM 비교</h5>
+
+ <p>같은 제품(자동차 블랙박스 본체 1대) 한 단위의 BOM을 R&amp;D 관점(EBOM)·생산 관점(MBOM)으로 펼쳐 본다. 두 BOM이 같은 부품을 다른 방식으로 다루는 자리가 명확히 드러난다.</p>
+
+ <div class="flow">[EBOM — R&amp;D 작성 · PLM 등록 · 기능 단위 그룹화]
+
+  자동차 블랙박스 본체 (1 EA)
+  ├─ 메인 PCBA (1 EA, 어셈블리)
+  │   ├─ 메인 PCB                  (1 EA, P/N: PCB-4L-FR4-001)
+  │   ├─ SoC                       (1 EA, P/N: SOC-A311D-BGA)
+  │   ├─ DDR3 메모리                (1 EA, P/N: DDR3-512MB-BGA)
+  │   ├─ eMMC 플래시                (1 EA, P/N: EMMC-16GB-BGA)
+  │   ├─ PMIC                      (5 EA, P/N: PMIC-XXX)
+  │   ├─ GPS 모듈                   (1 EA, P/N: GPS-M5-MOD)
+  │   ├─ WiFi/BT 모듈                (1 EA)
+  │   ├─ G-sensor                  (1 EA)
+  │   ├─ 칩 부품 (R·C·L 합산)        (412 EA, 종합)
+  │   ├─ 커넥터                     (7 EA)
+  │   └─ 솔더 페이스트              (1 EA, 재료비 항목 — 수량 미명시)
+  │
+  ├─ 카메라 모듈                    (1 EA, 어셈블리)  ← 하위 부품 분해 X
+  ├─ 하우징                        (1 EA, 어셈블리)
+  ├─ 케이블·하니스                  (1 EA, 어셈블리)
+  └─ microSD                       (1 EA, 옵션)
+
+  ※ 총 행 수: 약 14행 (어셈블리 단위)
+  ※ 자재 단위: EA (개수)
+  ※ 공정 정보: 없음
+  ※ Feeder 배치: 없음
+</div>
+
+ <div class="flow">[MBOM — 생산기술(PE) 작성 · ERP 등록 · 작업장 단위 그룹화]
+
+  공정 1. SMT 라인 작업 (메인 PCBA 1매 제작)
+   ├─ 메인 PCB 1매 (Loader 투입)
+   ├─ SMT 자재 (Feeder 슬롯 배치 명세)
+   │   ├─ M1-S01: 1005 100Ω 저항 × 8 + 안전재고 2 = 10 EA/매
+   │   ├─ M1-S02: 1005 100nF 커패시터 × 12 + 안전 3 = 15 EA/매
+   │   ├─ M1-S03: 1005 4.7μH 인덕터 × 4 + 안전 1 = 5 EA/매
+   │   ├─ ... (총 87 Feeder 슬롯)
+   │   ├─ M2-S03: SoC BGA × 1 (MSD Level 3 — 베이킹 사전 필수)
+   │   ├─ M2-S07: DDR3 BGA × 1 (MSD Level 3)
+   │   └─ M2-S11: eMMC BGA × 1 (MSD Level 4 — 노출 72h 한계)
+   │
+   ├─ 솔더 페이스트 0.34g/매 (스텐실 면적 기준 계산)
+   ├─ 접착제 (Bottom 면) 0.05g/매
+   └─ 페이스트 jar: 작업 8시간 후 교체·잔량 30% 폐기 룰
+
+  공정 2. 카메라 모듈 조립 (1개 제작)
+   ├─ CMOS 이미지 센서 × 1 (P/N: IMX-001)
+   ├─ 렌즈 어셈블리 × 1 (유리 6매 결합)
+   ├─ IR 컷 필터 × 1
+   ├─ FPC 케이블 × 1
+   ├─ 모듈 PCB × 1
+   ├─ UV 본드 × 0.02g (Active Alignment 후 경화용)
+   └─ 클린룸 환경 (Class 1000 의무)
+
+  공정 3. 하우징 조립
+   ├─ 전면 케이스 × 1 (ABS+PC, UV 안정화)
+   ├─ 후면 케이스 × 1
+   ├─ 윈드실드 마운트 × 1
+   ├─ 방열 패드 × 1
+   ├─ 나사 M2×6 × 4 (토크 0.4 N·m)
+   ├─ 양면테이프 × 1 (마운트 부착용)
+   └─ 라벨 × 1 (시리얼 인쇄 후 부착)
+
+  공정 4. 펌웨어 Flash·캘리브레이션
+   ├─ 펌웨어 v2.3.1 (모델·OEM별 매핑)
+   └─ 캘리브레이션 데이터 (MTF·왜곡·시야)
+
+  공정 5. 최종 검사·포장
+   ├─ 영상·GPS·WiFi·전류·오디오 검사 6종 (30~180초/대)
+   ├─ 포장 박스 × 1 (OEM별 규격)
+   └─ 동봉 매뉴얼 × 1
+
+  ※ 총 행 수: 약 110~150행 (공정·자재·단위 변환·환경 명세)
+  ※ 자재 단위: EA·g·N·m·sec·% 혼재 (생산 단위)
+  ※ 공정 정보: 모든 행에 매핑
+  ※ Feeder 배치: M1·M2 슬롯별 명세
+</div>
+
+ <h5>핵심 차이 7종</h5>
+
+ <table>
+ <thead><tr><th>관점</th><th>EBOM</th><th>MBOM</th></tr></thead>
+ <tbody>
+ <tr><td>총 행 수 (같은 제품)</td><td>약 14행</td><td>약 110~150행 (10배)</td></tr>
+ <tr><td>"카메라 모듈"</td><td>1행 (어셈블리 한 줄)</td><td>5종 부품 분해 + 클린룸 환경 + UV 본드 등</td></tr>
+ <tr><td>"솔더 페이스트"</td><td>1행 (수량 미명시, 재료비 항목)</td><td>0.34g/매 + 페이스트 잔량 30% 교체 룰</td></tr>
+ <tr><td>"칩 부품 412개"</td><td>1행 (총량)</td><td>87 Feeder 슬롯별 분해 + 안전재고 + MSD 베이킹 명세</td></tr>
+ <tr><td>"나사"</td><td>(어셈블리에 포함, 미표시)</td><td>M2×6 × 4 + 토크 0.4 N·m</td></tr>
+ <tr><td>자재 단위</td><td>EA 통일</td><td>EA·g·N·m·sec·% 혼재</td></tr>
+ <tr><td>공정 매핑</td><td>없음</td><td>공정 1~5 단계별 분배</td></tr>
+ </tbody>
+ </table>
+
+ <p>같은 부품을 다른 방식으로 보는 두 BOM의 차이가 바로 <strong>"설계와 생산의 언어 차이"</strong>다. R&amp;D 부서는 EBOM 한 줄("카메라 모듈")만 보고, 생산 부서는 그 한 줄을 5종 부품·클린룸·UV 본드로 풀어내야 한다. MES는 MBOM을 받아 라인에 배포한다 — 그래서 MBOM의 정확도가 라인 가동의 90%를 좌우한다.</p>
+
+ <h5>사례 3종 — EBOM·MBOM 불일치 사고</h5>
+
+ <div class="case">
+ <div class="case-title">사례 1 — ECN 발효 시점 차이로 라인 정지 (자동차 부품 협력사, 2022)</div>
+ <p>국내 모 자동차 부품 협력사. 신규 모델 양산 직전 설계 ECN을 PLM(Teamcenter)에서 발행. EBOM에 새 PMIC(P/N: PMIC-XYZ-002)가 추가됐다. ERP(SAP) 측 MBOM 갱신이 PE 부서 일정으로 4주 후 예정. 그 4주 동안 라인이 구 BOM(PMIC-XYZ-001)으로 가동.</p>
+ <p>구매 부서가 EBOM 보고 새 PMIC 발주 → 입고 → 라인 자재 카트에 들어감 → 작업자가 Feeder에 끼움. MES가 없는 라인이라 자재 검증 안 됨. 작업 시작 10분 후 ICT NG 폭증. 라인 3시간 정지. 손실 약 2,000만원 + 보드 600매 폐기.</p>
+ <p>학습: EBOM 변경 시점과 MBOM 발효 시점이 다르면 라인은 그 사이에 사고가 난다. MES는 ECN 발효일·적용 lot 범위를 명시해 라인 측에서 자재 검증·차단할 수 있어야 한다.</p>
+ </div>
+
+ <div class="case">
+ <div class="case-title">사례 2 — 자재 단위 차이로 솔더 폐기 1,500만원 (자동차 부품 협력사, 2023)</div>
+ <p>국내 모 협력사. 신규 모델 솔더 페이스트 발주. EBOM에는 "솔더 페이스트 1 EA"라고만 적힘 (재료비 항목·정확한 수량 없음). 구매 부서가 EBOM 보고 jar 단위로 발주 — 잘못 계산해 월 생산량의 10배를 발주.</p>
+ <p>MBOM에는 "0.34g/매 + 페이스트 jar 작업 8시간 후 교체·잔량 30% 폐기"가 정확히 명세돼 있었으나 구매 부서가 MBOM을 보지 않음. ERP 측에 두 BOM이 있는데 구매 시스템이 EBOM과 연결돼 있었던 게 원인.</p>
+ <p>결과: 솔더 페이스트 폐기 1,500만원 + 보관 공간 부족으로 일부 변질. 재고 정리 비용 +300만원. 그 후 ERP 측 구매 모듈을 MBOM 기반으로 재설정.</p>
+ </div>
+
+ <div class="case">
+ <div class="case-title">사례 3 — EBOM·MBOM 동기 누락으로 PPAP 거부 (자동차 부품 협력사, 2021)</div>
+ <p>국내 모 협력사. 신규 모델 PPAP 제출 단계. PPAP 4번(DFMEA)·5번(Process Flow)·6번(PFMEA) 산출물을 작성할 때 EBOM(설계)·MBOM(공정)이 OEM 측에 함께 제출됨. OEM SQE 검토 시 EBOM 한 부품(LED)이 MBOM에는 없는 것을 발견. 사유: 그 LED는 설계 단계에 있었으나 MBOM 작성 시 생산기술이 "샘플 단계 LED"로 분류해 양산 BOM에서 제외 → 그러나 EBOM에서는 빼지 않음.</p>
+ <p>OEM SQE는 EBOM과 MBOM의 불일치를 "변경 통제 부실"로 판정 → <strong>PPAP Reject</strong>. 양산 시작 6주 지연·매출 영향 약 4억. 협력사는 SQ Mark 3★ → 2★로 하락. 다음 신모델 우선권 상실.</p>
+ <p>학습: OEM PPAP 감사 시 EBOM·MBOM 동기를 직접 검증한다. MES가 EBOM(PLM)·MBOM(ERP)·Working BOM(MES) 3단 매핑을 자동 검증·동기하지 않으면 비슷한 사고가 매 신모델마다 발생.</p>
+ </div>
+
  <div class="keypoint">
  <div class="keypoint-title">MES가 잡아야 할 데이터 ⑧ — BOM 단계 매핑</div>
  <ul>
@@ -1167,6 +1367,334 @@ A4 노트 1권 + 4색 볼펜
  <li><strong>부적합품 격리</strong>는 MES의 NG 판정·격리 라인 라우팅 기능</li>
  <li>OEM 감사 시 위 항목들의 MES 데이터 추출 가능 여부가 인증 통과를 좌우</li>
  </ul>
+ </div>
+
+ <h5>IATF 16949 인증 절차·인증기관</h5>
+
+ <p><strong>발행 주체</strong>: International Automotive Task Force(IATF). 미국·유럽·일본 주요 자동차 OEM(GM·Ford·Stellantis·BMW·Daimler·VW·Renault·PSA 등) 협력 단체. 본부 미국·인증 시스템 운영.</p>
+
+ <p><strong>버전 이력</strong>:</p>
+ <ul>
+ <li><strong>QS-9000</strong> (1994, 미국) · <strong>VDA 6.1</strong> (1996, 독일) · <strong>EAQF</strong> (프랑스) — 초기 OEM별 분산 표준</li>
+ <li><strong>ISO/TS 16949</strong> (1999~2016) — ISO와 IATF가 협력해 통합</li>
+ <li><strong>IATF 16949:2016</strong> (2016~현재) — ISO 협력 종료·IATF 자체 발행. ISO 9001:2015 기반</li>
+ </ul>
+
+ <p><strong>인증 절차</strong>:</p>
+ <div class="flow">[IATF 16949 인증 절차 — 신규 인증 표준 흐름]
+
+  Step 1.  사전 준비 (6~12개월)
+   ─ 품질 매뉴얼·절차서·기록 양식 작성
+   ─ 5종 핵심 도구(APQP·PPAP·PFMEA·MSA·SPC) 적용 시스템 구축
+   ─ MES·ERP 등 시스템 인터페이스 정합성 확보
+   ─ 내부 감사·경영 검토 시행
+
+  Step 2.  CB(Certification Body) 선정
+   ─ IATF 승인 인증기관 약 30개사 중 선정
+   ─ 한국: KSA(한국표준협회)·KFQ(한국품질재단)·DNV·TÜV SÜD·SGS·BV·LRQA 등
+   ─ CB와 계약·일정 합의
+
+  Step 3.  Stage 1 감사 (문서 심사, 1~3일)
+   ─ 품질 매뉴얼·절차서 검토
+   ─ 사업장 사전 방문
+   ─ 부적합 발견 시 30~90일 시정 기간
+
+  Step 4.  Stage 2 감사 (현장 심사, 3~10일)
+   ─ 사업장 전 부서·라인 실사
+   ─ 5종 핵심 도구 적용 증거 확인
+   ─ Major·Minor 부적합 발행
+
+  Step 5.  부적합 시정 (60~90일)
+   ─ Major NCR(Non-Conformity Report) 60일 내 시정
+   ─ Minor NCR 90일 내 시정
+   ─ CB 후속 검증
+
+  Step 6.  인증서 발급 (인증 유효 3년)
+   ─ IATF 등록부 등재
+   ─ OEM 입찰 자격 획득
+
+  ─── 후속 (3년 주기) ───
+  매년 1회 감시 심사 (Surveillance Audit, 1~5일)
+  3년차 재인증 심사 (Recertification, Stage 1+2 축약형)
+</div>
+
+ <p><strong>한국 주요 인증기관(CB) 5종</strong>:</p>
+
+ <table>
+ <thead><tr><th>CB</th><th>약어</th><th>본사</th><th>특징</th></tr></thead>
+ <tbody>
+ <tr><td>한국표준협회</td><td>KSA</td><td>한국</td><td>국내 협력사 가장 흔함</td></tr>
+ <tr><td>한국품질재단</td><td>KFQ</td><td>한국</td><td>중견 협력사·자동차 부품 다수</td></tr>
+ <tr><td>DNV (Det Norske Veritas)</td><td>DNV</td><td>노르웨이</td><td>글로벌 OEM 신뢰도 높음</td></tr>
+ <tr><td>TÜV SÜD / TÜV NORD</td><td>TÜV</td><td>독일</td><td>독일계 OEM (VW·BMW·Daimler) 협력사 선호</td></tr>
+ <tr><td>SGS · Bureau Veritas · LRQA</td><td>—</td><td>스위스·프랑스·영국</td><td>유럽계 OEM 다수</td></tr>
+ </tbody>
+ </table>
+
+ <p><strong>인증 비용 (한국 중견 협력사 기준 · 저자 추정)</strong>:</p>
+ <ul>
+ <li>Stage 1+2 신규 인증: 약 1,500~3,000만원 (사업장 규모·CB에 따라)</li>
+ <li>매년 감시 심사: 약 500~1,200만원</li>
+ <li>3년 재인증: 약 1,000~2,000만원</li>
+ <li>내부 준비(컨설팅·시스템 구축): 별도 1~3억 (협력사 첫 도입 시)</li>
+ </ul>
+
+ <h5>IATF 16949:2016 구성 — 10개 절(Clauses)</h5>
+
+ <table>
+ <thead><tr><th>절</th><th>제목</th><th>핵심 (자동차 SMT MES와 관련)</th></tr></thead>
+ <tbody>
+ <tr><td>1</td><td>적용 범위 (Scope)</td><td>자동차 부품 생산·연구개발 사업장 적용</td></tr>
+ <tr><td>2</td><td>인용 표준 (Normative References)</td><td>ISO 9000·관련 표준</td></tr>
+ <tr><td>3</td><td>용어·정의 (Terms)</td><td>자동차 산업 용어 정의</td></tr>
+ <tr><td>4</td><td>조직 컨텍스트 (Context)</td><td>이해관계자·범위 결정</td></tr>
+ <tr><td>5</td><td>리더십 (Leadership)</td><td>경영진 책임·품질 정책·역할 분담</td></tr>
+ <tr><td>6</td><td>기획 (Planning)</td><td>품질 목표·위험·기회 식별·변경 통제</td></tr>
+ <tr><td>7</td><td>지원 (Support)</td><td>자원·인력 자격·기반시설·문서화·MSA·교정</td></tr>
+ <tr><td>8</td><td><strong>운영 (Operation) ★</strong></td><td><strong>APQP·PPAP·PFMEA·SPC·시리얼 추적·공급사 관리 — MES 영역 직접 매핑</strong></td></tr>
+ <tr><td>9</td><td>성과 평가 (Performance Evaluation)</td><td>고객 만족·내부 감사·경영 검토</td></tr>
+ <tr><td>10</td><td>개선 (Improvement)</td><td>부적합·시정 조치·8D·지속 개선</td></tr>
+ </tbody>
+ </table>
+
+ <p>8절(운영)이 가장 무거운 영역이고 MES와 직접 매핑되는 자리. 본 책의 1·2·3·4부 거의 전체가 8절의 충족 수단이다.</p>
+
+ <h5>IATF 16949 출현 배경 — 1980~1990년대 미국 자동차의 품질 위기</h5>
+
+ <p>오늘날 자동차 OEM 1차 협력의 절대 자격이 된 IATF 16949는 우연히 생긴 표준이 아니다. 1980년대 미국 자동차 산업의 품질 위기에서 시작된다. 일본 자동차(도요타·혼다·닛산)가 1970년대 오일 쇼크 이후 미국 시장에 본격 진출하면서 미국 Big 3(GM·Ford·Chrysler)의 시장 점유율이 1978년 80% → 1988년 65%까지 떨어졌다. 일본의 우위는 가격이 아니라 <strong>품질</strong>이었다. 같은 시점 J.D. Power 품질 조사에서 일본차의 100대당 결함 수가 미국차의 절반 이하였다.</p>
+
+ <p>1988년 미국 자동차 협력사 단체 ASQC(American Society for Quality Control) 산하 Automotive Division이 결성됐다. Big 3가 협력사 품질 표준을 통합하려는 첫 시도. 결과는 분산. 각 OEM이 자기 표준을 만들었다.</p>
+
+ <table>
+ <thead><tr><th>연도</th><th>표준</th><th>지역·OEM</th><th>문제</th></tr></thead>
+ <tbody>
+ <tr><td>1994</td><td>QS-9000</td><td>미국 (GM·Ford·Chrysler)</td><td>북미 협력사용</td></tr>
+ <tr><td>1996</td><td>VDA 6.1</td><td>독일 (VW·BMW·Daimler)</td><td>유럽 협력사용</td></tr>
+ <tr><td>1996</td><td>EAQF</td><td>프랑스 (Renault·PSA)</td><td>프랑스 협력사용</td></tr>
+ <tr><td>1996</td><td>AVSQ</td><td>이탈리아 (Fiat)</td><td>이탈리아 협력사용</td></tr>
+ </tbody>
+ </table>
+
+ <p>한 협력사가 GM·VW·Renault에 모두 납품하려면 4개 표준 인증을 따로 받아야 했다. 비용 부담 4배·중복 감사·문서 작업 폭증. 협력사·OEM 양쪽이 통합 표준을 강하게 원했다.</p>
+
+ <p><strong>1999년 IATF 결성</strong>. Big 3 + 유럽 OEM이 모여 ASQC·VDA·AFAQ-AFNOR·ANFIA 등 지역 단체를 통합. ISO와 협력해 1999년 <strong>ISO/TS 16949:1999</strong> 발행. "TS"는 Technical Specification(기술 사양서) 의미 — 정식 ISO 표준은 아니고 IATF가 ISO 협력으로 유지하는 형식.</p>
+
+ <p>2016년 IATF가 ISO와 협력 종료·자체 IATF 16949:2016 발행. 이유는 두 가지. 첫째, ISO 9001:2015 개정 후 자동차 산업 특수 요구를 더 빠르게 반영하기 위해. 둘째, IATF가 인증기관(CB) 감독을 직접 강화하기 위해 — 인증 품질 낮은 CB의 인증을 무효화하는 권한을 IATF가 직접 행사하려 함.</p>
+
+ <hr class="scene">
+
+ <h5>업계 동향 (2026 기준)</h5>
+
+ <p>2026년 기준 글로벌 IATF 16949 인증 기업은 약 <strong>8만 개사</strong>. 한국은 약 <strong>3,500개사</strong>로 자동차 부품 협력사 대부분이 인증 보유. 자동차 산업의 사실상 의무 표준이다.</p>
+
+ <p><strong>주요 동향 5가지</strong>:</p>
+
+ <ol>
+ <li><strong>전기차 전환 영향</strong> — 전기차·자율주행 부품(배터리·BMS·ADAS·LiDAR)에는 IATF 16949 + ISO 26262(기능안전) + ISO 21434(사이버보안) + ISO/PAS 21448(SOTIF, 자율주행 의도 안전) 결합 의무. 기존 협력사가 추가 인증 부담을 안고 있음.</li>
+ <li><strong>중소 협력사 인증 포기 증가</strong> — 인증 유지 연 1~2천만원 비용·문서·감사 부담으로 일부 2차·3차 협력사가 인증을 포기하고 1차 협력사에 종속. 1차 협력사가 2차의 IATF 부적합 책임을 떠안는 구조 증가.</li>
+ <li><strong>디지털 감사 확산</strong> — 코로나 이후 원격 감사 허용. CB가 영상·실시간 화면 공유로 일부 감사 진행. 단 핵심 사업장은 여전히 현장 감사.</li>
+ <li><strong>중국 IATF 인증 급증</strong> — 2015년 약 1만 5천 → 2025년 약 3만 5천. 중국 자동차 부품이 글로벌 시장 진출 위해 인증 의무. 한국 협력사가 중국과 직접 경쟁.</li>
+ <li><strong>OEM 직접 감사 강화</strong> — IATF 인증과 별개로 OEM SQE가 매년 직접 감사. 현대·기아·VW·도요타 등이 디지털 SQ 시스템으로 협력사 데이터를 실시간 추출. MES와의 인터페이스 표준화 요구가 강해짐.</li>
+ </ol>
+
+ <hr class="scene">
+
+ <h5>핵심 준수사항 — 자동차 SMT 협력사 12종</h5>
+
+ <p>IATF 16949의 200여 개 요구사항 중 자동차 SMT 협력사가 매일·매주·매월 준수해야 하는 핵심 12종.</p>
+
+ <table>
+ <thead><tr><th>#</th><th>준수사항</th><th>주기</th><th>MES 영역?</th></tr></thead>
+ <tbody>
+ <tr><td>1</td><td>품질 매뉴얼·절차서 최신 유지</td><td>상시·연 1회 갱신</td><td>(문서 관리)</td></tr>
+ <tr><td>2</td><td>5종 핵심 도구 적용 증거 유지 (APQP·PPAP·PFMEA·MSA·SPC)</td><td>상시</td><td>✅ 자동 산출</td></tr>
+ <tr><td>3</td><td>시리얼 단위 추적성 (15년)</td><td>실시간 수집·15년 보관</td><td>✅ MES 핵심</td></tr>
+ <tr><td>4</td><td>부적합품 격리·리워크 통제</td><td>실시간</td><td>✅ MES 인터록</td></tr>
+ <tr><td>5</td><td>변경 통제 (ECN/ECO·신규 부품·공정 변경)</td><td>건별</td><td>✅ MES 매핑</td></tr>
+ <tr><td>6</td><td>협력사 평가·관리 (2차·3차 협력사 관리)</td><td>분기·반기</td><td>(자재 마스터)</td></tr>
+ <tr><td>7</td><td>고객 클레임 8D 보고서</td><td>건별·48h 응답</td><td>✅ MES 역추적</td></tr>
+ <tr><td>8</td><td>내부 감사·경영 검토</td><td>분기 1회</td><td>(품질 시스템)</td></tr>
+ <tr><td>9</td><td>인력 자격·교육 (작업자·검사자·SQE)</td><td>연 1회</td><td>(HR·MES 작업자 마스터)</td></tr>
+ <tr><td>10</td><td>측정 기기 교정 (Calibration)</td><td>주기적</td><td>✅ MES 설비 마스터</td></tr>
+ <tr><td>11</td><td>비상 대응 계획 (전원·설비 고장·자연재해)</td><td>연 1회 훈련</td><td>(BCP)</td></tr>
+ <tr><td>12</td><td>지속적 개선 (CAPA·8D·5 Why)</td><td>상시</td><td>✅ MES 데이터 기반</td></tr>
+ </tbody>
+ </table>
+
+ <p>12종 중 7종(2·3·4·5·7·10·12)이 MES 직접 영역. 나머지 5종도 MES 데이터를 보조 입력으로 사용.</p>
+
+ <hr class="scene">
+
+ <h5>업계 대표 사례 — IATF 16949 부적합·강화 계기</h5>
+
+ <div class="case">
+ <div class="case-title">사례 1 — GM Cobalt 이그니션 스위치 (2014)</div>
+ <p>2014년 GM의 Chevrolet Cobalt 이그니션 스위치 결함으로 124명 사망·275명 부상. 결함 부품(이그니션 스위치 스프링)이 2002년부터 알려졌으나 GM·협력사 모두 시리얼 단위 추적성·필드 클레임 분석을 부실하게 처리. 결과: <strong>약 30억 달러 손실·CEO 메리 바라 의회 청문·1,400만 대 리콜</strong>. IATF 16949의 시리얼 추적성·8D 보고서·필드 클레임 응답 요구가 이 사건 후 대폭 강화됐다. MES의 15년 시리얼 보관 요구가 이 시점에 명문화.</p>
+ </div>
+
+ <div class="case">
+ <div class="case-title">사례 2 — 다카타 에어백 (2008~2017)</div>
+ <p>일본 다카타사 에어백 인플레이터 결함. 화약 충진 공정의 습도 관리 부실로 인플레이터가 폭발해 차량 운전자 부상·사망 25명·1억 대 리콜. <strong>역사상 최대 자동차 리콜·다카타 파산</strong>. 협력사 IATF 16949 인증을 가지고도 부적합 발견 못 함. 이 사건 후 OEM SQ 시스템이 IATF 16949 위에 추가 검증 단계로 강화됨. 한국 현대·기아의 SQ Mark 5★ 시스템도 이 영향.</p>
+ </div>
+
+ <div class="case">
+ <div class="case-title">사례 3 — Tesla 협력사 IATF 16949 위반 (2019)</div>
+ <p>2019년 Tesla Model 3 협력사 중 한 곳이 IATF 16949 인증 갱신 실패. 원인: 시리얼 추적성 시스템(자체 ERP)의 데이터 누락 발견. Tesla가 그 협력사 부품 사용 중단·거래 종료. <strong>해당 협력사 연 매출 30% 손실·6개월 후 파산</strong>. MES 부재가 직접 원인. 한국 협력사에 유명한 경고 사례.</p>
+ </div>
+
+ <hr class="scene">
+
+ <h4>2.4.1 SQ — OEM 공급사 품질 평가 시스템 <em style="color:#8b3a2a;font-size:13px;font-weight:normal;">(자동차 협력사 핵심)</em></h4>
+
+ <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#2.4.1</div>
+
+ <p><strong>SQ(Supplier Quality)</strong>는 OEM이 협력사의 품질·납기·기술·원가·재무 등을 자체 평가해 등급화하는 시스템이다. IATF 16949가 "협력사 자격의 최저선"이라면, SQ는 "이미 자격을 가진 협력사 중에서 누가 더 우수한가"를 OEM 기준으로 평가하는 추가 등급. SQ 등급에 따라 신모델 우선권·계약 우선·가격 자율도가 갈린다.</p>
+
+ <p><strong>주요 OEM별 SQ 시스템</strong>:</p>
+
+ <table>
+ <thead><tr><th>OEM</th><th>SQ 시스템</th><th>등급</th><th>특징</th></tr></thead>
+ <tbody>
+ <tr><td>현대·기아 (HKMC)</td><td><strong>SQ Mark · 5★</strong></td><td>5★·4★·3★·2★·1★</td><td>한국 자동차 SMT 협력사 핵심. 본 책 기준 OEM.</td></tr>
+ <tr><td>GM</td><td>BIQS (Built In Quality Supplier) · CQI</td><td>Level 1~5</td><td>CQI-9·CQI-11·CQI-23 각 공정별 추가 평가</td></tr>
+ <tr><td>Ford</td><td>Q1 (Quality 1st)</td><td>Q1 인증·해지</td><td>Q1 인증 = OEM 거래 자격 유지 조건</td></tr>
+ <tr><td>도요타</td><td>GTQS · 豊QC</td><td>4단계 등급</td><td>현지조사·지콴(地観)·5 Why 강조</td></tr>
+ <tr><td>VW / BMW / Daimler (독일계)</td><td>Formel-Q (Konkret · Kapabilität · Fähigkeit)</td><td>A·B·C·D</td><td>3 모듈 평가 (구체성·공정능력·기술력)</td></tr>
+ <tr><td>Stellantis</td><td>CSL1 (Customer Specific Level 1)</td><td>4단계</td><td>구 PSA·FCA 통합 후 갱신</td></tr>
+ <tr><td>Renault-Nissan</td><td>ASES (Alliance Supplier Evaluation Standard)</td><td>A·B·C·D</td><td>Alliance 통합 평가</td></tr>
+ <tr><td>Volvo Group / Truck</td><td>VPS·SQR</td><td>5단계</td><td>북유럽 상용차</td></tr>
+ </tbody>
+ </table>
+
+ <h5>현대·기아 SQ Mark · 5★ 상세 (한국 자동차 SMT 협력사 핵심)</h5>
+
+ <p>한국 자동차 SMT 협력사 대다수가 HKMC SQ Mark 평가 대상. 5★(별 5개)가 최고 등급, 1★이 최저. 등급에 따라 거래 조건이 크게 다르다.</p>
+
+ <table>
+ <thead><tr><th>등급</th><th>기준</th><th>혜택·제약</th></tr></thead>
+ <tbody>
+ <tr><td><strong>5★</strong></td><td>전 평가 항목 95점 이상 · PPM &lt; 50 · OTD 99%+</td><td>신모델 우선 진입·계약 우선·가격 자율도 +5%·연 1회 감사</td></tr>
+ <tr><td>4★</td><td>90~94점 · PPM &lt; 100 · OTD 98%+</td><td>신모델 정상 진입·연 1~2회 감사</td></tr>
+ <tr><td>3★ (평균)</td><td>80~89점 · PPM &lt; 200 · OTD 96%+</td><td>표준 거래·연 2회 감사</td></tr>
+ <tr><td>2★</td><td>70~79점 · PPM &lt; 500</td><td>신모델 후순위·6개월 내 개선 요구·연 3~4회 감사</td></tr>
+ <tr><td><strong>1★ (위기)</strong></td><td>69점 이하 · PPM &gt; 500 또는 중대 클레임 발생</td><td><strong>거래 정지 위기·1년 내 개선 요구·월 1회 감사·새 발주 중단</strong></td></tr>
+ </tbody>
+ </table>
+
+ <p><strong>평가 항목 6범주·가중치</strong> (현대·기아 SQ Mark 표준):</p>
+
+ <table>
+ <thead><tr><th>범주</th><th>가중치</th><th>세부 항목</th><th>MES 산출 데이터</th></tr></thead>
+ <tbody>
+ <tr><td>품질 (Quality)</td><td><strong>40%</strong></td><td>PPM 불량률·클레임 건수·8D 응답 시간·시정 조치 마감률·PPAP 통과율</td><td>NG·시리얼 추적·SPC·Cpk</td></tr>
+ <tr><td>납기 (Delivery)</td><td>25%</td><td>OTD (On-Time Delivery)·OEM 라인 정지 발생·긴급 출하 대응</td><td>출하 lot·시간 매핑</td></tr>
+ <tr><td>기술 (Technology)</td><td>15%</td><td>R&D 투자·신모델 대응·VA/VE 제안·특허</td><td>—</td></tr>
+ <tr><td>원가 (Cost)</td><td>10%</td><td>연차 가격 인하 약속·VA/VE 적용</td><td>—</td></tr>
+ <tr><td>재무 (Financial)</td><td>5%</td><td>재무 건전성·신용 등급</td><td>(ERP)</td></tr>
+ <tr><td>지속가능성 (Sustainability)</td><td>5%</td><td>ESG·환경·노동 인권</td><td>—</td></tr>
+ </tbody>
+ </table>
+
+ <p>품질·납기 65%가 MES 직접 산출 영역. SQ 등급은 MES 데이터 품질에 직결된다.</p>
+
+ <h5>SQ 등급 ↔ MES 영향</h5>
+
+ <div class="case">
+ <div class="case-title">현장 사례 — SQ 4★ → 5★ 승급 MES 효과</div>
+ <p>2023년 모 자동차 부품 협력사. HKMC 4★ 협력사로 5년 거래 중. 5★ 승급 목표로 MES 도입 결정. 도입 전 PPM 약 180·OTD 97.8%·클레임 연 8건·8D 평균 응답 9일.</p>
+ <p>14개월 MES 도입 후 1년: PPM 약 45 (1/4)·OTD 99.2%·클레임 연 2건·8D 평균 응답 2.5일. SQ 평가 점수 88점 → 96점. <strong>5★ 승급 달성</strong>.</p>
+ <p>5★ 승급 효과 — 신모델 3종 우선 진입·가격 자율도 +4.5%·연 매출 +85억. 14개월 MES 비용 12억의 7배를 1년에 회수.</p>
+ <p>학습: SQ 5★ 승급이 MES 도입의 가장 강력한 ROI 동기. 영업 미팅에서 클라이언트 임원에게 SQ 승급 시나리오를 인용하면 견적 협상력이 크게 올라간다.</p>
+ </div>
+
+ <h5>MES가 자동 산출해야 할 SQ 보고 데이터 10종</h5>
+
+ <p>OEM에 월·분기 단위로 보고하는 SQ 데이터. 수기 작성하면 작업 시간 2~3일/월·오류 위험. MES가 자동 추출하면 30분/월.</p>
+
+ <table>
+ <thead><tr><th>#</th><th>데이터</th><th>산출 주기</th><th>MES 산출 가능?</th></tr></thead>
+ <tbody>
+ <tr><td>1</td><td>PPM 불량률 (Parts Per Million)</td><td>월</td><td>✅ NG 집계 → 자동</td></tr>
+ <tr><td>2</td><td>OTD (On-Time Delivery, 납기 준수율)</td><td>월</td><td>✅ 출하 시각·매핑 → 자동</td></tr>
+ <tr><td>3</td><td>클레임 응답 시간 (Field Claim Response)</td><td>건별</td><td>✅ 시리얼 역추적 → 24h 내</td></tr>
+ <tr><td>4</td><td>8D 보고서 마감률</td><td>월</td><td>✅ 사고·시정 이력</td></tr>
+ <tr><td>5</td><td>시정 조치 (CA) 마감 시간</td><td>월</td><td>✅ PFMEA 갱신 이력</td></tr>
+ <tr><td>6</td><td>PPAP 통과율</td><td>분기</td><td>✅ PPAP 18 elements 자동 추출</td></tr>
+ <tr><td>7</td><td>SPC·Cpk 트렌드</td><td>월</td><td>✅ SPC 모듈 자동</td></tr>
+ <tr><td>8</td><td>PFMEA 검출도 입증</td><td>년</td><td>✅ 인터록 발동 카탈로그</td></tr>
+ <tr><td>9</td><td>환경 시험 lot ↔ 양산 lot 매핑</td><td>건별</td><td>✅ 시험 lot 추적</td></tr>
+ <tr><td>10</td><td>AEC 등급·인증서 lot 매핑</td><td>분기·OEM 감사 시</td><td>✅ 자재 마스터</td></tr>
+ </tbody>
+ </table>
+
+ <div class="keypoint">
+ <div class="keypoint-title">SQ·IATF 16949가 MES 도입에 미치는 영향 정리</div>
+ <ul>
+ <li><strong>IATF 16949</strong> = 자격 (없으면 입찰 자체 불가)</li>
+ <li><strong>SQ 등급</strong> = 경쟁력 (5★이 최고·1★이 거래 정지 위기)</li>
+ <li>SQ 평가 65%(품질·납기)가 MES 직접 산출 영역</li>
+ <li>MES 도입 시 SQ 1~2 등급 승급 가능 — ROI의 핵심 동기</li>
+ <li>OEM별 SQ 시스템이 다르므로 클라이언트 OEM 매핑이 14개월 진단의 1순위</li>
+ </ul>
+ </div>
+
+ <hr class="scene">
+
+ <h5>SQ 출현 배경 — 1980~1990년대 OEM 직접 관리의 시작</h5>
+
+ <p>SQ 시스템은 IATF 16949보다 먼저 시작됐다. 1980년대 후반 일본 자동차의 품질 추격에 대응하기 위해 미국 Big 3가 협력사를 직접 평가·관리하는 시스템을 도입했다.</p>
+
+ <table>
+ <thead><tr><th>연도</th><th>OEM</th><th>SQ 시스템</th><th>의미</th></tr></thead>
+ <tbody>
+ <tr><td>1989</td><td>Ford</td><td><strong>Q1 (Quality 1st)</strong></td><td>최초의 SQ 시스템. 협력사 자체 평가·등급화 시작.</td></tr>
+ <tr><td>1990</td><td>GM</td><td>Targets for Excellence (Q-1·QSP)</td><td>GM 협력사 등급제</td></tr>
+ <tr><td>1991</td><td>Chrysler</td><td>Pentastar Award</td><td>최우수 협력사 인증</td></tr>
+ <tr><td>1995</td><td>VW Group</td><td>Formel-Q</td><td>독일 자동차 표준 SQ. Konkret·Kapabilität·Fähigkeit 3 모듈</td></tr>
+ <tr><td>1996</td><td>도요타</td><td>Toyota Production System Supplier Award</td><td>일본식 협력사 평가</td></tr>
+ <tr><td>1990년대 말</td><td>현대자동차</td><td>품질 5★ 도입 검토</td><td>QS-9000·VDA 영향</td></tr>
+ <tr><td>2001</td><td><strong>현대·기아 (HKMC)</strong></td><td><strong>SQ Mark · 5★ 정식 발행</strong></td><td>한국 자동차 협력사 평가 시스템 표준. 2002년 모비스·만도 등 1차 협력사 첫 5★ 인증</td></tr>
+ <tr><td>2007</td><td>Tesla</td><td>(IPO 전 협력사 평가 시작)</td><td>Tesla 자체 SQ — 2017년 Model 3 양산 후 본격 운영</td></tr>
+ <tr><td>2010년대</td><td>—</td><td>디지털 SQ 확산</td><td>OEM이 협력사 시스템에 직접 접속·실시간 데이터 추출</td></tr>
+ <tr><td>2020년대</td><td>—</td><td>AI 기반 협력사 평가</td><td>예측 모델·이상 탐지·자동 등급 산출</td></tr>
+ </tbody>
+ </table>
+
+ <p>현대·기아 SQ Mark는 2001년 정식 발행 직후 약 600개 1차 협력사를 평가 대상으로 시작했다. 2026년 기준 약 4,000개 협력사가 SQ Mark 평가 대상. 5★ 협력사는 전체의 약 5~7%(약 200~280개사).</p>
+
+ <hr class="scene">
+
+ <h5>SQ 업계 동향 (2026 기준)</h5>
+
+ <ol>
+ <li><strong>디지털 SQ 확산</strong> — OEM이 협력사 MES·ERP에 API·B2MML 인터페이스로 직접 접속해 실시간 데이터 추출. Tesla·BMW가 선도. 현대·기아는 2020년부터 협력사 데이터 자동 수집 시스템 도입.</li>
+ <li><strong>AI 기반 협력사 평가</strong> — OEM이 협력사 KPI(PPM·OTD·클레임)를 머신러닝 모델로 예측·이상 탐지. 평가 주기가 분기에서 월·실시간으로 단축. 협력사의 MES 데이터 품질이 직접 평가에 반영됨.</li>
+ <li><strong>SQ 디지털 트윈</strong> — 협력사 라인을 OEM이 가상 모델로 보관. MES 데이터를 시뮬레이션 입력으로 사용. 협력사 라인 정지 예측·OEM 라인 영향 사전 분석.</li>
+ <li><strong>2차·3차 협력사 평가 강화</strong> — 1차 협력사가 자기 2차·3차 협력사도 SQ 평가 의무. 1차의 5★ 유지가 2·3차 품질에도 직접 연관.</li>
+ <li><strong>전기차 협력사 신규 SQ</strong> — 배터리·BMS·고전압 부품은 별도 SQ 트랙. 기존 자동차 부품 SQ보다 안전·환경 가중치 높음.</li>
+ </ol>
+
+ <hr class="scene">
+
+ <h5>SQ 사례 3종</h5>
+
+ <div class="case">
+ <div class="case-title">사례 1 — SQ 5★ 협력사의 신모델 우선권 (현대·기아, 2022)</div>
+ <p>국내 모 자동차 부품 협력사 A사. 5년 연속 HKMC SQ 5★ 유지. 2022년 현대 신모델(전기차 IONIQ 5N) 부품 입찰에서 5★ 협력사 우선권으로 단독 수주. 연 매출 +120억(전체 매출의 18%). 동시에 4★ 이하 협력사 3곳이 같은 입찰에 응했으나 5★ 우선권에 밀려 탈락.</p>
+ <p>학습: SQ 5★은 한 번 따면 끝나는 인증이 아니라 매 평가 주기마다 유지해야 한다. 5★ 협력사도 평가 미달 시 4★로 내려가고 우선권 상실. MES 데이터 품질 유지가 5★ 유지의 50%를 좌우.</p>
+ </div>
+
+ <div class="case">
+ <div class="case-title">사례 2 — VW Formel-Q D등급 거래 종료 (2020)</div>
+ <p>독일 모 자동차 부품 협력사 B사. VW 그룹 협력 12년 거래. 2019년 Formel-Q 평가에서 C등급(2년 연속 부적합 시정 미흡)·2020년 D등급 (중대 부적합 발견). VW가 6개월 시정 기간 부여했으나 협력사 측 자금 부족·MES 부재로 시정 실패. <strong>2020년 말 거래 종료·해당 협력사 연 매출 65% 손실·2021년 사업 부문 매각</strong>.</p>
+ <p>D등급 거래 종료는 IATF 16949 인증과 별개의 OEM 결정. 인증 보유에도 SQ 부적합으로 거래 종료 가능. SQ는 IATF 위에 OEM이 추가하는 자기 기준.</p>
+ </div>
+
+ <div class="case">
+ <div class="case-title">사례 3 — Tesla 실시간 데이터 공유 시스템 (2021)</div>
+ <p>Tesla가 협력사에 자기 시스템에 실시간 데이터를 보내도록 의무화. 협력사 MES → Tesla SQ 시스템 직접 API 연결. PPM·OTD·NG 사유·시리얼별 부품 매핑 데이터를 매 시간 송신. 데이터 누락·지연 발생 시 즉시 알람.</p>
+ <p>한 한국 협력사 C사가 Tesla 부품 공급. 자체 MES가 약해 데이터 송신 지연 30분 이상 발생. Tesla SQ 자동 알람 → 협력사에 시정 요구 → 3개월 시정 기간 → MES 업그레이드 8억 투자 → 통과. <strong>Tesla 거래를 위해 사실상 MES 업그레이드 의무</strong>.</p>
+ <p>학습: 디지털 SQ는 이제 OEM이 협력사 MES 품질을 직접 평가하는 단계로 진입. MES 도입의 ROI 산정 시 "디지털 SQ 대응 능력"이 핵심 가치 영역.</p>
  </div>
 
  <hr class="scene">
@@ -9475,11 +10003,7 @@ function toggleTocPopup(force) {
  html += '<div onclick="gotoSection(\'' + id + '\');" style="cursor:pointer;padding:8px 0 8px ' + indent + 'px;font-weight:' + weight + ';color:' + color + ';border-bottom:1px dotted #eee;-webkit-tap-highlight-color:rgba(44,95,93,0.15);">' + title + '</div>';
  });
  // 기타 색인 (1장만 작성된 현재 단계 — 핵심 단원 anchor만)
- var sumScenes = [
- ['ch1', '#1.1 SMT 공정 ─ 솔더 인쇄에서 X-Ray까지'],
- ['p1-1', '#1.1 SMT · SMD 정의'],
- ['prologue', '프롤로그 ─ 월요일 아침 9시']
- ];
+ var sumScenes = []
  if (sumScenes.length > 0) {
  html += '<div style="border-top:2px solid #2c5f5d;margin-top:8px;padding-top:8px;font-weight:700;color:#2c5f5d;">기타 색인</div>';
  sumScenes.forEach(function(s) {

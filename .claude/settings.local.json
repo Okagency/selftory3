@@ -108,5 +108,18 @@
       "d:\\mydocs",
       "C:\\Users\\home\\.claude"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \".claude\\session-start-rules.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
   }
 }
