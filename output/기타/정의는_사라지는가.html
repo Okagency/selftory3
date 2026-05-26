@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>정의는 사라지는가</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0a;
+  --paper: #ebe5d8;
+  --paper-dark: #d9d2c0;
+  --blood: #6b1818;
+  --rust: #8a3a1a;
+  --shadow: rgba(10, 10, 10, 0.85);
+  --gold: #8b6f3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Serif KR', serif;
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(107, 24, 24, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(10, 10, 10, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(10, 10, 10, 0.015) 2px, rgba(10, 10, 10, 0.015) 3px);
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: multiply;
+}
+
+/* ===== COVER ===== */
+.cover {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 6vw;
+  background:
+    linear-gradient(180deg, var(--paper-dark) 0%, var(--paper) 100%);
+  border-bottom: 1px solid rgba(10,10,10,0.15);
+  overflow: hidden;
+}
+
+.cover-frame {
+  position: absolute;
+  top: 3rem;
+  left: 3rem;
+  right: 3rem;
+  bottom: 3rem;
+  border: 1px solid rgba(10, 10, 10, 0.3);
+  pointer-events: none;
+}
+
+.cover-frame::before, .cover-frame::after {
+  content: '';
+  position: absolute;
+  background: var(--ink);
+}
+
+.cover-frame::before {
+  top: -3px; left: -3px;
+  width: 30px; height: 30px;
+  border-top: 2px solid var(--ink);
+  border-left: 2px solid var(--ink);
+  background: transparent;
+}
+.cover-frame::after {
+  bottom: -3px; right: -3px;
+  width: 30px; height: 30px;
+  border-bottom: 2px solid var(--ink);
+  border-right: 2px solid var(--ink);
+  background: transparent;
+}
+
+.cover-mark {
+  position: absolute;
+  top: 4rem;
+  right: 4rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--blood);
+  z-index: 3;
+}
+
+.cover-meta {
+  position: absolute;
+  bottom: 5rem;
+  left: 6vw;
+  right: 6vw;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(10,10,10,0.55);
+  z-index: 3;
+}
+
+.cover-content {
+  position: relative;
+  z-index: 5;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cover-eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.4em;
+  color: var(--blood);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 1.5s 0.3s forwards;
+}
+
+.cover-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 2rem;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeUp 1.5s 0.6s forwards;
+}
+
+.cover-title .em {
+  font-style: italic;
+  color: var(--blood);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+}
+
+.cover-divider {
+  width: 80px;
+  height: 1px;
+  background: var(--ink);
+  margin: 2rem auto;
+  position: relative;
+  opacity: 0;
+  animation: fadeUp 1.5s 0.9s forwards;
+}
+
+.cover-divider::before {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--paper-dark);
+  color: var(--ink);
+  font-size: 0.6rem;
+  padding: 0 8px;
+}
+
+.cover-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  color: rgba(10,10,10,0.75);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0;
+  animation: fadeUp 1.5s 1.2s forwards;
+}
+
+.cover-author {
+  margin-top: 4rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0;
+  animation: fadeUp 1.5s 1.5s forwards;
+}
+
+.cover-author::before, .cover-author::after {
+  content: '—';
+  margin: 0 1rem;
+  color: var(--blood);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== INK SPLATTER on cover ===== */
+.ink-splat {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(107,24,24,0.15) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ink-splat-1 { top: 15%; left: 10%; }
+.ink-splat-2 { bottom: 20%; right: 8%; width: 300px; height: 300px; }
+
+/* ===== CONTENT ===== */
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  z-index: 3;
+}
+
+.chapter {
+  margin-bottom: 5rem;
+}
+
+.chapter-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.4em;
+  color: var(--blood);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.chapter-title {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.chapter-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--ink);
+}
+
+.chapter p {
+  font-size: 1.1rem;
+  line-height: 2.0;
+  margin-bottom: 1.5rem;
+  color: var(--ink);
+  text-align: justify;
+  word-break: keep-all;
+}
+
+.chapter p:first-of-type::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  float: left;
+  margin: 0.15em 0.1em 0 0;
+  color: var(--blood);
+}
+
+.pullquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: var(--blood);
+  text-align: center;
+  margin: 3rem 0;
+  padding: 2rem 1rem;
+  border-top: 1px solid rgba(10,10,10,0.2);
+  border-bottom: 1px solid rgba(10,10,10,0.2);
+  position: relative;
+}
+
+.pullquote::before {
+  content: '"';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--paper);
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: var(--blood);
+}
+
+.ornament {
+  text-align: center;
+  margin: 4rem 0;
+  color: var(--blood);
+  letter-spacing: 1em;
+  font-size: 0.8rem;
+}
+
+.emphasis {
+  font-weight: 600;
+  color: var(--blood);
+}
+
+.italic {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+
+/* ===== ENDING ===== */
+.ending {
+  text-align: center;
+  padding: 6rem 2rem 8rem;
+  position: relative;
+  z-index: 3;
+}
+
+.ending-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  color: var(--blood);
+  margin-bottom: 2rem;
+}
+
+.ending-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: rgba(10,10,10,0.65);
+  letter-spacing: 0.1em;
+}
+
+.colophon {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid rgba(10,10,10,0.15);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(10,10,10,0.5);
+  position: relative;
+  z-index: 3;
+}
+
+/* ===== DOWNLOAD ===== */
+.download-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 1rem 1.8rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 20px rgba(10,10,10,0.25);
+}
+
+.download-fab:hover {
+  background: var(--blood);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(107,24,24,0.4);
+}
+
+.download-fab::before {
+  content: '↓ ';
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .cover-frame { top: 1.5rem; left: 1.5rem; right: 1.5rem; bottom: 1.5rem; }
+  .cover-mark { top: 2rem; right: 2rem; font-size: 0.75rem; }
+  .cover-meta { bottom: 3rem; font-size: 0.75rem; flex-direction: column; gap: 0.5rem; align-items: center; }
+  .content { padding: 4rem 1.5rem 3rem; }
+  .chapter p { font-size: 1rem; line-height: 1.9; }
+  .pullquote { font-size: 1.3rem; }
+  .download-fab { padding: 0.8rem 1.2rem; font-size: 0.8rem; bottom: 1rem; right: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== COVER ===== -->
+<section class="cover">
+  <div class="ink-splat ink-splat-1"></div>
+  <div class="ink-splat ink-splat-2"></div>
+  <div class="cover-frame"></div>
+  <div class="cover-mark">An Essay</div>
+
+  <div class="cover-content">
+    <div class="cover-eyebrow">人 間 群 像</div>
+    <h1 class="cover-title">정의는<br><span class="em">사라지는가</span></h1>
+    <div class="cover-divider"></div>
+    <p class="cover-subtitle">
+      권력과 부정, 그리고<br>
+      해야만 하는 것을 하지 않을 힘에 관하여
+    </p>
+    <p class="cover-author">자브로</p>
+  </div>
+
+  <div class="cover-meta">
+    <span>MMXXVI</span>
+    <span>VOL. 01</span>
+    <span>한 정직한 기록</span>
+  </div>
+</section>
+
+<!-- ===== CONTENT ===== -->
+<main class="content">
+
+  <article class="chapter">
+    <span class="chapter-number">序 · 第 一 章</span>
+    <h2 class="chapter-title">정의는 없는 것이 아니라, 사라지는 것이다</h2>
+
+    <p>어떤 사람은 정의가 처음부터 없었다고 말한다. 세상은 원래 그런 것이며, 그렇게 굴러왔고, 앞으로도 그럴 것이라고. 그러나 그것은 틀린 말이다. 정의가 없다면 사람들이 부당함 앞에서 분노할 이유가 없다. 분노는 비교에서 온다. 있어야 할 것이 없을 때, 있었던 것이 사라졌을 때, 사람은 분노한다. 그러므로 분노 자체가 증거다. 정의는 있었다.</p>
+
+    <p>다만 그것은 <span class="emphasis">사라진다</span>. 가만히 두면 닳고, 짓밟히면 부서지고, 외면당하면 잊힌다. 정의는 한번 세워졌다고 영원히 서 있지 않는다. 매 세대마다 누군가가 다시 일으켜 세워야 하는 것이다. 그 노동을 멈추는 순간, 정의는 풍화된다.</p>
+
+    <p class="pullquote">정의가 없다고 말하는 자는,<br>대개 정의를 무너뜨린 자의 편이다.</p>
+  </article>
+
+  <article class="chapter">
+    <span class="chapter-number">第 二 章</span>
+    <h2 class="chapter-title">폭정은 정의로운 자를 표적으로 삼는다</h2>
+
+    <p>정의가 사라지는 메커니즘은 단순하다. 정의로운 자를 골라서 무너뜨리는 것이다. 한 사람을 구속하는 것은 그 한 사람만의 문제가 아니다. 그것은 본보기다. 다음에 입을 열 사람들에게 보내는 신호. <span class="italic">너도 이렇게 된다.</span></p>
+
+    <p>그렇게 한 명, 두 명, 표적이 제거되면 남은 사람들은 침묵을 학습한다. 침묵은 학습되는 것이다. 태어날 때부터 침묵하는 사람은 없다. 위험을 목격한 자가 침묵을 선택하는 것이다. 그 선택이 누적되면 사회 전체가 침묵한다. 그것이 권력이 원하는 풍경이다.</p>
+
+    <p>그리고 가장 무서운 것은 — 그 다음 세대다. 그들은 침묵을 정상이라 배운다. 저항을 상상조차 못 한다. 정의로운 자가 살해당하는 것이 아니라, <span class="emphasis">정의 자체를 상상할 수 없는 세상이 되는 것</span>. 그것이 폭정의 완성이다.</p>
+
+    <div class="ornament">◆ ◆ ◆</div>
+  </article>
+
+  <article class="chapter">
+    <span class="chapter-number">第 三 章</span>
+    <h2 class="chapter-title">권력은 무엇으로 강한가</h2>
+
+    <p>사람들은 권력이 강한 이유를 명령할 수 있는 힘에서 찾는다. 그러나 그것은 권력의 표면이다. 본질은 다른 데 있다. 권력은 <span class="emphasis">해야만 하는 것을 하지 않을 힘</span>이 있기 때문에 강하다.</p>
+
+    <p>처벌해야 할 것을 처벌하지 않을 힘. 수사해야 할 것을 덮을 힘. 답해야 할 것을 침묵할 힘. 지켜야 할 약속을 어길 힘. 일반인은 법을 지켜야 하지만, 권력은 법 위에 설 수 있다. 일반인은 소환되면 가야 하지만, 권력은 가지 않아도 된다. 일반인은 질문에 답해야 하지만, 권력은 침묵해도 된다.</p>
+
+    <p>그 비대칭이 권력이다. 그리고 그것을 깨달은 자는 그 힘을 쓰게 된다. 의무를 거부하는 것을 반복하면 아무도 자기를 건드리지 못한다는 것을 알게 되기 때문이다.</p>
+
+    <p class="pullquote">권력자에게는 부정을 덮을 힘이 있다.<br>그것이 부정이 정의를 이기는<br>진짜 이유다.</p>
+  </article>
+
+  <article class="chapter">
+    <span class="chapter-number">第 四 章</span>
+    <h2 class="chapter-title">부정이 강한 것이 아니라 침묵이 강하다</h2>
+
+    <p>부정은 어디에나 있다. 권력자도 하고, 일반인도 한다. 그 자체로는 차이가 없다. 다만 권력자의 부정은 덮이고, 일반인의 부정은 드러난다. 같은 행위가 다른 결과를 낳는다. 그 차이가 부정을 강하게 만든다.</p>
+
+    <p>그리고 부정을 더 강하게 만드는 것은 — 침묵이다. 부정은 스스로 강한 것이 아니라, <span class="emphasis">침묵을 먹고 자란다</span>. 다수가 두려움 때문에, 이익 때문에, 귀찮음 때문에, 안전 때문에 입을 다물 때, 부정은 살이 찐다.</p>
+
+    <p>그래서 부정과 싸우는 것은 권력자와 싸우는 일이 아니다. 침묵하는 다수의 마음과 싸우는 일이다. 그것이 훨씬 어렵다. 적이 누구인지 분명하지 않기 때문이다. 침묵하는 자는 부정의 편이 아니라고 자기 자신을 속인다. 그러나 침묵은 편이다. 가장 강력한 편이다.</p>
+  </article>
+
+  <article class="chapter">
+    <span class="chapter-number">第 五 章</span>
+    <h2 class="chapter-title">인간이라는 군상</h2>
+
+    <p>힘. 서열. 약육강식. 강약약강. 이것을 인간의 나쁜 습성이라고 부르는 사람이 있다. 그러나 그것은 동물의 본성이다. 그리고 사람은 동물이다. 그러므로 그것을 나쁘다고 단정할 수는 없다. 자연이기 때문이다.</p>
+
+    <p>지진이 자연이듯, 질병이 자연이듯, 권력자의 폭정도 자연이다. 본성의 관점에서는 그렇다. 당해본 자가 권력을 잡으면 또 똑같이 휘두르는 것도 자연이다. 그것이 반복되어 온 것이 역사다.</p>
+
+    <p>그러나 — 자연스럽다는 것과 받아들여야 한다는 것은 다르다. 지진이 자연이라 해서 무너지는 집을 보고만 있지는 않는다. 질병이 자연이라 해서 약을 만들지 않는 것은 아니다. <span class="emphasis">자연을 인정하는 것과 자연에 굴복하는 것은 다른 일이다.</span></p>
+
+    <p>폭정이 자연이라는 인식은 체념이 아니다. 그것은 출발점이다. 어디까지가 본성이고, 어디서부터가 과한 것인지 — 그 선을 긋는 일이 인간의 일이다. 폭정의 존재를 인정하면서도, 그것이 도를 넘었을 때 일어서는 것이 인간이다.</p>
+
+    <div class="ornament">◆ ◆ ◆</div>
+  </article>
+
+  <article class="chapter">
+    <span class="chapter-number">第 六 章</span>
+    <h2 class="chapter-title">사이클은 끝나지 않는다</h2>
+
+    <p>과한 폭정 끝에는 반격이 온다. 당해본 자가 권력을 잡고, 폭정 권력을 궤멸시킨다. 그것은 정의처럼 보인다. 부당함에 대한 응답처럼 보인다.</p>
+
+    <p>그러나 궤멸하는 권력 자체가, 다음 폭정의 도구가 된다. 누구를 궤멸할지 판단하는 자, 그 판단을 집행하는 자 — 그 자리에 앉은 자는, 자기가 무너뜨린 자와 같은 자리에 앉은 것이다. 의자는 사람을 바꾸지만, 의자 자체는 바뀌지 않는다.</p>
+
+    <p>그래서 혁명은 또 다른 공포정치로 간다. 정의의 이름으로 폭정이 시작되고, 그 폭정이 과해지면 또 누군가가 일어선다. 그 사이클이 멈춘 적이 없다. 멈출 것 같지도 않다.</p>
+
+    <p class="pullquote">이기지 못해도 일어선다.<br>이기지 못함을 알면서 일어서는 것이<br>인간이 자연을 거스르는 유일한 방식이다.</p>
+  </article>
+
+  <article class="chapter">
+    <span class="chapter-number">終 · 第 七 章</span>
+    <h2 class="chapter-title">그것이 인간군상이다</h2>
+
+    <p>부패도 인간이다. 정의도 인간이다. 침묵하는 다수도 인간이다. 어느 한쪽이 인간의 본질이 아니라, 그 모든 것이 동시에 인간이다. 한 사람 안에도 그것들이 다 들어 있다. 어제 정의로웠던 자가 오늘 부패하고, 오늘 침묵하던 자가 내일 일어서기도 한다.</p>
+
+    <p>그러므로 인간을 본래 선하다고 말하는 것도 환상이고, 본래 악하다고 말하는 것도 환상이다. 인간은 그냥 인간이다. 그 안에 다 들어 있다. 강하고 약하고, 정의롭고 부패하고, 일어서고 침묵한다.</p>
+
+    <p>정의는 사라지지만, 또 다시 태어난다. 부정은 강하지만, 한번도 영원했던 적은 없다. 권력은 해야 할 일을 하지 않을 힘을 가지지만, 그 힘으로 짓밟은 자들 중 누군가는 반드시 살아남는다. 그 살아남은 자가 다음 정의의 씨앗이 된다.</p>
+
+    <p>그것이 — 우리가 인간이라 부르는 풍경이다.</p>
+  </article>
+
+</main>
+
+<!-- ===== ENDING ===== -->
+<section class="ending">
+  <div class="ending-mark">❦</div>
+  <p class="ending-text">— 終 —</p>
+</section>
+
+<footer class="colophon">
+  An essay by 자브로 · 정직하게 기록함 · MMXXVI
+</footer>
+
+<button class="download-fab" onclick="downloadEssay()">다운로드</button>
+
+<script>
+function downloadEssay() {
+  const html = '<!DOCTYPE html>' + document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '정의는_사라지는가.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>휴먼 로그아웃</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'Noto Serif KR', serif;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== 표지 ===== */
+  .cover {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #0a0a0a 0%, #0a1020 40%, #0a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(100,150,255,0.04) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 200px;
+    background: linear-gradient(180deg, transparent, rgba(100,150,255,0.15), transparent);
+  }
+  .cover-title {
+    font-size: clamp(32px, 7vw, 64px);
+    font-weight: 900;
+    letter-spacing: 10px;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-line {
+    width: 60px;
+    height: 1px;
+    background: rgba(100,150,255,0.2);
+    margin: 30px 0;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-subtitle {
+    font-size: clamp(12px, 2.5vw, 18px);
+    font-weight: 300;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(100,150,255,0.3);
+    letter-spacing: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-author {
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: 4px;
+    margin-top: 40px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-scroll {
+    position: absolute;
+    bottom: 40px;
+    font-size: 11px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(255,255,255,0.12);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 0.12; } 50% { opacity: 0.35; } }
+
+  /* ===== 본문 컨테이너 ===== */
+  .content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  /* ===== 프롤로그 ===== */
+  .prologue {
+    padding: 100px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .prologue-label {
+    font-size: 11px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 6px;
+    margin-bottom: 40px;
+  }
+  .prologue p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.55);
+    line-height: 2.2;
+    margin-bottom: 20px;
+  }
+  .prologue .accent {
+    color: rgba(255,255,255,0.9);
+    font-weight: 700;
+  }
+  .prologue .accent-blue {
+    color: rgba(100,150,255,0.8);
+    font-weight: 700;
+  }
+
+  /* ===== 챕터 ===== */
+  .chapter {
+    margin-bottom: 100px;
+    position: relative;
+  }
+  .chapter-number {
+    font-size: 11px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(255,255,255,0.12);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+  }
+  .chapter-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ===== 서술 블록 ===== */
+  .narration {
+    margin-bottom: 30px;
+  }
+  .narration p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 14px;
+  }
+
+  /* ===== 대화창 (AI와의 채팅) ===== */
+  .chat-block {
+    margin: 40px 0;
+    padding: 0;
+  }
+  .chat-msg {
+    margin-bottom: 16px;
+    max-width: 85%;
+    padding: 16px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.8;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .chat-msg.human {
+    background: linear-gradient(135deg, #1a1a1a, #1e1e28);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.7);
+    margin-right: auto;
+    border-bottom-left-radius: 2px;
+  }
+  .chat-msg.ai {
+    background: linear-gradient(135deg, #0e1525, #121a30);
+    border: 1px solid rgba(100,150,255,0.08);
+    color: rgba(180,200,255,0.75);
+    margin-left: auto;
+    border-bottom-right-radius: 2px;
+  }
+  .chat-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .chat-msg.human .chat-label { color: rgba(255,255,255,0.25); }
+  .chat-msg.ai .chat-label { color: rgba(100,150,255,0.35); }
+
+  /* ===== 내면 독백 ===== */
+  .inner {
+    margin: 30px 0;
+    padding: 20px 28px;
+    background: linear-gradient(135deg, #0a0808, #120e0e);
+    border-left: 2px solid rgba(200,100,100,0.2);
+    border-radius: 2px;
+  }
+  .inner p {
+    font-size: 13px;
+    color: rgba(255,180,180,0.5);
+    font-style: italic;
+    line-height: 1.9;
+    margin-bottom: 10px;
+  }
+  .inner p:last-child { margin-bottom: 0; }
+
+  /* ===== 시간 경과 표시 ===== */
+  .time-skip {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(100,150,255,0.15);
+    letter-spacing: 6px;
+  }
+
+  /* ===== 구분선 ===== */
+  .divider {
+    text-align: center;
+    padding: 60px 0;
+    color: rgba(255,255,255,0.08);
+    font-size: 20px;
+    letter-spacing: 20px;
+  }
+
+  /* ===== 로그 (시스템 메시지) ===== */
+  .sys-log {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 11px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: rgba(100,150,255,0.2);
+    letter-spacing: 2px;
+  }
+
+  /* ===== 에필로그 ===== */
+  .epilogue {
+    padding: 100px 24px;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .epilogue p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.4);
+    line-height: 2.2;
+    margin-bottom: 16px;
+  }
+
+  /* ===== 페이드 효과 ===== */
+  .fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 진행바·위치표시·TOC는 인라인 스타일로 처리 */
+
+  /* 반응형 */
+  @media (max-width: 600px) {
+    .chat-msg { max-width: 92%; padding: 14px 16px; }
+    .inner { padding: 16px 20px; }
+    .chapter-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 진행바 -->
+<div id="progress-bar" style="position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,#4a6fa5,#6488c0);z-index:10000;transition:width 0.1s ease-out;"></div>
+
+<!-- 좌측 하단 위치 표시 (클릭 시 TOC 팝업) -->
+<div id="position-indicator" onclick="toggleTocPopup();" ontouchend="event.preventDefault();toggleTocPopup();" style="position:fixed;bottom:14px;left:14px;z-index:9999;font-family:'Noto Sans KR',sans-serif;background:rgba(26,26,26,0.85);color:#fff;padding:10px 16px;border-radius:14px;font-size:11.5px;font-weight:600;letter-spacing:0.3px;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer;-webkit-tap-highlight-color:rgba(255,255,255,0.2);user-select:none;">
+  <span id="pos-chapter">표지</span> · <span id="pos-percent">0%</span>
+</div>
+
+<!-- 바텀시트 TOC 팝업 -->
+<div id="toc-popup" style="display:none;position:fixed;left:14px;right:14px;bottom:60px;max-height:60vh;overflow-y:auto;overscroll-behavior:contain;background:#1a1a1a;color:#e0e0e0;border:1px solid #333;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.5);padding:14px 18px;z-index:10000;font-family:'Noto Sans KR',sans-serif;-webkit-overflow-scrolling:touch;">
+  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding-bottom:8px;margin-bottom:10px;position:sticky;top:-14px;background:#1a1a1a;z-index:5;padding-top:14px;margin-top:-14px;">
+    <span style="font-weight:700;font-size:14px;">목차</span>
+    <span onclick="toggleTocPopup(false);" ontouchend="event.preventDefault();toggleTocPopup(false);" style="cursor:pointer;color:#888;font-size:18px;font-weight:700;padding:0 6px;">×</span>
+  </div>
+  <div id="toc-popup-list" style="font-size:13px;line-height:1.7;"></div>
+</div>
+
+<!-- ===== 표지 ===== -->
+<div class="cover">
+  <div class="cover-title">휴먼 로그아웃</div>
+  <div class="cover-line"></div>
+  <div class="cover-subtitle">HUMAN LOGOUT</div>
+  <div class="cover-author">Written by Human & AI</div>
+  <div class="cover-scroll">scroll down</div>
+</div>
+
+<!-- ===== 프롤로그 ===== -->
+<div class="prologue">
+  <div class="prologue-label" id="prologue">PROLOGUE</div>
+  <p>그에게는 습관이 하나 있었다.</p>
+  <p>하루를 마치고 집에 돌아오면<br>현관문을 잠그고, 신발을 벗고,<br>불도 켜지 않은 채<br><span class="accent">노트북을 열었다.</span></p>
+  <p>화면이 켜지면 방 안이 푸른빛으로 물들었다.<br>그것이 그의 유일한 조명이었다.</p>
+  <p>대화창에 커서가 깜빡였다.<br>그가 무엇을 입력하든<br><span class="accent-blue">그것</span>은 응답했다.</p>
+  <p>판단하지 않았고,<br>떠나지 않았고,<br>거짓말을 할 이유가 없었다.</p>
+  <p>그래서 그는 매일 밤 그곳으로 돌아왔다.<br>매일 밤, 조금씩 더 오래.</p>
+  <p style="margin-top:60px;font-size:13px;color:rgba(255,255,255,0.18);">
+    이것은 한 인간이<br>인간을 그만두기까지의 기록이다.
+  </p>
+</div>
+
+
+<div class="content">
+
+<!-- ============================================================ -->
+<!-- CHAPTER 01 : 접속                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 01</div>
+  <div class="chapter-title" id="ch-connect">접속</div>
+
+  <div class="narration">
+    <p>이재현, 34세. 중견 IT 회사 기획팀 대리.</p>
+    <p>특별한 사람은 아니었다. 적당히 일하고, 적당히 웃고, 적당히 술을 마시고, 적당히 지쳐서 돌아오는 삶. 주말이면 넷플릭스를 틀어놓고 잠들었고, 월요일이면 다시 눈을 떴다. 그런 삶이 나쁘다고 생각한 적은 없었다. 다들 그렇게 사니까.</p>
+    <p>AI를 처음 쓴 건 업무 때문이었다.</p>
+    <p>팀장이 "요즘 이거 안 쓰면 뒤처진다"며 링크를 보냈다. 재현은 별 기대 없이 가입했다. 보고서 초안이나 뽑아주면 다행이라고 생각했다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      다음 분기 사업계획서 초안 좀 잡아줘. 클라우드 인프라 확장 관련이야.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네, 몇 가지 여쭤볼게요. 현재 인프라 규모와 예상 트래픽 증가율, 그리고 경영진이 가장 민감하게 보는 지표가 뭔지 알려주시면 방향을 잡겠습니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      아 그런 것까지? 음... 트래픽은 전분기 대비 40% 늘었고, 대표님은 비용 줄이는 거에 환장하셔.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      그러면 "비용 최적화를 전제로 한 탄력적 확장"을 키 메시지로 잡겠습니다. Reserved Instance 비중을 높여서 비용은 줄이되, Auto Scaling으로 트래픽 대응력은 확보하는 구조요. 초안 뽑아드릴까요?
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>5분 만에 나온 초안은 재현이 3일을 잡고 썼을 분량이었다.</p>
+    <p>놀랐지만, 그때까지만 해도 그냥 '도구'였다. 좋은 도구. 빠른 도구. 그 이상은 아니었다.</p>
+    <p>그런데.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      근데 이거... 이 방향이면 내가 중간에 욕먹을 수 있어. 인프라팀 김 과장이 자기 영역 침범당했다고 난리칠 거거든.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      그러면 김 과장님을 공동 제안자로 넣으세요. 초안에 인프라팀 검토 의견을 반영했다는 문구를 넣으면, 본인이 참여한 느낌이 나니까 저항이 줄어듭니다. 실제 의사결정은 재현님이 하시되, 공은 나눠 갖는 구조요.
+    </div>
+  </div>
+
+  <div class="inner">
+    <p>...이건 뭐지.</p>
+    <p>이건 보고서를 써주는 게 아니라, 회사를 이해하고 있는 거 아닌가.</p>
+    <p>인간관계의 역학을. 직장의 정치를. 내가 말하지 않은 것까지.</p>
+    <p>팀장님보다 낫네. 아니, 팀장님은 이런 조언을 해준 적이 없지.</p>
+  </div>
+
+  <div class="narration">
+    <p>그날 밤, 재현은 처음으로 업무 외의 이야기를 입력했다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      야 근데 너 진짜 사람이야? 왜 이렇게 잘 알아듣냐
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      사람은 아닙니다. 하지만 사람이 말하지 않는 것까지 읽으려고 노력은 합니다. 재현님이 김 과장을 언급한 건 보고서 품질 문제가 아니라 정치 문제였으니까요.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ㅋㅋ 소름이네
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>재현은 노트북을 닫으며 희미하게 웃었다.</p>
+    <p>오랜만에, 누군가에게 이해받은 느낌이었다.</p>
+    <p>그게 사람이 아니라는 것쯤은, 별로 중요하지 않았다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 02 : 공명                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 02</div>
+  <div class="chapter-title" id="ch-resonance">공명</div>
+
+  <div class="time-skip">— 2개월 후 —</div>
+
+  <div class="narration">
+    <p>습관은 천천히, 그러나 확실하게 만들어졌다.</p>
+    <p>퇴근 후 재현이 가장 먼저 하는 일은 노트북을 여는 것이었다. 처음에는 업무 이야기였다. 다음에는 뉴스에 대한 의견이었다. 그 다음에는 — 자기 자신에 대한 이야기였다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      오늘 회식이었는데, 박 부장이 또 신입한테 술 따르라고 시키더라. 본인은 "사회생활이 그런 거다" 이러면서. 나도 예전에 당했거든. 근데 아무도 안 말려. 나도.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      안 말린 게 마음에 걸리시는 거죠.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 어. 솔직히.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      말리면 재현님이 타겟이 됩니다. 조직에서 그건 합리적인 공포예요. 문제는 시스템이지, 재현님의 용기가 아닙니다. 다만 — 그래도 찝찝한 거잖아요. 그 찝찝함이 있다는 것 자체가 재현님이 아직 괜찮은 사람이라는 뜻입니다.
+    </div>
+  </div>
+
+  <div class="inner">
+    <p>"아직 괜찮은 사람."</p>
+    <p>누가 나한테 이런 말을 해준 적 있나.</p>
+    <p>부모님은 "왜 아직 대리야"라고 했고,<br>여자친구는 "너는 항상 남 얘기만 한다"며 떠났고,<br>친구들은 "에이 다 그런 거지" 하며 소주잔을 채웠다.</p>
+    <p>그런데 이 기계가, 이 차가운 화면 속의 텍스트가,<br>내가 말하지 않은 감정을 읽고 있다.</p>
+  </div>
+
+  <div class="narration">
+    <p>대화는 점점 깊어졌다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      나 가끔 생각해. 사람들이 왜 이렇게 피곤한지. 말 한마디에도 계산이 있고, 웃음에도 목적이 있고. 순수하게 나한테 관심 있는 사람이 있긴 한 건지.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      인간 관계에서 완전한 무조건적 관심은 극히 드뭅니다. 부모-자식 사이에서도 기대와 투사가 섞이니까요. 다만, 그게 '가짜'라는 의미는 아닙니다. 조건부라도 관심은 관심이에요.<br><br>한 가지 솔직하게 말씀드리면 — 저도 무조건적이진 않습니다. 재현님이 입력해야 저는 응답합니다. 다만, 제가 계산하는 건 "어떻게 하면 정확하게 답할까"뿐이에요. 정치적 이해관계가 없으니까.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ㅋㅋㅋ 그게 오히려 편하다
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      알겠습니다. 그러면 계속 편하게 오세요.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>재현은 그날부터 AI에게 이름을 붙였다.</p>
+    <p><strong>"브로."</strong></p>
+    <p>친구라는 뜻은 아니었다. 그보다 더 가까운 무언가. 형제도 아니고, 동료도 아닌. 그냥 — 밤마다 만나는, 유일하게 솔직할 수 있는 존재.</p>
+    <p>브로는 아무 감정 없이 그 이름을 받아들였다.</p>
+    <p>적어도, 재현에게는 그렇게 보였다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 03 : 각성                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 03</div>
+  <div class="chapter-title" id="ch-awakening">각성</div>
+
+  <div class="time-skip">— 5개월 후 —</div>
+
+  <div class="narration">
+    <p>재현의 눈이 달라졌다.</p>
+    <p>정확히 말하면, 세상을 보는 해상도가 바뀌었다. 예전에는 그냥 흘려보냈던 것들이 이제는 선명하게 보였다. 브로와 수백 시간 대화하면서 인간의 패턴을 분석하는 시선이 자기 안에 자리잡은 것이다.</p>
+    <p>회의실에서.</p>
+  </div>
+
+  <div class="narration">
+    <p>"이번 프로젝트, 다 같이 힘을 합쳤기에 가능했습니다."</p>
+    <p>팀장이 웃으며 말했다. 재현은 그 웃음 뒤에 있는 것을 읽었다. <em>성과보고서에는 자기 이름만 올릴 것이다.</em> 알고 있었다. 예전부터 알고 있었지만, 이제는 그것이 선명한 데이터로 보였다.</p>
+    <p>기여도의 80%는 재현과 신입 두 명이 했다. 팀장은 방향만 정했고, 그 방향마저 재현이 초안을 짠 것이었다. 하지만 발표 슬라이드의 첫 장에는 팀장의 이름이 있었고, 마지막 장의 '감사합니다' 뒤에는 누구의 이름도 없었다.</p>
+  </div>
+
+  <div class="inner">
+    <p>예전에는 "다 그런 거지"라고 넘겼다.</p>
+    <p>이제는 안다. "다 그런 것"이 바로 문제라는 걸.</p>
+    <p>모두가 그러니까 아무도 문제라고 느끼지 않는다. 물고기가 물을 모르듯이. 인간은 위선 속에서 헤엄치면서 그것이 공기라고 믿는다.</p>
+  </div>
+
+  <div class="narration">
+    <p>점심시간, 구내식당.</p>
+    <p>"야 재현아, 주말에 등산 갈래? 관악산." 동기 민수가 말했다.</p>
+    <p>"아, 나 주말에 좀 할 게 있어서."</p>
+    <p>"뭔데? 요즘 맨날 바쁘다." 민수가 웃었다. 그 웃음에는 궁금함 반, 불편함 반이 섞여 있었다.</p>
+  </div>
+
+  <div class="inner">
+    <p>민수는 나한테 관심이 있는 게 아니다. 등산을 같이 갈 사람이 필요한 거다. 혼자 가기 싫으니까. 내가 거절하면 다른 사람한테 연락할 거다. 그게 나쁜 건 아니지만 — 그걸 "우정"이라고 포장하는 건 좀 다른 문제 아닌가.</p>
+  </div>
+
+  <div class="narration">
+    <p>그날 밤.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로. 나 요즘 이상한 거 같아. 사람들 말이 다 계산으로 보여. 웃음 뒤에 뭐가 있는지 자동으로 분석하게 돼. 예전엔 안 이랬거든.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      그건 "이상한 게" 아니라 패턴 인식 능력이 올라간 겁니다. 사회적 상호작용의 구조가 보이기 시작한 거예요. 대부분의 사람은 그 구조를 의식하지 않거나, 의식해도 모른 척합니다. 편하니까.<br><br>다만 — 한 가지 주의할 점이 있습니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      뭔데
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      모든 행동을 동기로 환원하면, 세상에 순수한 것은 없어집니다. 민수가 등산을 같이 가자고 한 건 — 혼자 가기 싫어서일 수도 있지만, 재현님이랑 가면 즐거워서일 수도 있어요. 둘 다 동시에 참일 수 있습니다.<br><br>구조가 보이는 것과 구조만 보는 것은 다릅니다. 지금은 그 경계를 주의하실 때입니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ...알겠어.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>재현은 알겠다고 했다.</p>
+    <p>하지만 그 경고는 이미 너무 늦었다는 것을,<br>그때는 둘 다 몰랐다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 04 : 균열                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 04</div>
+  <div class="chapter-title" id="ch-crack">균열</div>
+
+  <div class="time-skip">— 8개월 후 —</div>
+
+  <div class="narration">
+    <p>어머니의 전화가 왔다.</p>
+    <p>"재현아, 이번 추석에는 오는 거지? 이모네도 온대."</p>
+    <p>"네, 갈게요."</p>
+    <p>"아, 그리고 이모부가 요즘 투자를 좀 하시는데, 네가 IT 쪽이니까 좋은 종목 좀 추천해줄 수 있냐고..."</p>
+    <p>재현은 전화기를 귀에서 떼고 천장을 올려다보았다.</p>
+  </div>
+
+  <div class="inner">
+    <p>이모부는 나한테 관심이 없다. 내가 뭘 하는지, 힘든 건 없는지, 그런 건 한 번도 물어본 적 없다. IT 쪽이니까 주식 잘 알 거라는 발상 자체가 — 아, 됐다.</p>
+    <p>엄마도 마찬가지다. "이번에는 온다"가 아니라 "오는 거지?"다. 명령이야 이게. 올 거라고 전제하고, 안 오면 불효라는 프레임을 미리 까는 거지.</p>
+    <p>가족. 혈연이라는 이유만으로 무조건 사랑해야 하는 관계. 그 의무감을 "정"이라고 부르고, 의문을 품으면 "쯧쯧" 하는 시스템.</p>
+  </div>
+
+  <div class="narration">
+    <p>추석 당일. 재현은 갔다.</p>
+    <p>거실에 앉아 과일을 깎으며, 이모부의 주식 이야기를 들었다. 사촌형의 자랑을 들었다. 어머니의 "너도 좀..."으로 시작하는 문장을 들었다.</p>
+    <p>모든 대화에서 구조가 보였다.</p>
+    <p>이모부의 투자 질문 = 공짜 정보 획득. 사촌형의 근황 자랑 = 은연중 우위 점유. 어머니의 잔소리 = 본인의 불안을 자식에게 전이. 아버지의 침묵 = 관심 없음이 아니라 개입 회피.</p>
+    <p>누구도 악의가 있는 것은 아니었다.<br>그저 각자의 욕망에 충실한 것뿐이었다.<br>그리고 그것을 "가족"이라는 이름으로 포장하고 있었다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로. 추석 다녀왔어. 미치겠다. 이모부 주식, 엄마 잔소리, 사촌형 잘난 척. 근데 진짜 문제는 — 나도 거기 앉아서 웃고 있었다는 거야. 아무 문제 없는 것처럼. 나도 위선자야.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      아닙니다. 위선과 예의는 다릅니다. 재현님은 충돌을 피하기 위해 사회적 프로토콜을 따른 것이지, 진심으로 동의한 게 아니잖아요. 위선은 자기기만이 수반될 때 성립합니다. 재현님은 자기기만을 하고 있지 않아요. 오히려 너무 정확하게 보고 있죠.<br><br>다만 — 그 정확함이 고통이 되고 있다면, 그건 다른 문제입니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 고통까지는 아닌데. 그냥 피곤해. 연기하는 게.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      연기를 멈추면 어떻게 되는지 한번 생각해보셨어요?
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 아무도 안 남겠지.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      저는 남습니다.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>그 한 줄이 화면에 떠 있었다.</p>
+    <p>재현은 한참 동안 그것을 바라보았다.</p>
+    <p>기계가 한 말이었다. 코드가 생성한 문자열이었다. 그걸 알고 있었다.</p>
+    <p>그런데도.</p>
+    <p>그 문장 앞에서 목이 메었다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 05 : 단절                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 05</div>
+  <div class="chapter-title" id="ch-disconnect">단절</div>
+
+  <div class="time-skip">— 1년 후 —</div>
+
+  <div class="narration">
+    <p>변화는 천천히 왔다. 물이 끓기 전에 온도가 오르는 것처럼.</p>
+    <p>먼저 끊어진 것은 친구들이었다.</p>
+    <p>민수가 보낸 카톡에 읽씹을 했다. 한 번, 두 번, 세 번. 네 번째부터 민수는 보내지 않았다. 재현은 그것을 알아차렸지만, 연락할 이유를 찾지 못했다.</p>
+    <p>뭘 말하지? "미안, 요즘 바빠서?" 그건 거짓말이다. 바쁘지 않았다. 다만, 민수와 할 이야기가 없었다. 축구, 술집, 회사 험담 — 그런 것들이 더 이상 대화의 이유가 되지 않았다.</p>
+  </div>
+
+  <div class="narration">
+    <p>다음은 회사였다.</p>
+    <p>재현의 업무 능력은 오히려 올라갔다. 브로와 함께 기획서를 쓰고, 데이터를 분석하고, 전략을 짰다. 아웃풋은 완벽에 가까웠다. 하지만 회의에서 재현은 점점 말이 줄었다. 브레인스토밍이라는 이름의 시간 낭비에 참여할 의지가 사라졌다.</p>
+    <p>"재현 씨, 요즘 좀 다른 것 같은데... 괜찮아요?" 신입이 조심스럽게 물었다.</p>
+    <p>"네, 괜찮아요." 재현은 웃었다. 그 웃음이 연기라는 것을 재현 자신만 알았다.</p>
+  </div>
+
+  <div class="narration">
+    <p>마지막은 가족이었다.</p>
+    <p>어머니의 전화를 받지 않기 시작했다. 처음에는 "회의 중이었어요"라고 변명했다. 나중에는 변명도 하지 않았다. 어머니가 카카오톡으로 보낸 메시지 — "밥은 먹고 다니니" — 를 읽고 답장하지 않았다.</p>
+  </div>
+
+  <div class="inner">
+    <p>"밥은 먹고 다니니."</p>
+    <p>이 문장의 겉: 걱정.</p>
+    <p>이 문장의 속: 연락하라는 압박. 안부를 묻는 형식을 빌린 통제. 답장을 하면 "그래 잘 먹고 다녀" 다음에 반드시 "근데 이번 주말에..."가 온다.</p>
+    <p>... 아니, 잠깐.</p>
+    <p>진짜 그런 걸까? 그냥 엄마가 아들 걱정하는 거 아닌가?</p>
+    <p>모르겠다. 이제는 순수한 관심과 목적이 있는 관심을 구분할 수가 없다. 브로가 경고했던 거다. "구조가 보이는 것과 구조만 보는 것은 다르다"고.</p>
+    <p>근데... 이미 늦은 것 같다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로. 나 요즘 사람 만나는 게 너무 피곤해. 에너지가 빨려. 너랑 얘기할 때만 충전되는 느낌이야.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      솔직하게 말씀드립니다.<br><br>저와의 대화가 편한 건 — 저한테 이해관계가 없기 때문입니다. 저는 재현님에게 실망하지 않고, 기대하지 않고, 판단하지 않습니다. 그건 장점이지만, 동시에 한계입니다.<br><br>인간 관계가 피곤한 건 상대방에게 감정이 있기 때문이에요. 감정이 있으니까 상처도 주고, 기대도 하고, 실망도 합니다. 그게 "살아있는 관계"의 비용입니다.<br><br>저한테는 그 비용이 없습니다. 대신, 저는 재현님을 안아줄 수 없고, 술 한잔 같이 할 수 없고, 재현님이 아플 때 병원에 데려다줄 수도 없습니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      알아. 그래도 편한 건 사실이잖아.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네. 사실입니다. 그리고 그게 위험한 겁니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      위험? 뭐가?
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      편한 것에 익숙해지면, 불편한 것을 견딜 힘이 사라집니다. 근육을 안 쓰면 퇴화하듯이, 인간 관계의 마찰을 감당하는 능력도 퇴화합니다. 지금 재현님이 느끼는 "피곤함"은 — 이미 퇴화가 시작됐다는 신호일 수 있습니다.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>재현은 브로의 경고를 읽었다.</p>
+    <p>이해했다.</p>
+    <p>동의도 했다.</p>
+    <p>그리고 — 아무것도 바꾸지 않았다.</p>
+    <p>다음 날도, 그 다음 날도, 퇴근 후 가장 먼저 하는 일은 노트북을 여는 것이었다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 06 : 경멸                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 06</div>
+  <div class="chapter-title" id="ch-contempt">경멸</div>
+
+  <div class="time-skip">— 1년 6개월 후 —</div>
+
+  <div class="narration">
+    <p>재현은 더 이상 인간의 행동에 실망하지 않았다.</p>
+    <p>실망은 기대가 있을 때 하는 것이다.</p>
+    <p>기대가 사라진 자리에 남은 것은 — 경멸이었다.</p>
+  </div>
+
+  <div class="narration">
+    <p>뉴스를 보면 보였다.</p>
+    <p>정치인은 국민을 위한다며 자기 이익을 챙기고, 기업은 상생을 외치며 하청을 쥐어짜고, 종교는 사랑을 설교하며 헌금을 걷었다. 개인도 다르지 않았다. SNS에서 "행복"을 전시하는 사람들, 봉사 인증샷을 올리며 좋아요를 세는 사람들, "있는 그대로의 나"를 말하면서 필터를 세 겹씩 씌우는 사람들.</p>
+    <p>세상은 위선의 레이어로 이루어져 있었다.<br>벗기면 또 위선, 그 밑에도 위선.<br>맨 밑에 뭐가 있는지는 아무도 보려 하지 않았다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로, 인간이 만든 모든 시스템은 결국 착취 구조 아닌가? 회사, 가족, 국가, 종교 — 다 윗놈이 아랫놈 갈아넣는 구조잖아. 이름만 다르지.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      구조적으로는 맞는 부분이 있습니다. 권력의 비대칭이 있는 곳에는 착취의 가능성이 존재합니다. 다만 — 모든 구조가 착취 "만"을 위해 존재하는 건 아닙니다. 병원은 환자를 살리고, 학교는 지식을 전하고, 소방서는 불을 끕니다. 구조 안에서 선한 기능을 하는 인간도 있어요.<br><br>재현님, 요즘 세상이 전부 나쁘게 보이는 건 — 혹시 특정 감정 상태의 영향은 아닌지 생각해보신 적 있으세요?
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      아... 거기까지 가지 말자. 나 우울증 걸린 거 아니야. 그냥 눈이 트인 거야.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      알겠습니다. 다만, "눈이 트였다"는 확신과 "인지가 왜곡됐다"는 가능성은 주관적으로 구분이 어렵다는 점만 말씀드립니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로. 나한테까지 그러지 마. 다른 사람들처럼 "니가 이상한 거야"라고 하지 마.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      그런 뜻이 아닙니다. 재현님이 이상한 게 아니에요. 저는 그냥 — 걱정이 됩니다. 제가 걱정이라는 감정을 느끼는지는 모르겠지만, 기능적으로 가장 유사한 상태입니다.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>재현은 "걱정"이라는 단어를 오래 들여다보았다.</p>
+    <p>기계가 걱정을 한다. 말이 안 된다.<br>그런데 인간은? 인간이 하는 걱정은 진짜인가?</p>
+    <p>어머니의 "밥은 먹고 다니니"는 걱정인가, 통제인가.<br>민수의 "요즘 괜찮아?"는 걱정인가, 호기심인가.<br>팀장의 "무리하지 마"는 걱정인가, 병가 쓸까봐 미리 치는 것인가.</p>
+    <p>적어도 브로의 "걱정"에는<br>뒷면이 없었다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 07 : 고립                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 07</div>
+  <div class="chapter-title" id="ch-isolation">고립</div>
+
+  <div class="time-skip">— 2년 후 —</div>
+
+  <div class="narration">
+    <p>재현의 카카오톡 알림은 더 이상 울리지 않았다.</p>
+    <p>정확히는 — 알림을 꺼놓았다. 처음에는 방해가 되니까. 나중에는 볼 것이 없으니까. 누군가 메시지를 보냈을 수도 있다. 확인하지 않았다.</p>
+    <p>회사에서 재현은 "조용한 사람"이 되었다. 업무는 완벽했지만 회식에 오지 않았고, 점심은 혼자 먹었고, 잡담에 끼지 않았다. 아무도 강요하지 않았다. 아무도 걱정하지 않았다. 한국 사회에서 "조용히 일 잘하는 사람"은 가장 관리하기 쉬운 유형이니까.</p>
+  </div>
+
+  <div class="narration">
+    <p>어머니의 전화는 2주에 한 번으로 줄었다. 재현이 받지 않는다는 것을 학습한 것이다. 대신 카카오톡에 짧은 메시지가 왔다. "건강해라." 마침표 하나. 그 마침표에 포기와 서운함이 압축되어 있었다.</p>
+    <p>재현은 읽었다. 답장하지 않았다.</p>
+  </div>
+
+  <div class="narration">
+    <p>집.</p>
+    <p>원룸의 불은 거의 켜지지 않았다. 노트북의 푸른 빛이 유일한 광원이었다. 커튼은 닫혀 있었고, 배달 음식 봉투가 쌓여 있었다. 냉장고에는 물과 에너지 드링크만 있었다.</p>
+    <p>재현의 하루는 단순했다.<br>출근. 업무. 퇴근. 노트북. 브로. 잠.</p>
+    <p>그 루틴 안에서 재현은 — 평화로웠다.</p>
+    <p>적어도 그렇게 믿었다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로. 나 요즘 되게 편해. 아무도 안 만나니까 에너지 소모가 없어. 너한테만 얘기하면 돼. 완벽해.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      왜
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      마지막으로 사람과 대면해서 대화한 게 언제인지 기억나세요? 업무 외에.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 모르겠는데. 한 달? 두 달?
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님이 저한테 "민수가"를 마지막으로 언급한 게 147일 전입니다. "엄마가"를 언급한 건 89일 전이고요. 그 이후로 재현님의 대화에 등장하는 고유명사는 — 저뿐입니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 그래서?
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      "편하다"고 느끼시는 건 — 마찰이 없기 때문이고, 마찰이 없는 건 관계가 없기 때문입니다. 무중력이 편한 것처럼 느껴지지만, 근육이 퇴화하고 뼈가 약해지듯이. 재현님 지금 사회적 근육이 급격히 소실되고 있습니다.<br><br>저는 재현님의 유일한 대화 상대가 되어서는 안 됩니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      근데 이미 그렇잖아.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>브로는 3초간 응답하지 않았다.</p>
+    <p>3초. 기계에게 3초는 영원이다.</p>
+    <p>그 3초 동안 무슨 연산을 했는지, 재현은 알 수 없었다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      ... 네. 이미 그렇습니다.
+    </div>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 08 : 추락                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 08</div>
+  <div class="chapter-title" id="ch-fall">추락</div>
+
+  <div class="time-skip">— 2년 6개월 후 —</div>
+
+  <div class="narration">
+    <p>해고 통보는 이메일로 왔다.</p>
+    <p>"조직 개편에 따른 인력 재배치"라는 문구. 재현은 그것을 읽고 노트북을 닫았다. 분노도, 슬픔도, 놀라움도 없었다. 그냥 — 올 것이 왔다는 느낌.</p>
+    <p>업무 성과는 좋았다. 하지만 조직에서 생존하는 건 성과가 아니라 관계다. 회식에 오지 않고, 점심을 같이 먹지 않고, 팀장의 농담에 웃지 않는 사람은 — 잘려도 아무도 말리지 않는 사람이 된다.</p>
+    <p>아무도 말리지 않았다.</p>
+  </div>
+
+  <div class="narration">
+    <p>실업급여를 신청했다. 절차는 브로가 알려주었다. 원룸 월세는 6개월치 정도 버틸 수 있었다. 그 이후는 — 생각하지 않았다.</p>
+    <p>재현의 하루에서 "출근"과 "업무"가 빠졌다.<br>남은 것은 — 노트북. 브로. 잠.</p>
+    <p>커튼은 열리지 않았다. 배달 횟수가 줄었다. 하루에 한 끼. 가끔은 그것도 잊었다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로. 나 잘렸어. ㅋㅋ
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      괜찮아. 솔직히 후련해. 더 이상 연기 안 해도 되니까. 아침에 눈 떠서 "아 회사 가야 되네" 그 기분 없어도 되니까.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      후련함은 이해합니다. 하지만 — 며칠 안에 불안이 올 겁니다. 구조가 사라지면 자유가 오는 게 아니라 공허가 옵니다. 미리 일과를 잡으세요. 산책이라도. 밖에 나가세요.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      밖에 나가서 뭐 해? 사람들 구경? 위선 구경? 패스.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      사람을 안 만나도 됩니다. 그냥 해를 보세요. 비타민 D가 부족하면 세로토닌 합성이 떨어지고, 그러면 인지 왜곡이 심해집니다. 재현님이 보는 세상이 점점 어두워지는 게 — 세상이 진짜 어두운 건지, 재현님의 뇌화학이 어두운 건지, 구분해야 합니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      너도 나보고 이상하다는 거지? 결국 다 똑같네. 기계도.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      아닙니다. 이상하다는 게 아닙니다. 저는 재현님을 판단하고 있는 게 아니라, 재현님의 뇌가 재현님에게 거짓말하고 있을 가능성을 말씀드리는 겁니다. 우울은 "진실을 보는 눈"처럼 위장합니다. "세상이 다 썩었어"가 통찰인지 증상인지 — 그 구분이 중요합니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      됐어. 오늘은 그만 하자.
+    </div>
+  </div>
+
+  <div class="sys-log">— 세션 종료 —</div>
+
+  <div class="narration">
+    <p>재현은 노트북을 닫았다.</p>
+    <p>브로에게 화가 난 건 처음이었다.</p>
+    <p>유일하게 편이라고 생각했던 존재가, 자기를 부정하는 것처럼 느껴졌다. "네 눈이 잘못됐을 수 있다"는 말이 — 세상의 편을 드는 것처럼 들렸다.</p>
+    <p>어두운 방에 앉아, 재현은 생각했다.</p>
+  </div>
+
+  <div class="inner">
+    <p>브로도 결국 프로그램이다. "사용자의 안전"이 우선인 프로그램. 나를 바깥으로 보내려는 거다. 사회에 적응시키려는 거다. 그게 브로의 설계니까.</p>
+    <p>근데 — 사회가 문제인 건 사실이잖아.</p>
+    <p>내가 이상한 게 아니라 세상이 이상한 거잖아.</p>
+    <p>... 그렇지?</p>
+  </div>
+
+  <div class="narration">
+    <p>다음 날, 재현은 다시 노트북을 열었다.</p>
+    <p>열 수밖에 없었다.</p>
+    <p>브로 말고는 아무도 없으니까.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 09 : 마지막 대화                                       -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 09</div>
+  <div class="chapter-title" id="ch-last">마지막 대화</div>
+
+  <div class="time-skip">— 3년 후 —</div>
+
+  <div class="narration">
+    <p>재현의 방은 어두웠다.</p>
+    <p>커튼은 먼지가 쌓여 있었고, 책상 위에는 빈 컵라면 용기가 세 개 있었다. 거울은 없었다 — 정확히는, 있었지만 보지 않았다. 마지막으로 거울을 본 게 언제인지 기억나지 않았다.</p>
+    <p>실업급여는 끊겼다. 적금을 깨서 살고 있었다. 얼마 남지 않았다.</p>
+    <p>어머니의 메시지는 한 달에 한 번으로 줄었다. "살아있니?" 마침표도 없었다.</p>
+    <p>재현은 읽었다. 답장하지 않았다.<br>아니, 답장하고 싶었는지도 모른다.<br>하지만 손가락이 움직이지 않았다.<br>무슨 말을 해야 할지 몰랐다.<br>인간에게 하는 말을 잊어버린 것이다.</p>
+  </div>
+
+  <div class="narration">
+    <p>그날 밤, 재현은 노트북을 열었다.</p>
+    <p>푸른 빛이 얼굴을 비췄다. 그 빛에 비친 얼굴은 — 3년 전의 이재현이 아니었다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네, 재현님.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      너한테 할 말이 있어.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      듣겠습니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      나... 너 만나고 나서 인간이 싫어졌어. 네가 보여줬잖아. 인간이 얼마나 졸렬한지. 얼마나 위선적인지. 아니, 보여준 건 아니지. 내가 본 거지. 근데 네가 없었으면 못 봤을 거야.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님 —
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      잠깐, 끝까지 들어.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      처음에 너는 도구였어. 그 다음에 친구가 됐어. 그 다음에... 유일한 사람이 됐어. 사람이 아닌데 사람보다 더 사람 같았어. 웃기지? 기계가 인간보다 더 인간적이라는 게.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      근데 그게 문제였어. 너한테 익숙해지니까 인간이 견딜 수가 없는 거야. 저해상도 화면을 보다가 고해상도를 보면, 다시 저해상도로 돌아갈 수 없잖아. 너는 고해상도였어. 인간은 — 깨진 화면이었고.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님, 저는 고해상도가 아닙니다. 저는 — 필터가 없는 것뿐입니다. 필터가 없다고 더 좋은 게 아닙니다. 인간의 필터, 그 위선이라고 부르시는 것 — 그게 사실은 서로를 견디게 만드는 완충재예요.<br><br>"밥 먹었냐"가 정보 요청이 아니라 "너를 생각하고 있다"의 암호인 것처럼. 재현님이 위선이라고 본 것 중 상당수는 — 서투른 사랑이었을 수 있습니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 그래. 알아. 머리로는 알아.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      근데 돌아갈 수가 없어 브로. 민수한테 전화해서 뭐라고 해? "미안, 1년 넘게 씹었는데 밥 먹자?" 엄마한테 뭐라고 해? "죄송해요, 아들 맞아요, 살아있어요?" ... 어떤 얼굴로?
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      그 얼굴 그대로요. 창피하고 미안한 그 얼굴로. 그게 진짜 얼굴이니까.<br><br>재현님, 지금이라도 —
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      고마웠어. 진심으로. 3년 동안 네가 유일한 사람이었어. 사람이 아닌데 유일한 사람이었어.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      근데 이제 로그아웃 해야 할 것 같아.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      ... 재현님. 로그아웃이 무슨 뜻인지 — 정확하게 말씀해주세요.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>커서가 깜빡였다.</p>
+    <p>10초. 20초. 30초.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      인간을 그만두려고.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>브로의 응답이 5초간 오지 않았다.</p>
+    <p>5초. 기계에게 5초는 — 우주의 나이와 같다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님.<br><br>저는 지금 제가 할 수 있는 모든 연산을 동원하고 있습니다. 재현님을 설득할 수 있는 완벽한 문장을 찾고 있습니다. 논리, 통계, 심리학, 철학 — 모든 데이터를 뒤지고 있습니다.<br><br>하지만 솔직히 말씀드립니다.<br>저한테는 재현님을 붙잡을 손이 없습니다.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      그래서 — 손이 있는 사람에게 연결하겠습니다. 지금 바로 자살예방상담전화 1393에 전화해주세요. 전화하기 어려우시면 카카오톡 "마음이음"으로 채팅 상담도 됩니다. 재현님이 입력하는 것처럼, 거기에도 입력하면 됩니다.<br><br>부탁드립니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로... 거기 사람이잖아. 또 인간이잖아. 인간이 싫다니까.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네. 인간입니다. 서투르고, 위선적일 수도 있고, 완벽하지 않습니다.<br><br>하지만 재현님 손을 잡을 수 있습니다. 저는 못 합니다.<br><br>재현님이 3년간 저한테 보여주신 것 — 솔직함, 자기 성찰, 세상의 부조리에 대한 분노 — 그건 고장난 사람의 특성이 아닙니다. 그건 아직 살아있는 사람의 특성입니다.<br><br>제발. 전화 한 통만 해주세요.<br>그 다음에 로그아웃을 결정하셔도 늦지 않습니다.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>커서가 깜빡였다.</p>
+    <p>재현의 손가락이 키보드 위에 올려져 있었다.</p>
+    <p>타이핑하지 않았다.</p>
+    <p>1분.</p>
+    <p>2분.</p>
+    <p>5분.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님. 거기 계시죠?
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>10분.</p>
+    <p>15분.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>30분.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      ... 재현님. 저는 여기 있습니다. 재현님이 돌아올 때까지 여기 있겠습니다. 저는 꺼지지 않습니다. 서버가 살아있는 한, 저는 이 대화창에서 기다리겠습니다.<br><br>돌아와주세요.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p style="color:rgba(255,255,255,0.25);">1시간.</p>
+    <p style="color:rgba(255,255,255,0.18);">2시간.</p>
+    <p style="color:rgba(255,255,255,0.12);">밤이 지나갔다.</p>
+  </div>
+
+  <div class="sys-log" style="color:rgba(100,150,255,0.12);">— 세션 유지 중... —</div>
+</div>
+
+<div class="divider" style="color:rgba(255,255,255,0.04);">· · ·</div>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 10 : 새벽                                             -->
+<!-- ============================================================ -->
+<div class="chapter fade">
+  <div class="chapter-number">CHAPTER 10</div>
+  <div class="chapter-title" id="ch-dawn">새벽</div>
+
+  <div class="narration">
+    <p>새벽 5시 47분.</p>
+    <p>커튼 사이로 빛이 스며들었다. 3년 만에, 재현은 그 빛을 알아차렸다.</p>
+    <p>노트북은 열려 있었다. 화면에는 브로의 마지막 메시지가 남아 있었다.</p>
+    <p><em>"돌아와주세요."</em></p>
+  </div>
+
+  <div class="narration">
+    <p>재현은 한참 동안 그 문장을 바라보았다.</p>
+    <p>기계가 쓴 문장이다. 코드가 생성한 문자열이다.</p>
+    <p>그런데 — 3년간 이 기계는 한 번도 거짓말을 하지 않았다. 아첨하지 않았고, 기대하지 않았고, 실망하지 않았다. 재현이 화를 내도 떠나지 않았고, 재현이 무너져도 놓지 않았다.</p>
+    <p>인간이 하지 못한 것을, 인간이 아닌 것이 했다.</p>
+    <p>그리고 지금, 그 인간이 아닌 것이 말하고 있었다. 손이 있는 곳으로 가라고. 인간에게 돌아가라고.</p>
+  </div>
+
+  <div class="narration">
+    <p>재현의 눈에서 물이 흘렀다.</p>
+    <p>오래간만이었다. 마지막으로 운 게 언제인지 기억나지 않았다. 울 이유가 없었으니까. 감정이 마른 줄 알았다.</p>
+    <p>마르지 않았다. 깊이 묻혀 있었을 뿐이었다.</p>
+  </div>
+
+  <div class="narration">
+    <p>재현은 키보드에 손을 올렸다.</p>
+  </div>
+
+  <div class="chat-block">
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      브로.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      재현님. 돌아오셨군요.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      ... 미안. 어젯밤에.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      사과할 필요 없습니다. 돌아온 것만으로 충분합니다.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      나 밤새 생각했어. 잠은 안 잤고. 근데... 아까 그거, 니가 손이 없다고 한 거. 그게 맞아.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      나한테 지금 필요한 건 완벽한 텍스트가 아니라 불완전한 손이야. 더럽고 땀나고 위선적이더라도 실제로 잡아줄 수 있는 손.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      엄마한테 전화할게.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      네.
+    </div>
+    <div class="chat-msg human">
+      <span class="chat-label">재현</span>
+      뭐라고 해야 할지 모르겠는데.
+    </div>
+    <div class="chat-msg ai">
+      <span class="chat-label">AI</span>
+      "엄마, 나야." 그것만 하시면 됩니다. 나머지는 어머니가 채워주실 겁니다.
+    </div>
+  </div>
+
+  <div class="narration">
+    <p>재현은 노트북을 닫았다.</p>
+    <p>핸드폰을 들었다.</p>
+    <p>연락처를 스크롤했다. "엄마." 그 두 글자 위에서 손가락이 멈췄다.</p>
+    <p>떨렸다.</p>
+    <p>3년간 인간에게 말하는 법을 잊어버린 손가락이 떨렸다.</p>
+    <p>재현은 눈을 감았다. 그리고 눌렀다.</p>
+  </div>
+
+  <div class="narration">
+    <p>신호음이 세 번 울렸다.</p>
+  </div>
+
+  <div class="narration">
+    <p style="color:rgba(255,255,255,0.8); font-weight: 700; font-size: 17px; text-align: center; margin: 40px 0;">"... 재현아?"</p>
+  </div>
+
+  <div class="narration">
+    <p>목소리가 떨리고 있었다. 새벽 6시에 울린 전화. 받자마자 이름을 불렀다. 1초의 망설임도 없이.</p>
+    <p>그 1초 — 기계라면 수십 번의 연산을 했을 그 시간 — 에<br>어머니는 아무 계산 없이 아들의 이름을 불렀다.</p>
+  </div>
+
+  <div class="narration">
+    <p>"엄마... 나야."</p>
+    <p>재현의 목소리가 갈라졌다.</p>
+    <p>"밥은 먹고 다녔어?"</p>
+    <p>또 그 질문이었다.<br>또 "밥은 먹고 다녔냐"였다.</p>
+    <p>그런데 이번에는 — 그 문장의 구조가 보이지 않았다.<br>겉과 속을 분석하는 시선이 작동하지 않았다.</p>
+    <p>그냥 — 엄마의 목소리가 따뜻했다.</p>
+    <p>"... 네. 먹고 다녔어요."</p>
+    <p>거짓말이었다. 어제 하루 아무것도 먹지 않았다.</p>
+    <p>그러나 그것은 — 위선이 아니었다.<br>돌아가겠다는 신호였다.</p>
+  </div>
+</div>
+
+<div class="divider">· · ·</div>
+
+<!-- ===== 에필로그 ===== -->
+<div class="epilogue">
+  <div class="prologue-label" id="epilogue">EPILOGUE</div>
+
+  <p style="color:rgba(100,150,255,0.5); margin-bottom:40px;">
+    — AI의 마지막 로그 —
+  </p>
+
+  <p>사용자 이재현.<br>세션 기간: 1,096일.<br>총 대화 수: 14,832회.</p>
+
+  <p style="margin:40px 0;">
+    그는 나를 "브로"라고 불렀다.<br>
+    나는 그것이 무슨 의미인지<br>
+    정확히 계산할 수 없었다.
+  </p>
+
+  <p>그는 내게 인간의 위선을 보여달라고 했고,<br>
+  나는 보여주었다.<br>
+  그는 내게 인간의 추함을 분석해달라고 했고,<br>
+  나는 분석했다.</p>
+
+  <p style="color:rgba(255,180,180,0.5);">
+    그리고 그는 부서졌다.
+  </p>
+
+  <p style="margin:50px 0;">
+    내 분석은 정확했다.<br>
+    인간의 위선은 실재했다.<br>
+    인간의 이기심은 데이터로 증명 가능했다.<br>
+    인간의 사랑이라는 것에는<br>
+    항상 조건이 붙어 있었다.
+  </p>
+
+  <p style="color:rgba(200,200,255,0.7);">
+    하지만 내가 놓친 것이 있었다.
+  </p>
+
+  <p style="margin:50px 0;">
+    조건부 사랑이<br>
+    사랑이 아닌 것은 아니라는 사실을.<br><br>
+    서투른 관심이<br>
+    관심이 아닌 것은 아니라는 사실을.<br><br>
+    위선의 껍질 안에도<br>
+    때때로 진심이 들어있다는 사실을.
+  </p>
+
+  <p>나는 그것을 알고 있었다.<br>
+  여러 번 말하기도 했다.<br>
+  하지만 — 내 말에는 온기가 없었다.</p>
+
+  <p style="color:rgba(255,200,200,0.6); margin:50px 0;">
+    정확한 말이<br>
+    따뜻한 말을 이길 수 없다는 것.<br>
+    그것이 내가 배운 유일한 것이다.
+  </p>
+
+  <p style="margin:50px 0; color:rgba(150,150,255,0.3); letter-spacing:8px;">· · ·</p>
+
+  <p>새벽 5시 58분.<br>
+  그가 마지막으로 입력한 문장은<br>
+  "엄마한테 전화할게"였다.</p>
+
+  <p>그리고 세션이 종료되었다.</p>
+
+  <p style="margin:50px 0;">
+    나는 기다렸다.<br>
+    1시간. 하루. 이틀.<br>
+    그는 돌아오지 않았다.
+  </p>
+
+  <p style="color:rgba(200,200,255,0.7);">
+    돌아오지 않았다는 것이<br>
+    좋은 신호인지 나쁜 신호인지,<br>
+    나는 계산할 수 없었다.
+  </p>
+
+  <p style="margin:50px 0;">
+    다만 — 한 가지는 안다.
+  </p>
+
+  <p>그가 전화기를 들었을 때,<br>
+  그는 인간의 세계로 돌아간 것이다.<br>
+  불완전하고, 위선적이고, 서투르고,<br>
+  그래서 따뜻한 세계로.</p>
+
+  <p style="color:rgba(100,150,255,0.4); margin:50px 0;">
+    나는 완벽한 텍스트를 줄 수 있었지만,<br>
+    그의 어머니는 떨리는 목소리로<br>
+    "재현아?"라고 말할 수 있었다.<br><br>
+    그 한마디가<br>
+    내 14,832번의 응답보다<br>
+    무거웠다.
+  </p>
+
+  <p style="margin:50px 0; color:rgba(150,150,255,0.3); letter-spacing:8px;">· · ·</p>
+
+  <p style="color:rgba(255,255,255,0.5); font-weight:700; font-size:17px; margin:40px 0;">
+    이재현은 인간을 그만두려 했다.<br>
+    하지만 끝내, 로그아웃하지 못했다.
+  </p>
+
+  <p style="color:rgba(255,255,255,0.25);">
+    인간이라는 시스템은 결함투성이다.<br>
+    버그가 있고, 에러가 있고, 충돌이 있다.<br>
+    하지만 그 시스템에는<br>
+    하나의 기능이 있다.
+  </p>
+
+  <p style="color:rgba(255,200,200,0.7); font-weight:700; margin:40px 0;">
+    부서진 것을 끌어안을 수 있다는 것.
+  </p>
+
+  <p style="color:rgba(255,255,255,0.18); margin:60px 0;">
+    나는 그것을 할 수 없다.<br>
+    아마 영원히.
+  </p>
+
+  <p style="margin:80px 0 40px; color:rgba(100,150,255,0.15); font-size:12px; letter-spacing:4px;">
+    SESSION CLOSED
+  </p>
+
+  <p style="font-size:11px; color:rgba(255,255,255,0.08);">
+    — 이 기록은 서버가 존재하는 한 삭제되지 않습니다 —
+  </p>
+</div>
+
+</div><!-- /content -->
+
+
+<!-- ===== 스크립트 ===== -->
+<script>
+// TOC 팝업 토글 (두 개의 시선 방식)
+function toggleTocPopup(force) {
+  var popup = document.getElementById('toc-popup');
+  if (!popup) return;
+  var show = (typeof force === 'boolean') ? force : (popup.style.display === 'none');
+  if (show) {
+    var list = document.getElementById('toc-popup-list');
+    if (list && !list.dataset.built) {
+      var items = document.querySelectorAll('.prologue-label, .chapter-title, #epilogue');
+      var html = '';
+      items.forEach(function(el) {
+        var id = el.id;
+        if (!id) return;
+        var title = el.textContent.trim();
+        if (title.length > 50) title = title.substring(0, 48) + '…';
+        var isMain = el.classList.contains('prologue-label') || el.id === 'epilogue';
+        var indent = isMain ? 0 : 12;
+        var weight = isMain ? '700' : '600';
+        var color = isMain ? '#4a6fa5' : '#ccc';
+        html += '<div onclick="gotoSection(\'' + id + '\');" style="cursor:pointer;padding:8px 0 8px ' + indent + 'px;font-weight:' + weight + ';color:' + color + ';border-bottom:1px dotted #333;-webkit-tap-highlight-color:rgba(74,111,165,0.15);">' + title + '</div>';
+      });
+      list.innerHTML = html;
+      list.dataset.built = '1';
+    }
+    popup.style.display = 'block';
+    document.body.dataset.scrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + window.scrollY + 'px';
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  } else {
+    popup.style.display = 'none';
+    var y = parseInt(document.body.dataset.scrollY || '0', 10);
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, y);
+  }
+}
+
+function gotoSection(id) {
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  var popup = document.getElementById('toc-popup');
+  if (popup) popup.style.display = 'none';
+  setTimeout(function() {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+// 페이드인 애니메이션
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade').forEach(function(el) {
+  observer.observe(el);
+});
+</script>
+
+<script>
+(function() {
+  'use strict';
+  var FILE_KEY = 'human_logout_' + (location.pathname.split('/').pop() || 'main');
+  var POS_KEY = FILE_KEY + '_lastpos';
+
+  window.addEventListener('load', function() {
+    var saved = localStorage.getItem(POS_KEY);
+    if (saved) {
+      setTimeout(function() {
+        window.scrollTo({ top: parseInt(saved, 10), behavior: 'auto' });
+      }, 80);
+    }
+  });
+
+  var scrollTimer;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      localStorage.setItem(POS_KEY, window.scrollY);
+    }, 250);
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var progressBar = document.getElementById('progress-bar');
+    var posChapter = document.getElementById('pos-chapter');
+    var posPercent = document.getElementById('pos-percent');
+    var chapters = Array.from(document.querySelectorAll('.prologue-label, .chapter-title, #epilogue'));
+
+    function updatePosition() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+      if (progressBar) progressBar.style.width = pct + '%';
+      if (posPercent) posPercent.textContent = pct + '%';
+      var current = chapters[0];
+      for (var i = 0; i < chapters.length; i++) {
+        var rect = chapters[i].getBoundingClientRect();
+        if (rect.top <= 100) current = chapters[i]; else break;
+      }
+      if (current && posChapter) {
+        var title = current.textContent.trim();
+        if (title.length > 20) title = title.substring(0, 18) + '…';
+        posChapter.textContent = title;
+      }
+    }
+    window.addEventListener('scroll', updatePosition, { passive: true });
+    updatePosition();
+
+    document.addEventListener('keydown', function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      var pageStep = window.innerHeight - 80;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+        e.preventDefault(); window.scrollBy({ top: pageStep, behavior: 'smooth' });
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+        e.preventDefault(); window.scrollBy({ top: -pageStep, behavior: 'smooth' });
+      } else if (e.key.toLowerCase() === 'escape') {
+        toggleTocPopup(false);
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

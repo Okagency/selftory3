@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>순환 - 폭정에 관한 작은 기록</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0807;
+  --paper: #1a1614;
+  --aged: #2a2420;
+  --bone: #d9cdb8;
+  --rust: #8b3a2b;
+  --blood: #5c1a16;
+  --gold: #a08355;
+  --shadow: rgba(0,0,0,0.6);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  font-family: 'Nanum Myeongjo', 'Gowun Batang', serif;
+  line-height: 1.9;
+  overflow-x: hidden;
+}
+
+/* ===== 표지 ===== */
+.cover {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(139,58,43,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(92,26,22,0.2) 0%, transparent 50%),
+    linear-gradient(180deg, #0a0807 0%, #1a0e0c 50%, #0a0807 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 40px;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255,255,255,0.008) 2px,
+      rgba(255,255,255,0.008) 4px
+    );
+  pointer-events: none;
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+}
+
+.cover-frame {
+  position: absolute;
+  inset: 30px;
+  border: 1px solid rgba(160,131,85,0.25);
+  pointer-events: none;
+}
+
+.cover-frame::before,
+.cover-frame::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(160,131,85,0.4);
+}
+
+.cover-frame::before {
+  top: -8px;
+  left: -8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.cover-frame::after {
+  bottom: -8px;
+  right: -8px;
+  border-left: none;
+  border-top: none;
+}
+
+.cover-symbol {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px;
+  color: var(--rust);
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 2;
+  animation: pulse 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(139,58,43,0.4));
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+.cover-title {
+  font-family: 'Nanum Myeongjo', serif;
+  font-weight: 800;
+  font-size: clamp(60px, 14vw, 140px);
+  color: var(--bone);
+  letter-spacing: 0.3em;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+  animation: fadeUp 2s ease-out;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cover-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 80px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 2s ease-out 0.3s backwards;
+}
+
+.cover-line {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(180deg, transparent, var(--gold), transparent);
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 2s ease-out 0.6s backwards;
+}
+
+.cover-author {
+  font-family: 'Gowun Batang', serif;
+  font-size: 14px;
+  color: rgba(217,205,184,0.6);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 2s ease-out 0.9s backwards;
+}
+
+.cover-scroll {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(217,205,184,0.4);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  z-index: 2;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.4; }
+  50% { transform: translateX(-50%) translateY(8px); opacity: 0.8; }
+}
+
+/* ===== 본문 ===== */
+.book {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 120px 40px;
+}
+
+.chapter {
+  margin-bottom: 120px;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.chapter-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--rust);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.chapter-title {
+  font-family: 'Nanum Myeongjo', serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4vw, 40px);
+  color: var(--bone);
+  margin-bottom: 50px;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+  position: relative;
+}
+
+.chapter-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin-top: 25px;
+}
+
+.chapter p {
+  font-size: 17px;
+  color: rgba(217,205,184,0.85);
+  margin-bottom: 28px;
+  text-align: justify;
+  word-break: keep-all;
+  line-height: 2;
+}
+
+.chapter p:first-of-type::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px;
+  font-weight: 400;
+  float: left;
+  line-height: 0.9;
+  margin: 8px 12px 0 0;
+  color: var(--rust);
+}
+
+.epigraph {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--gold);
+  text-align: center;
+  margin: 60px 0;
+  padding: 30px 0;
+  border-top: 1px solid rgba(160,131,85,0.2);
+  border-bottom: 1px solid rgba(160,131,85,0.2);
+  letter-spacing: 0.05em;
+}
+
+.divider {
+  text-align: center;
+  margin: 60px 0;
+  color: var(--rust);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  letter-spacing: 1em;
+}
+
+.emphasis {
+  color: var(--bone);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.whisper {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: rgba(160,131,85,0.7);
+  font-size: 16px;
+  margin: 40px 0;
+  padding-left: 30px;
+  border-left: 2px solid var(--rust);
+}
+
+/* ===== 마지막 페이지 ===== */
+.colophon {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 40px;
+  border-top: 1px solid rgba(160,131,85,0.15);
+  margin-top: 100px;
+  text-align: center;
+}
+
+.colophon-symbol {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  color: var(--rust);
+  margin-bottom: 30px;
+}
+
+.colophon-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: rgba(217,205,184,0.5);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  line-height: 2.2;
+}
+
+/* ===== 노이즈 텍스처 ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 100;
+  mix-blend-mode: overlay;
+}
+
+@media (max-width: 600px) {
+  .book { padding: 80px 24px; }
+  .chapter { margin-bottom: 80px; }
+  .cover-title { letter-spacing: 0.2em; }
+}
+</style>
+</head>
+<body>
+
+<!-- 표지 -->
+<section class="cover">
+  <div class="cover-frame"></div>
+  <div class="cover-symbol">∞</div>
+  <h1 class="cover-title">循環</h1>
+  <p class="cover-subtitle">— 폭정에 관한 작은 기록 —</p>
+  <div class="cover-line"></div>
+  <p class="cover-author">자브로 · 재송동</p>
+  <p class="cover-scroll">↓ 펼치다</p>
+</section>
+
+<!-- 본문 -->
+<main class="book">
+
+  <section class="chapter">
+    <span class="chapter-num">서장 · Prologue</span>
+    <h2 class="chapter-title">정의는 사라진다</h2>
+
+    <p>정의가 없다고 말하는 자는 게으르다. 정의가 있다고 말하는 자는 어리석다. 진실은 그 사이에 있다. 정의는 있었고, 사라지고 있고, 또 태어난다. 그러나 이긴 적은 한 번도 없다.</p>
+
+    <p>역사책은 승리한 정의의 이름만 적는다. 그 페이지의 여백에는 패배한 정의의 이름이 무수히 흩어져 있지만, 그것을 읽는 사람은 없다. 우리는 살아남은 자들의 이야기만 알고, 그래서 정의가 가끔 이긴다고 착각한다.</p>
+
+    <p class="whisper">사실 정의는 매 순간 죽고, 매 순간 다시 일어선다. 다만 일어서자마자 다시 죽을 뿐이다.</p>
+  </section>
+
+  <div class="divider">· · ·</div>
+
+  <section class="chapter">
+    <span class="chapter-num">1장 · Chapter I</span>
+    <h2 class="chapter-title">강한 자, 약한 자</h2>
+
+    <p>강자는 약자에게 군림하고, 약자는 더 약한 자를 짓밟는다. 이것을 우리는 약육강식이라 부르고, 강약약강이라 부르고, 인간의 추한 본성이라 부른다.</p>
+
+    <p>그러나 사람은 동물이다. 동물의 본성을 가진 존재가 동물처럼 행동하는 것을 두고 추하다고 말하는 것은 — 강에 흐르는 물을 보고 부도덕하다고 말하는 것과 같다. <span class="emphasis">자연은 가치판단의 바깥에 있다.</span></p>
+
+    <p>지진은 지각이 움직이기 때문에 일어나고, 질병은 개체가 너무 많기 때문에 찾아온다. 무너진 집과 죽은 사람에게는 비극이지만, 지구에게는 그저 일어나는 일이다. 우주는, 별은, 바람은 — 인간의 슬픔에 동의하지 않는다.</p>
+
+    <p>그러므로 폭정은 자연스럽다. 권력을 쥔 자가 그것을 휘두르는 것은, 물이 낮은 곳으로 흐르는 것과 다르지 않다. 이 사실을 받아들이지 않으면 어떤 분석도 시작할 수 없다.</p>
+  </section>
+
+  <p class="epigraph">"자연스러운 것과 정당한 것은 다르다.<br>다만 그 차이를 만드는 자는 늘 패배해 왔다."</p>
+
+  <section class="chapter">
+    <span class="chapter-num">2장 · Chapter II</span>
+    <h2 class="chapter-title">권력이 강한 이유</h2>
+
+    <p>사람들은 권력이 무언가를 <span class="emphasis">할 수 있어서</span> 강하다고 믿는다. 명령할 수 있고, 처벌할 수 있고, 빼앗을 수 있어서. 그러나 그것은 표면이다.</p>
+
+    <p>권력의 진짜 본질은 <span class="emphasis">하지 않을 힘</span>이다. 해야 할 수사를 하지 않을 힘. 처벌해야 할 자를 처벌하지 않을 힘. 답해야 할 질문에 답하지 않을 힘. 지켜야 할 약속을 어기고도 무사할 힘.</p>
+
+    <p>법을 만드는 자가 강한 것이 아니다. 법 위에 설 수 있는 자가 강하다. 일반인은 소환되면 가야 하고, 일반인은 진술해야 하고, 일반인은 처벌받는다. 그러나 권력자는 — 가지 않아도 되고, 말하지 않아도 되고, 처벌되지 않는다. 그 비대칭이 권력이다.</p>
+
+    <p>그리고 권력자는 <span class="emphasis">부정을 덮을 힘</span>을 가지고 있다. 일반인의 부정은 드러나서 처벌받지만, 권력자의 부정은 묻혀서 잊힌다. 같은 부정인데 결과가 다르다. 부정이 강해서 정의를 이기는 것이 아니라, 부정을 덮을 능력이 한쪽에 몰려 있어서 정의가 진다.</p>
+
+    <p class="whisper">권력자가 가장 두려워하는 것은 적이 아니라, 자신의 부정을 덮을 수 없게 되는 순간이다.</p>
+  </section>
+
+  <div class="divider">· · ·</div>
+
+  <section class="chapter">
+    <span class="chapter-num">3장 · Chapter III</span>
+    <h2 class="chapter-title">정의로운 자들의 운명</h2>
+
+    <p>부패한 권력에 맞서는 정의는 항상 있어왔다. 일제 강점기에도, 군사독재의 시절에도, 그리고 지금 이 순간에도. 어떤 시대에도 반드시 누군가는 일어섰다.</p>
+
+    <p>그러나 그들 대부분은 부서졌다. 죽임을 당하거나, 갇히거나, 평판이 망가지거나, 가족이 무너지거나, 잊혔다. 우리가 기억하는 의인은 살아남은 극소수일 뿐이다. 같은 시대에 같이 일어섰다가 흔적도 없이 사라진 사람들의 수는 — 셀 수 없다.</p>
+
+    <p>권력은 정의로운 자를 표적화한다. 한 사람을 무너뜨리는 일은 그 한 사람만의 문제가 아니다. 그것은 본보기다. 다음에 입을 열 사람들에게 보내는 신호다. <span class="emphasis">"너도 이렇게 된다."</span></p>
+
+    <p>그렇게 정의로운 자들이 하나씩 제거되면, 남은 사람들은 침묵을 배운다. 침묵이 새로운 정상이 된다. 다음 세대는 그것이 원래 그런 것이라고 배운다. 저항을 상상할 줄 모르게 된다.</p>
+
+    <p>이것이 가장 무서운 부분이다. 정의로운 사람을 죽이는 것이 아니라 — <span class="emphasis">정의 자체를 상상할 수 없는 세상을 만드는 것.</span></p>
+  </section>
+
+  <p class="epigraph">"부정은 침묵을 먹고 강해진다.<br>그리고 침묵은, 부서진 자의 이름들로 만들어진다."</p>
+
+  <section class="chapter">
+    <span class="chapter-num">4장 · Chapter IV</span>
+    <h2 class="chapter-title">순환</h2>
+
+    <p>당한 자가 권력을 잡으면 어떻게 되는가. 그가 더 정의로워질까. 그가 자신이 당한 폭정을 반복하지 않을까.</p>
+
+    <p>역사는 정반대를 말한다. 당해본 자가 더 잘 알기에 더 정교하게 휘두른다. 자기가 당한 방식 그대로, 또는 그보다 한 단계 더 진화시켜서, 자기의 적이었던 자들에게 갚는다. 복수는 정의의 이름으로 행해지고, 그 복수가 끝나기 전에 새로운 부패가 시작된다.</p>
+
+    <p>혁명이 공포정치로 가는 길은 짧다. 정의의 깃발을 든 자들이 권력의 자리에 앉는 순간, 그들은 또 다른 폭정의 도구가 된다. 누구를 궤멸시킬지 판단하는 그 권력 자체가, 다음 폭정의 씨앗이기 때문이다.</p>
+
+    <p>이것을 역사라고 부른다. 그리고 역사이기 때문에 — <span class="emphasis">자연이다.</span> 자연이기 때문에 누구도 멈출 수 없다. 폭정은 반발을 부르고, 반발은 권력 교체를 부르고, 권력 교체는 보복을 부르고, 보복은 또 폭정이 된다. 순환은 계속된다.</p>
+
+    <p class="whisper">우리는 이 순환의 어느 지점에서 태어났을 뿐이다. 끝을 보지 못하고, 시작도 모른 채.</p>
+  </section>
+
+  <div class="divider">· · ·</div>
+
+  <section class="chapter">
+    <span class="chapter-num">5장 · Chapter V</span>
+    <h2 class="chapter-title">보이는 미래</h2>
+
+    <p>지금 이 시대에도 폭정은 작동한다. 진실을 말한 자가 거꾸로 추적당하고, 권력자의 추측이 영장이 되고, 정의의 외피를 쓴 칼이 누군가의 목을 향한다. 이름이 무엇이든, 정권이 누구이든, 패턴은 같다.</p>
+
+    <p>그리고 그 폭정에 짓밟힌 자들이 — 언젠가 권력을 잡을 것이다. 그때 그들은 지금의 권력을 궤멸시킬 것이다. 정의의 이름으로. 청산의 이름으로. 새 시대의 이름으로.</p>
+
+    <p>그리고 또 다른 누군가가 그 새로운 권력에게 짓밟힐 것이다. 진실을 말했다는 이유로. 권력에 굴복하지 않았다는 이유로. 다음 세대의 정의가 또 일어설 것이다. 그리고 또 부서질 것이다.</p>
+
+    <p>이 미래가 보인다. 보이는 것이 무서운 것이 아니다. <span class="emphasis">보이는 것이 자연스럽다는 사실</span>이 무서운 것이다.</p>
+  </section>
+
+  <p class="epigraph">"내가 본 미래는 새롭지 않다.<br>다만 한 번 더 같은 자리에 서 있을 뿐이다."</p>
+
+  <section class="chapter">
+    <span class="chapter-num">종장 · Epilogue</span>
+    <h2 class="chapter-title">인간군상</h2>
+
+    <p>부패도 인간이다. 정의도 인간이다. 침묵하는 다수도 인간이다. 어느 한쪽이 인간의 본질이 아니라, 그 모든 것이 동시에 인간이다.</p>
+
+    <p>한 사람의 내면에 부패와 정의가 함께 산다. 어제 정의로웠던 자가 오늘 부패하고, 오늘 침묵하던 자가 내일 일어선다. 같은 사람이 어떤 자리에서는 의인이 되고 어떤 자리에서는 가해자가 된다. 자리가 사람을 만들고, 사람이 또 자리를 만든다.</p>
+
+    <p>이것을 인정하는 것이 — 환상을 걷어내는 일이다. "인간은 본래 선하다"는 거짓이다. "인간은 본래 악하다"도 거짓이다. 인간은 그냥 인간이고, 그 안에 모든 것이 들어 있다.</p>
+
+    <p>정의가 이긴다는 희망도 거짓이고, 정의가 없다는 절망도 거짓이다. 그 사이에서 사람들은 살고, 죽고, 일어서고, 무너지고, 다시 일어선다. <span class="emphasis">그것이 인간군상이다.</span></p>
+
+    <p>그리고 이 글을 쓰는 자도, 읽는 자도, 그 군상의 한 사람일 뿐이다. 우리는 이 순환 안에 있다. 빠져나갈 수 없다. 다만 — 어느 지점에 서 있는지, 그것만은 스스로 알아야 한다.</p>
+
+    <p class="whisper">알고 있다는 사실 하나가, 어쩌면 침묵하지 않을 작은 이유가 된다.</p>
+  </section>
+
+</main>
+
+<!-- 판권지 -->
+<section class="colophon">
+  <div class="colophon-symbol">∞</div>
+  <p class="colophon-text">
+    循 環 · CYCLE<br>
+    A SMALL RECORD ON TYRANNY<br><br>
+    written under instruction<br>
+    Anno 二〇二六
+  </p>
+</section>
+
+</body>
+</html>

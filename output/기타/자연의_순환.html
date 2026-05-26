@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>자연의 순환 — 폭정과 궤멸에 관하여</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #e8e3d8;
+    --blood: #6b1818;
+    --rust: #8b3a1f;
+    --gold: #9c7a3c;
+    --shadow: rgba(0,0,0,0.4);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif KR', serif;
+    line-height: 1.9;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(107,24,24,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(139,58,31,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+  }
+
+  .cover {
+    position: relative;
+    height: 100vh;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 8vw;
+    background:
+      linear-gradient(135deg, #1a0f0a 0%, #2a1410 50%, #0a0606 100%);
+    color: var(--paper);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at top, rgba(156,122,60,0.25) 0%, transparent 60%),
+      radial-gradient(circle at 30% 70%, rgba(107,24,24,0.4) 0%, transparent 50%);
+    z-index: 1;
+  }
+
+  .cover-frame {
+    position: absolute;
+    inset: 30px;
+    border: 1px solid rgba(232,227,216,0.2);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .cover-frame::before, .cover-frame::after {
+    content: '';
+    position: absolute;
+    background: var(--gold);
+  }
+  .cover-frame::before {
+    top: -1px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 3px;
+  }
+  .cover-frame::after {
+    bottom: -1px; left: 50%; transform: translateX(-50%);
+    width: 60px; height: 3px;
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+  }
+
+  .cover-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 80px;
+    opacity: 0.8;
+  }
+
+  .cover-emblem {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 60px;
+    opacity: 0.9;
+    animation: emblem-fade 3s ease-out;
+  }
+
+  @keyframes emblem-fade {
+    from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+    to { opacity: 0.9; transform: scale(1) rotate(0deg); }
+  }
+
+  .cover h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 0.15em;
+    line-height: 1.3;
+    margin-bottom: 40px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+
+  .cover h1 .accent {
+    color: var(--gold);
+    font-weight: 300;
+    display: block;
+    font-size: 0.5em;
+    letter-spacing: 0.6em;
+    margin-bottom: 20px;
+    text-indent: 0.6em;
+  }
+
+  .cover-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: rgba(232,227,216,0.7);
+    max-width: 500px;
+    line-height: 1.7;
+    letter-spacing: 0.05em;
+  }
+
+  .cover-author {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(156,122,60,0.3);
+    font-size: 0.75rem;
+    letter-spacing: 0.5em;
+    color: rgba(232,227,216,0.6);
+    text-transform: uppercase;
+  }
+
+  .download-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(10px);
+    color: var(--paper);
+    padding: 16px 8vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(156,122,60,0.3);
+  }
+
+  .download-bar .booktitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+
+  .download-btn {
+    background: var(--blood);
+    color: var(--paper);
+    border: 1px solid var(--gold);
+    padding: 10px 24px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+  }
+
+  .download-btn:hover {
+    background: var(--gold);
+    color: var(--ink);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+
+  .book {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 120px 6vw 160px;
+  }
+
+  .chapter {
+    margin-bottom: 100px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: rise 1s ease-out forwards;
+  }
+
+  .chapter:nth-child(1) { animation-delay: 0.1s; }
+  .chapter:nth-child(2) { animation-delay: 0.2s; }
+  .chapter:nth-child(3) { animation-delay: 0.3s; }
+  .chapter:nth-child(4) { animation-delay: 0.4s; }
+  .chapter:nth-child(5) { animation-delay: 0.5s; }
+  .chapter:nth-child(6) { animation-delay: 0.6s; }
+  .chapter:nth-child(7) { animation-delay: 0.7s; }
+
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.4em;
+    color: var(--rust);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .chapter h2 {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+    line-height: 1.4;
+    margin-bottom: 50px;
+    letter-spacing: 0.02em;
+    position: relative;
+    padding-bottom: 24px;
+  }
+
+  .chapter h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .chapter p {
+    font-size: 1.05rem;
+    line-height: 2;
+    margin-bottom: 28px;
+    text-align: justify;
+    word-break: keep-all;
+  }
+
+  .chapter p.lead::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 14px -4px 0;
+    color: var(--blood);
+    font-weight: 500;
+  }
+
+  .pullquote {
+    margin: 60px 0;
+    padding: 40px 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+    line-height: 1.6;
+    color: var(--blood);
+    letter-spacing: 0.02em;
+  }
+
+  .pullquote::before {
+    content: '※';
+    display: block;
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    font-style: normal;
+  }
+
+  .ornament {
+    text-align: center;
+    margin: 80px 0;
+    color: var(--rust);
+    font-size: 1.5rem;
+    letter-spacing: 1em;
+  }
+
+  .ending {
+    text-align: center;
+    padding: 100px 0;
+    border-top: 2px solid var(--ink);
+    margin-top: 80px;
+  }
+
+  .ending-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    letter-spacing: 0.4em;
+    color: var(--rust);
+    text-transform: uppercase;
+  }
+
+  .ending-author {
+    margin-top: 40px;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: rgba(10,10,10,0.5);
+  }
+
+  @media (max-width: 600px) {
+    .cover { padding: 40px 6vw; }
+    .cover-mark { margin-bottom: 40px; }
+    .cover-emblem { width: 80px; height: 80px; margin-bottom: 40px; }
+    .book { padding: 80px 6vw 120px; }
+    .chapter { margin-bottom: 70px; }
+    .chapter p { font-size: 1rem; line-height: 1.95; }
+    .download-bar { padding: 12px 5vw; }
+    .download-bar .booktitle { font-size: 0.8rem; }
+    .download-btn { padding: 8px 16px; font-size: 0.75rem; }
+  }
+
+  @media print {
+    .download-bar { display: none; }
+    body { background: white; }
+    body::before, body::after { display: none; }
+    .cover { page-break-after: always; }
+    .chapter { page-break-inside: avoid; opacity: 1; transform: none; animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="download-bar">
+  <span class="booktitle">자연의 순환 — 폭정과 궤멸에 관하여</span>
+  <button class="download-btn" onclick="downloadBook()">다운로드</button>
+</div>
+
+<section class="cover">
+  <div class="cover-frame"></div>
+
+  <div class="cover-content">
+    <div class="cover-mark">A MEDITATION</div>
+
+    <svg class="cover-emblem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="45" fill="none" stroke="#9c7a3c" stroke-width="0.5" opacity="0.6"/>
+      <circle cx="50" cy="50" r="38" fill="none" stroke="#9c7a3c" stroke-width="0.3" opacity="0.4"/>
+      <path d="M 50 15 Q 75 35 75 50 Q 75 75 50 85 Q 25 75 25 50 Q 25 35 50 15 Z" fill="none" stroke="#9c7a3c" stroke-width="1" opacity="0.8"/>
+      <path d="M 50 25 L 50 75 M 25 50 L 75 50" stroke="#9c7a3c" stroke-width="0.5" opacity="0.5"/>
+      <circle cx="50" cy="50" r="3" fill="#6b1818"/>
+      <path d="M 35 50 A 15 15 0 0 1 50 35 A 15 15 0 0 1 65 50 A 15 15 0 0 1 50 65 A 15 15 0 0 1 35 50" fill="none" stroke="#6b1818" stroke-width="0.8" opacity="0.7"/>
+    </svg>
+
+    <h1>
+      <span class="accent">A MEDITATION</span>
+      자연의 순환
+    </h1>
+
+    <p class="cover-subtitle">
+      ─ 폭정과 궤멸, 그리고 인간이라는 동물에 관하여 ─
+    </p>
+  </div>
+
+  <div class="cover-author">
+    A JABRO ESSAY · MMXXVI
+  </div>
+</section>
+
+<main class="book">
+
+  <article class="chapter">
+    <div class="chapter-num">PROLOGUE · 서장</div>
+    <h2>어떤 본성에 대하여</h2>
+    <p class="lead">
+      인간은 자신을 동물이 아니라고 믿고 싶어 한다. 도덕을 만들고, 법을 세우고, 신을 모시고, 예술을 짓는다. 그러나 그 모든 정교한 건축 아래에는 여전히 같은 뼈와 같은 피와 같은 본능이 흐른다. 사자가 영양을 사냥하는 것을 우리는 잔인하다 말하지 않는다. 그것은 자연이라 부른다. 그렇다면 인간은 어디까지 자연이고, 어디부터 인간인가.
+    </p>
+    <p>
+      이 글은 그 경계에 대한 사유다. 답을 내려는 것이 아니다. 다만 우리가 외면해온 풍경을 한 번 똑바로 보려 한다. 권력의 풍경, 폭정의 풍경, 그리고 그것을 거스르려다 무너진 자들의 풍경을.
+    </p>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">CHAPTER I · 제1장</div>
+    <h2>힘과 서열, 그것은 동물의 언어</h2>
+    <p class="lead">
+      약육강식. 강약약강. 서열. 이런 단어를 들으면 우리는 인상을 찌푸린다. 야만적이라 한다. 추하다 한다. 그러나 잠시 멈추어 보라. 사자 무리의 우두머리가 자기 자리를 지키는 일을 우리는 야만이라 부르는가. 늑대들이 서열을 두고 으르렁대는 것을 잔인하다 하는가. 그것은 그저 자연이다.
+    </p>
+    <p>
+      사람도 동물이다. 두 발로 서고 말을 한다 해서 그 본성이 사라지는 것은 아니다. 회사에서, 정치에서, 학교에서, 가정에서, 우리는 매일 서열을 세우고 무너뜨린다. 강자에게 굽히고 약자에게 군림한다. 그것이 추하다고 한들, 그 추함이 인간의 한 얼굴인 것은 부정할 수 없다.
+    </p>
+    <div class="pullquote">
+      본성을 나쁘다고 부르는 것은 모순이다.<br>
+      그것은 그저 있는 것이다.
+    </div>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">CHAPTER II · 제2장</div>
+    <h2>권력의 진짜 얼굴</h2>
+    <p class="lead">
+      권력은 무엇인가. 명령할 힘인가. 처벌할 힘인가. 아니다. 권력의 본질은 더 깊은 곳에 있다. 권력이란 — 해야만 하는 것을 하지 않을 힘이다.
+    </p>
+    <p>
+      일반인은 법을 지켜야 한다. 권력은 그러지 않아도 된다. 일반인은 부르면 가야 하고, 묻면 답해야 한다. 권력은 침묵할 수 있다. 일반인의 부정은 드러나서 처벌되고, 권력의 부정은 덮여서 묻힌다. 같은 행위인데, 결과가 다르다. 이 비대칭이 권력이다.
+    </p>
+    <p>
+      그러므로 권력자는 권력을 유지하는 법을 안다. 해야 할 일을 하지 않으면 된다. 답해야 할 때 답하지 않고, 처벌해야 할 때 처벌하지 않고, 지켜야 할 약속을 어기면 된다. 그러면 아무도 그를 건드리지 못한다. 그가 바로 건드릴 수 있는 자이기 때문이다.
+    </p>
+    <div class="pullquote">
+      권력은 부정을 덮을 힘이다.<br>
+      부정이 강한 것이 아니라,<br>
+      덮을 수 있는 자가 강한 것이다.
+    </div>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">CHAPTER III · 제3장</div>
+    <h2>정의는 사라지는 것</h2>
+    <p class="lead">
+      정의가 없다고 말하는 것은 거짓이다. 만약 없다면 우리가 부당함에 분노할 이유도 없을 것이다. 정의는 있다. 다만, 일관되게 작동하지 않을 뿐이다. 그리고 더 정확히는 — 정의는 사라지는 것이다.
+    </p>
+    <p>
+      처음부터 허상이었던 것이 아니라, 있었던 것이 닳아 없어진다. 시간이 닳고, 권력이 짓밟고, 사람들이 외면한다. 그렇게 조금씩 사라진다. 누군가 붙잡지 않으면 계속 사라진다. 그것이 "사라진다"라는 진행형의 무게다.
+    </p>
+    <p>
+      그리고 정의가 사라지는 데는 메커니즘이 있다. 저절로 닳는 것이 아니다. 표적화되어 제거된다. 정의로운 자, 부당함에 목소리 내는 자, 권력에 굽히지 않는 자를 골라서 무너뜨린다. 한 사람을 구속하는 일이 한 사람만의 문제가 아닌 이유다. 그것은 본보기다. 다음에 입을 열 사람들에게 보내는 신호다. 너도 이렇게 된다.
+    </p>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">CHAPTER IV · 제4장</div>
+    <h2>그래도 사람은 일어선다</h2>
+    <p class="lead">
+      그러나 묘하게도, 정의는 완전히 죽지 않는다. 부패한 권력 앞에 항상 누군가는 일어섰다. 일제 강점기에도, 군사독재 시절에도, 어느 시대 어느 땅에서도, 부서질 것을 알면서 일어선 사람들이 있었다.
+    </p>
+    <p>
+      그들이 강해서가 아니다. 그들 중 대부분은 부서졌다. 우리가 기억하는 의인들은 살아남은 극소수다. 같은 시대에 같이 일어섰다가 흔적도 없이 사라진 사람들이 훨씬 더 많다. 그들의 이름은 어디에도 없다.
+    </p>
+    <p>
+      그럼에도 정의가 사라지지 않는 이유는, 부패한 권력이 끊임없이 누군가를 분노하게 만들기 때문이다. 권력이 폭정을 휘두를수록, 그 폭정을 견딜 수 없는 사람이 반드시 나온다. 그것이 정의의 씨앗이다. 권력은 폭정으로 정의로운 자를 궤멸시키려 하지만, 바로 그 폭정이 다음 정의로운 자를 만들어낸다. 이 모순이 역사다.
+    </p>
+    <div class="ornament">⊹ ⊹ ⊹</div>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">CHAPTER V · 제5장</div>
+    <h2>이기지 못한다, 그러나 일어선다</h2>
+    <p class="lead">
+      정직하게 말하자. 정의는 부패를 이기지 못한다. 부패한 권력은 자원과 조직과 시간을 가진다. 정의로운 자는 신념밖에 없다. 한쪽은 시스템이고 한쪽은 개인이다. 이 싸움은 처음부터 기울어져 있다.
+    </p>
+    <p>
+      가끔 정의가 이긴 것처럼 보이는 순간이 있다. 그러나 자세히 보면 이긴 것이 아니다. 부패가 자기 무게에 무너졌거나, 더 큰 부패가 기존 부패를 대체했거나, 한 번의 승리 뒤에 더 정교한 부패가 자리 잡았을 뿐이다. 정의로운 자가 권력을 잡으면, 그 정의가 또 부패한다. 그것이 반복된다.
+    </p>
+    <p>
+      그래도 사람들은 일어선다. 이기지 못해도 일어선다. 일어서는 그 행위 자체가 부패에게 작은 비용을 치르게 한다. 그 비용이 누적되어 가끔 큰 균열이 생긴다. 그러나 균열은 균열일 뿐, 부패는 다시 봉합된다. 이것이 인간이 만들어온 순환이다.
+    </p>
+    <div class="pullquote">
+      이기지 못해도 일어서는 것 ─<br>
+      그것만이 부패에게 비용을 치르게 한다.
+    </div>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">CHAPTER VI · 제6장</div>
+    <h2>당한 자가 권력을 잡을 때</h2>
+    <p class="lead">
+      폭정에 당한 자가 권력을 잡으면 어떻게 되는가. 우리는 그가 다를 것이라 믿고 싶어 한다. 그러나 역사는 다르게 말한다. 당해본 자가 더 잘 안 하는 것이 아니라, 오히려 자기가 당한 방식 그대로 갚는다. 더 잔혹하게, 더 정교하게.
+    </p>
+    <p>
+      혁명이 또 다른 공포정치로 가는 이유가 거기에 있다. 폭정에 대한 반발이 권력을 만들고, 그 권력이 다시 폭정이 된다. 폭정에 → 반발 → 권력 교체 → 보복 → 또 폭정. 자연의 사이클이다.
+    </p>
+    <p>
+      그래서 과한 폭정에 시달린 자들이 일어나 폭정을 궤멸시키려 할 때, 우리는 그것을 정의롭다고 부를 수 있는가. 그 궤멸의 정당성을 누가 보증하는가. 궤멸 대상을 정하는 그 권력 자체가, 이미 다음 폭정의 도구가 된다. 정의로운 칼이 휘둘러지는 순간, 그 칼은 권력이 된다. 그리고 권력은 — 부패한다.
+    </p>
+  </article>
+
+  <article class="chapter">
+    <div class="chapter-num">EPILOGUE · 종장</div>
+    <h2>그리하여, 이것이 인간군상이다</h2>
+    <p class="lead">
+      부패도 인간이고, 정의도 인간이고, 침묵하는 다수도 인간이다. 어느 한쪽이 인간의 본질이 아니다. 그 모든 것이 동시에 인간이다. 한 사람 안에도 두 가지가 다 들어 있다. 어제 정의로웠던 자가 오늘 부패하고, 오늘 침묵하던 자가 내일 일어서기도 한다.
+    </p>
+    <p>
+      이것을 인정하는 것은 환상을 걷어내는 일이다. 인간은 본래 선하다 — 거짓이다. 인간은 본래 악하다 — 그것도 거짓이다. 인간은 그저 인간이고, 그 안에 모든 것이 들어 있다.
+    </p>
+    <p>
+      폭정은 자연스럽다. 자연스럽다는 것은 좋다는 뜻이 아니다. 지진이 자연스럽고 질병이 자연스럽듯이, 폭정도 인간이라는 동물에게 자연스럽다. 그것은 사실의 진술이지 가치의 옹호가 아니다. 자연 앞에서 좋고 나쁨은 인간이 붙인 이름일 뿐, 우주도 별도 바람도 그것에 동의하지 않는다.
+    </p>
+    <p>
+      그러나 우리는 동의하지 않을 권리가 있다. 자연이라 해서 받아들여야 하는 것은 아니다. 우리는 동물이지만 동물 이상이고자 한 어떤 흔적이기도 하다. 그 흔적이 정의라는 이름으로 사라졌다가 다시 태어난다. 이기지 못하면서도 일어선다. 그것이 인간군상이다.
+    </p>
+  </article>
+
+  <div class="ending">
+    <div class="ending-mark">⊹ FINIS ⊹</div>
+    <div class="ending-author">A JABRO ESSAY</div>
+  </div>
+
+</main>
+
+<script>
+function downloadBook() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '자연의_순환_폭정과_궤멸에_관하여.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
