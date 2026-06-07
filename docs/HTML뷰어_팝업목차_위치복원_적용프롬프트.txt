@@ -1,0 +1,444 @@
+===============================================================
+HTML 뷰어 인프라 적용 프롬프트
+— 팝업 목차 + 마지막 위치 자동 복원 + 책갈피
+===============================================================
+
+이 프롬프트는 다른 AI(클론)에게 "현재 작업 중인 책 HTML에 아래
+인프라를 적용해"고 지시할 때 그대로 던지는 텍스트다.
+AI가 사용자에게 물어볼 것·교체할 부분·검증할 것까지 모두 포함.
+
+
+───────────────────────────────────────────────────────────────
+■ 너의 역할
+───────────────────────────────────────────────────────────────
+사용자가 작업 중인 단일 HTML 파일에 다음 세 가지 동작을 박는 것이
+너의 임무다.
+
+1. 팝업 목차
+   - 좌측 하단의 "위치 인디케이터"를 탭/클릭하면 풀스크린 오버레이로
+     목차가 펼쳐진다.
+   - 목차 항목은 본문의 <h2 class="part">, <h3 class="chapter">에서
+     자동으로 빌드된다.
+   - 항목 클릭 시 해당 섹션으로 부드럽게 스크롤한다.
+
+2. 마지막 위치 자동 복원
+   - 사용자의 스크롤 위치를 localStorage에 250ms throttle로 저장한다.
+   - 파일을 다시 열면 그 위치에서 자동으로 시작한다.
+
+3. 책갈피 + 단축키
+   - 우측 하단 🔖 버튼 — 책갈피 추가·이동·삭제 패널.
+   - 키보드: B(추가) L(목록 토글) Esc(닫기) H(도움말) ← →
+     PageUp/Down Space (한 화면씩 페이지 이동).
+
+
+───────────────────────────────────────────────────────────────
+■ 작업 절차 (이 순서대로 수행할 것)
+───────────────────────────────────────────────────────────────
+STEP 1 — 사용자에게 다음 두 가지를 물어본다.
+
+   (1) 책 식별자 (영문 소문자·언더스코어, 예: erp_guide, sc_guide,
+       mes_guide)
+       → 이것이 localStorage 키 prefix가 된다. 다른 책과 절대
+         충돌하면 안 된다.
+
+   (2) 액센트 색상 (헥스 코드 2개)
+       · primary  — 책 표지·테마 메인 색 (예: #2c5f5d teal,
+                    #8b3a2a 적갈색)
+       · accent2  — 진행률 바 그라데이션 오른쪽 색 (예: #a68a3f
+                    골드)
+       → 사용자가 모르면 표지/대표 색상을 따라가도 무방하다고
+         안내하고, 사용자 입력값으로 진행.
+
+STEP 2 — 대상 HTML 파일을 열고 다음 사전 조건을 검증한다.
+
+   (a) 부 헤더가 <h2 class="part" id="…">로 마크업되어 있는가?
+   (b) 장 헤더가 <h3 class="chapter" id="…">로 마크업되어 있는가?
+   (c) id가 없는 헤더는 가장 가까운 부모 <section id="…">으로
+       fallback 한다. 부모 section에도 id가 없으면 그 항목은
+       목차에 안 뜬다.
+
+   ※ 사전 조건이 안 맞으면 사용자에게 "현재 본문에는 h2.part /
+     h3.chapter 클래스가 없어 목차가 비어버립니다. 본문 헤더 클래스를
+     먼저 바꿀까요, 셀렉터를 책에 맞게 변경할까요?" 라고 묻는다.
+     멋대로 본문 헤더를 수정하지 말 것.
+
+STEP 3 — 아래 「붙여넣을 코드」를 </body> 직전에 통째로 삽입한다.
+
+   삽입 위치는 반드시 </body> 직전. 다른 곳에 박지 말 것.
+
+STEP 4 — 삽입한 코드 안에서 다음 두 가지를 교체한다.
+
+   (1) localStorage prefix
+       원본 코드:
+         const FILE_KEY = '__BOOK_PREFIX__' + (location.pathname...
+       → __BOOK_PREFIX__ 를 STEP 1에서 받은 책 식별자로 교체.
+       예) 'erp_guide_'
+
+   (2) 액센트 색상 — 코드 안에 __ACCENT__·__ACCENT2__ 두 토큰이
+       총 7곳 박혀있다. 모두 STEP 1에서 받은 헥스 코드로 교체.
+       (전체 치환 권장)
+
+       __ACCENT__   → primary (예: #2c5f5d)
+       __ACCENT2__  → accent2 (예: #a68a3f)
+
+STEP 5 — 사용자에게 다음을 확인 요청한다.
+
+   "기타 색인(핵심 장면을 한 화면에서 점프할 수 있는 보조 색인)을
+    추가할까요? 추가한다면 [id, '라벨'] 쌍 목록을 알려주세요.
+    없으면 빈 배열로 두고 표시 안 됩니다."
+
+   사용자가 색인 항목을 주면, 코드 안 `var sumScenes = [];` 부분에
+   배열로 채워 넣는다. 빈 채로 두면 색인 섹션 자체가 안 그려진다.
+
+STEP 6 — 검증. 사용자에게 다음을 확인하라고 안내한다.
+
+   [ ] 브라우저로 파일을 열어 좌측 하단 인디케이터를 탭 → 목차가
+       풀스크린으로 펼쳐지는가?
+   [ ] 목차 항목 클릭 시 해당 섹션으로 스크롤되는가?
+   [ ] 페이지를 새로고침했을 때 직전 스크롤 위치로 자동 복원되는가?
+   [ ] B 키로 책갈피 추가 → L 키로 목록 토글이 되는가?
+   [ ] 다른 책(다른 prefix)과 localStorage가 섞이지 않는가?
+
+
+───────────────────────────────────────────────────────────────
+■ 붙여넣을 코드 (</body> 직전에 통째로 삽입)
+───────────────────────────────────────────────────────────────
+
+<!-- ============================================================
+ 책갈피 · 진행률 · 팝업 목차 · 마지막 위치 인프라
+============================================================ -->
+<div id="progress-bar" style="position:fixed;top:0;left:0;width:0%;height:3px;background:linear-gradient(90deg,__ACCENT__,__ACCENT2__);z-index:10000;transition:width 0.1s ease-out;"></div>
+
+<div id="position-indicator" onclick="toggleTocPopup();" ontouchend="event.preventDefault();toggleTocPopup();" style="position:fixed;bottom:14px;left:14px;z-index:9999;font-family:'Noto Sans KR',sans-serif;background:rgba(26,26,26,0.85);color:#fff;padding:10px 16px;border-radius:14px;font-size:11.5px;font-weight:600;letter-spacing:0.3px;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer;-webkit-tap-highlight-color:rgba(255,255,255,0.2);user-select:none;">
+ <span id="pos-chapter">표지</span> · <span id="pos-percent">0%</span>
+</div>
+
+<div id="toc-popup" style="display:none;position:fixed;left:14px;right:14px;bottom:60px;max-height:60vh;overflow-y:auto;overscroll-behavior:contain;background:#fff;color:#1a1a1a;border:1px solid #b8a988;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);padding:14px 18px;z-index:10000;font-family:'Noto Sans KR',sans-serif;-webkit-overflow-scrolling:touch;">
+ <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding-bottom:8px;margin-bottom:10px;position:sticky;top:-14px;background:#fff;z-index:5;padding-top:14px;margin-top:-14px;">
+  <span style="font-weight:700;font-size:14px;">📖 목차</span>
+  <span onclick="toggleTocPopup(false);" ontouchend="event.preventDefault();toggleTocPopup(false);" style="cursor:pointer;color:#888;font-size:18px;font-weight:700;padding:0 6px;">×</span>
+ </div>
+ <div id="toc-popup-list" style="font-size:13px;line-height:1.7;"></div>
+</div>
+
+<script>
+function toggleTocPopup(force) {
+ var popup = document.getElementById('toc-popup');
+ if (!popup) return;
+ var show = (typeof force === 'boolean') ? force : (popup.style.display === 'none');
+ if (show) {
+  var list = document.getElementById('toc-popup-list');
+  if (list && !list.dataset.built) {
+   var items = document.querySelectorAll('h2.part, h3.chapter');
+   var html = '';
+   items.forEach(function(el) {
+    var id = el.id;
+    if (!id) {
+     var parentSection = el.closest('section');
+     if (parentSection && parentSection.id) id = parentSection.id;
+    }
+    if (!id) return;
+    var clone = el.cloneNode(true);
+    clone.querySelectorAll('small').forEach(function(s){s.remove();});
+    var title = clone.textContent.trim();
+    if (title.length > 50) title = title.substring(0, 48) + '…';
+    var indent = el.tagName === 'H2' ? 0 : (el.tagName === 'H3' ? 12 : 24);
+    var weight = el.tagName === 'H2' ? '700' : (el.tagName === 'H3' ? '600' : '400');
+    var color  = el.tagName === 'H2' ? '__ACCENT__' : (el.tagName === 'H3' ? '#1a1a1a' : '#555');
+    html += '<div onclick="gotoSection(\'' + id + '\');" style="cursor:pointer;padding:8px 0 8px ' + indent + 'px;font-weight:' + weight + ';color:' + color + ';border-bottom:1px dotted #eee;-webkit-tap-highlight-color:rgba(44,95,93,0.15);">' + title + '</div>';
+   });
+   // 기타 색인 — 사용자가 핵심 장면을 점프할 수 있게 [id, '라벨'] 쌍을 채움
+   //          비어있으면 색인 섹션 자체가 안 그려진다
+   var sumScenes = [];
+   if (sumScenes.length > 0) {
+    html += '<div style="border-top:2px solid __ACCENT__;margin-top:8px;padding-top:8px;font-weight:700;color:__ACCENT__;">기타 색인</div>';
+    sumScenes.forEach(function(s) {
+     html += '<div onclick="gotoSection(\'' + s[0] + '\');" style="cursor:pointer;padding:6px 0 6px 16px;font-size:12.5px;color:#555;border-bottom:1px dotted #eee;-webkit-tap-highlight-color:rgba(44,95,93,0.15);">' + s[1] + '</div>';
+    });
+   }
+   list.innerHTML = html;
+   list.dataset.built = '1';
+  }
+  popup.style.display = 'block';
+  document.body.dataset.scrollY = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = '-' + window.scrollY + 'px';
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+ } else {
+  popup.style.display = 'none';
+  var y = parseInt(document.body.dataset.scrollY || '0', 10);
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  window.scrollTo(0, y);
+ }
+}
+function gotoSection(id) {
+ document.body.style.position = '';
+ document.body.style.top = '';
+ document.body.style.left = '';
+ document.body.style.right = '';
+ document.body.style.width = '';
+ var popup = document.getElementById('toc-popup');
+ if (popup) popup.style.display = 'none';
+ setTimeout(function() {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }, 50);
+}
+</script>
+
+<div id="bm-toolbar" style="position:fixed;bottom:14px;right:14px;z-index:9999;font-family:'Noto Sans KR',sans-serif;">
+ <button id="bm-toggle" title="책갈피 (L)" style="background:__ACCENT__;color:#fff;border:0;padding:7px 12px;border-radius:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);font-size:16px;">🔖</button>
+ <div id="bm-panel" style="display:none;position:absolute;bottom:48px;right:0;width:280px;max-height:380px;overflow-y:auto;background:#fff;color:#1a1a1a;border:1px solid #b8a988;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:12px 14px;">
+  <div style="font-weight:700;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:8px;">📑 책갈피 목록</div>
+  <div id="bm-list" style="font-size:12.5px;line-height:1.5;"></div>
+  <div style="border-top:1px solid #ddd;margin-top:8px;padding-top:8px;font-size:11px;color:#666;">
+   <button id="bm-add" style="background:__ACCENT__;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;margin-right:4px;">+ 현재 위치 추가</button>
+   <button id="bm-clear" style="background:#f0e0e0;color:__ACCENT__;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;">전체 삭제</button>
+   <div style="margin-top:6px;">단축키: B(추가) L(목록) Esc(닫기) H(도움말)</div>
+  </div>
+ </div>
+</div>
+
+<script>
+(function() {
+ 'use strict';
+ // ★★★ 책별로 바꿀 prefix — localStorage 충돌 방지 ★★★
+ const FILE_KEY = '__BOOK_PREFIX__' + (location.pathname.split('/').pop() || 'main');
+ const POS_KEY  = FILE_KEY + '_lastpos';
+ const BM_KEY   = FILE_KEY + '_bookmarks';
+
+ // 1. 마지막 위치 자동 복원
+ window.addEventListener('load', function() {
+  const saved = localStorage.getItem(POS_KEY);
+  if (saved) {
+   setTimeout(function() {
+    window.scrollTo({ top: parseInt(saved, 10), behavior: 'auto' });
+   }, 80);
+  }
+  renderList();
+ });
+
+ // 2. 스크롤 시 위치 저장 (250ms throttle)
+ let scrollTimer;
+ window.addEventListener('scroll', function() {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(function() {
+   localStorage.setItem(POS_KEY, window.scrollY);
+  }, 250);
+ });
+
+ // 3. 책갈피 관리
+ function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem(BM_KEY) || '[]'); }
+  catch(e) { return []; }
+ }
+ function saveBookmarks(arr) { localStorage.setItem(BM_KEY, JSON.stringify(arr)); }
+ function findNearestHeading() {
+  const headings = document.querySelectorAll('h1, h2, h3, h4');
+  let nearest = null, minDiff = Infinity;
+  const y = window.scrollY + 80;
+  for (const h of headings) {
+   const top = h.getBoundingClientRect().top + window.scrollY;
+   if (top <= y) { const diff = y - top; if (diff < minDiff) { minDiff = diff; nearest = h; } }
+  }
+  return nearest ? nearest.textContent.trim().substring(0, 40) : '제목 없음';
+ }
+ function addBookmark() {
+  const name = prompt('책갈피 이름 (취소 시 자동 제목):', findNearestHeading());
+  if (name === null) return;
+  const bm = getBookmarks();
+  bm.push({
+   name: (name || findNearestHeading()).substring(0, 50),
+   pos: window.scrollY,
+   time: new Date().toLocaleString('ko-KR')
+  });
+  saveBookmarks(bm);
+  renderList();
+  flash('✓ 책갈피 추가됨');
+ }
+ function gotoBookmark(idx) {
+  const bm = getBookmarks();
+  if (bm[idx]) { window.scrollTo({ top: bm[idx].pos, behavior: 'smooth' }); togglePanel(false); }
+ }
+ function deleteBookmark(idx) {
+  const bm = getBookmarks(); bm.splice(idx, 1); saveBookmarks(bm); renderList();
+ }
+ function clearAll() {
+  if (confirm('모든 책갈피를 삭제하시겠습니까?')) { saveBookmarks([]); renderList(); }
+ }
+ function renderList() {
+  const list = document.getElementById('bm-list');
+  if (!list) return;
+  const bm = getBookmarks();
+  if (bm.length === 0) {
+   list.innerHTML = '<div style="color:#999;padding:8px 0;">저장된 책갈피가 없습니다.</div>';
+   return;
+  }
+  list.innerHTML = bm.map(function(b, i) {
+   return '<div style="padding:6px 0;border-bottom:1px dotted #eee;">' +
+    '<a href="#" onclick="window._bmGoto(' + i + ');return false;" style="color:__ACCENT__;text-decoration:none;font-weight:500;display:block;">📍 ' + escapeHtml(b.name) + '</a>' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">' +
+    '<span style="color:#999;font-size:10.5px;">' + escapeHtml(b.time) + '</span>' +
+    '<button onclick="window._bmDelete(' + i + ')" style="background:none;border:0;color:#c66;cursor:pointer;font-size:11px;">🗑️</button>' +
+    '</div></div>';
+  }).join('');
+ }
+ function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+   return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+  });
+ }
+ function togglePanel(force) {
+  const p = document.getElementById('bm-panel');
+  const show = (typeof force === 'boolean') ? force : (p.style.display === 'none');
+  p.style.display = show ? 'block' : 'none';
+  if (show) renderList();
+ }
+ let flashTimer;
+ function flash(msg) {
+  let el = document.getElementById('bm-flash');
+  if (!el) {
+   el = document.createElement('div');
+   el.id = 'bm-flash';
+   el.style.cssText = 'position:fixed;top:18px;left:50%;transform:translateX(-50%);background:__ACCENT__;color:#fff;padding:8px 18px;border-radius:20px;z-index:10000;font-family:sans-serif;font-size:13px;box-shadow:0 2px 10px rgba(0,0,0,.2);transition:opacity.3s;';
+   document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.opacity = '1';
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(function() { el.style.opacity = '0'; }, 1500);
+ }
+ window._bmGoto = gotoBookmark;
+ window._bmDelete = deleteBookmark;
+
+ // 4. 진행률 + 현재 챕터 + 키보드 페이지 이동
+ document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('bm-toggle').addEventListener('click', function() { togglePanel(); });
+  document.getElementById('bm-add').addEventListener('click', addBookmark);
+  document.getElementById('bm-clear').addEventListener('click', clearAll);
+
+  const progressBar = document.getElementById('progress-bar');
+  const posChapter  = document.getElementById('pos-chapter');
+  const posPercent  = document.getElementById('pos-percent');
+  const chapters    = Array.from(document.querySelectorAll('h2.part, h3.chapter'));
+
+  function updatePosition() {
+   const scrollTop = window.scrollY || document.documentElement.scrollTop;
+   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+   const pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+   if (progressBar) progressBar.style.width = pct + '%';
+   if (posPercent)  posPercent.textContent  = pct + '%';
+   let current = chapters[0];
+   for (const ch of chapters) {
+    const rect = ch.getBoundingClientRect();
+    if (rect.top <= 100) current = ch; else break;
+   }
+   if (current && posChapter) {
+    const text = current.cloneNode(true);
+    text.querySelectorAll('small').forEach(s => s.remove());
+    let title = text.textContent.trim();
+    if (title.length > 30) title = title.substring(0, 28) + '…';
+    posChapter.textContent = title;
+   }
+  }
+  window.addEventListener('scroll', updatePosition, { passive: true });
+  updatePosition();
+
+  // 5. 한 화면씩 페이지 이동
+  document.addEventListener('keydown', function(e) {
+   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+   if (e.ctrlKey || e.metaKey || e.altKey) return;
+   const pageStep = window.innerHeight - 80;
+   if (e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+    e.preventDefault(); window.scrollBy({ top: pageStep, behavior: 'smooth' });
+   } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+    e.preventDefault(); window.scrollBy({ top: -pageStep, behavior: 'smooth' });
+   }
+  });
+ });
+
+ // 6. 책갈피·도움말 단축키
+ document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const key = e.key.toLowerCase();
+  if (key === 'b') { e.preventDefault(); addBookmark(); }
+  else if (key === 'l') { e.preventDefault(); togglePanel(); }
+  else if (key === 'escape') { togglePanel(false); if (typeof toggleTocPopup === 'function') toggleTocPopup(false); }
+  else if (key === 'h' && !e.shiftKey) {
+   alert('📖 단축키\n\nB — 책갈피 추가\nL — 책갈피 목록 토글\nEsc — 책갈피·목차 팝업 닫기\nH — 이 도움말\n\n📌 마지막 본 위치는 자동 저장됩니다.\n파일을 다시 열어도 그 위치부터 시작합니다.');
+  }
+ });
+})();
+</script>
+
+
+───────────────────────────────────────────────────────────────
+■ 교체 토큰 정리 (전체 치환 권장)
+───────────────────────────────────────────────────────────────
+__BOOK_PREFIX__   →  사용자가 정한 책 식별자 + '_'
+                     예) 'erp_guide_', 'sc_guide_', 'mes_guide_'
+                     ※ 따옴표 안에 들어가는 위치임. 따옴표는 코드에
+                       이미 있으니 토큰만 바꾸면 됨.
+
+__ACCENT__        →  사용자가 정한 primary 헥스 코드 (예: #2c5f5d)
+__ACCENT2__       →  사용자가 정한 accent2 헥스 코드 (예: #a68a3f)
+
+
+───────────────────────────────────────────────────────────────
+■ 팝업 목차 자동 빌드 룰 (참고)
+───────────────────────────────────────────────────────────────
+- 셀렉터: h2.part, h3.chapter (h4 이하는 목차에 안 들어간다)
+- id 우선순위: (1) 헤더 element 자체의 id
+              (2) 가장 가까운 부모 <section>의 id (fallback)
+              (3) 둘 다 없으면 항목 누락
+- 들여쓰기: h2 = 0px / h3 = 12px
+- 두께/색: h2 = 700 weight, primary 색 / h3 = 600 weight, 진회색
+- 캐싱: 첫 토글 시 빌드 후 dataset.built = '1' — 두 번째 호출부터
+        재빌드 안 함. 본문이 동적으로 바뀌는 페이지에서는 캐싱을
+        풀거나 dataset을 지워야 함.
+- 본문 스크롤 잠금: 팝업이 열리면 body { position:fixed }로 모바일
+        백그라운드 스크롤을 막고, 닫을 때 원래 위치로 복원.
+- 점프: gotoSection(id) → scrollIntoView({behavior:'smooth'})
+
+
+───────────────────────────────────────────────────────────────
+■ 마지막 위치 복원 — 동작 흐름 (참고)
+───────────────────────────────────────────────────────────────
+1. 페이지 load → localStorage[POS_KEY] 읽음 → 80ms 후 그 위치로
+   즉시 jump (behavior:'auto')
+2. 스크롤 발생 → 250ms throttle → localStorage[POS_KEY] = scrollY
+3. 다른 파일이거나 다른 prefix면 키가 다르므로 위치 독립
+
+
+───────────────────────────────────────────────────────────────
+■ 주의 / 한계
+───────────────────────────────────────────────────────────────
+- file:// 로 열어도 localStorage는 origin(파일 경로)별로 저장된다.
+  → 파일을 다른 폴더로 복사·이동하면 위치가 따라오지 않는다.
+- 시크릿/프라이빗 브라우징에서는 저장 안 됨.
+- 같은 prefix를 다른 책에 쓰면 키 충돌 — 반드시 책별 분리.
+- 스크롤 저장은 250ms throttle. 마지막 스크롤 후 250ms 내에
+  탭을 닫으면 이전 위치로 복원될 수 있음(실용상 무시 가능).
+- chapters 배열은 DOMContentLoaded 시점에 한 번만 수집한다.
+  본문이 동적으로 추가되면 위치 인디케이터가 갱신되지 않는다.
+- 본문에 h2.part / h3.chapter 클래스가 없으면 목차가 비고
+  현재 챕터 표시도 "표지"에서 멈춘다. 본문 마크업 조건 필수.
+
+
+───────────────────────────────────────────────────────────────
+■ 작업 완료 후 너의 보고 형식
+───────────────────────────────────────────────────────────────
+사용자에게 다음을 한 줄씩 보고해라.
+
+- 삽입 위치: {HTML 파일 경로} 의 </body> 직전
+- localStorage prefix: '{prefix}'
+- 액센트 색: primary={hex} / accent2={hex}
+- 기타 색인 항목 수: {N}개 (없으면 0)
+- 검증 체크리스트: 사용자에게 브라우저로 확인 요청

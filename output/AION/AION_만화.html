@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AION — Graphic Novel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #e8e3d8;
+    --soft: #555555;
+    --blood: #6b1818;
+    --rust: #8b3a1f;
+    --gold: #9c7a3c;
+    --shadow: rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Serif KR', serif;
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(107,24,24,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(139,58,31,0.05) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1; opacity: 0.4; mix-blend-mode: multiply;
+  }
+
+  /* COVER */
+  .cover {
+    position: relative; height: 100vh; min-height: 760px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #1a0612 0%, #0a0612 50%, #08030c 100%);
+    color: #f0e8ff; overflow: hidden; z-index: 2; padding: 60px 8vw;
+  }
+  .cover::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(ellipse at top, rgba(156,122,60,0.18) 0%, transparent 60%),
+      radial-gradient(circle at 40% 70%, rgba(107,24,24,0.3) 0%, transparent 50%);
+    z-index: 1;
+  }
+  .cover-frame { position: absolute; inset: 30px; border: 1px solid rgba(232,227,216,0.15); z-index: 2; }
+  .cover svg.cover-art { position: relative; z-index: 3; width: min(420px, 80vw); height: auto; margin-bottom: 30px; }
+  .cover h1 {
+    position: relative; z-index: 3;
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    font-size: clamp(4.5rem, 11vw, 8rem); letter-spacing: 0.25em;
+    color: #f0e8ff; margin-bottom: 20px;
+    text-shadow: 0 4px 30px rgba(107,24,24,0.5);
+  }
+  .cover-sub {
+    position: relative; z-index: 3;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: rgba(232,227,216,0.55); font-size: 1.1rem; letter-spacing: 0.25em;
+    margin-bottom: 8px;
+  }
+  .cover-mark {
+    position: relative; z-index: 3;
+    font-size: 0.75rem; letter-spacing: 0.5em; color: #9c7a3c;
+    margin-top: 30px; text-transform: uppercase;
+  }
+
+  /* PAGE */
+  .book {
+    position: relative; z-index: 2;
+    max-width: 880px; margin: 0 auto; padding: 60px 4vw 100px;
+  }
+  .page {
+    background: #f4efe3; box-shadow: 0 6px 30px rgba(0,0,0,0.15);
+    margin-bottom: 60px; padding: 30px 28px; border-radius: 4px;
+    position: relative; border: 1px solid rgba(0,0,0,0.08);
+  }
+  .page-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid var(--ink); padding-bottom: 10px; margin-bottom: 20px;
+  }
+  .page-chapter {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: var(--rust); letter-spacing: 0.3em; font-size: 0.85rem; text-transform: uppercase;
+  }
+  .page-title {
+    font-family: 'Black Han Sans', sans-serif; font-size: 1.4rem;
+    color: var(--ink); letter-spacing: 0.05em;
+  }
+  .page-num {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: var(--soft); font-size: 0.85rem;
+  }
+
+  /* PANEL GRID */
+  .panels { display: grid; gap: 14px; }
+  .grid-1 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .grid-mixed-1 { grid-template-columns: 2fr 1fr; }
+  .grid-mixed-2 { grid-template-columns: 1fr 2fr; }
+  .grid-tall { grid-template-rows: 1fr 1fr; }
+
+  .panel {
+    position: relative; background: #f8f3e6;
+    border: 2px solid var(--ink); border-radius: 2px;
+    overflow: hidden; min-height: 200px;
+    display: flex; flex-direction: column;
+  }
+  .panel.dark { background: #1a1422; color: #e8dcff; }
+  .panel.blood { background: linear-gradient(180deg, #2a0a0e 0%, #6b1818 100%); color: #f0e8ff; }
+  .panel.flash { background: #fff9e6; }
+  .panel.tall { min-height: 320px; }
+  .panel.full { grid-column: 1 / -1; }
+
+  .panel svg { width: 100%; height: 100%; display: block; flex: 1; }
+  .panel-caption {
+    background: rgba(255,250,232,0.92); color: var(--ink);
+    padding: 8px 12px; font-size: 0.92rem; line-height: 1.5;
+    border-top: 1px solid var(--ink); font-style: italic;
+  }
+  .panel.dark .panel-caption { background: rgba(15,10,22,0.92); color: #e8dcff; }
+
+  /* SPEECH BUBBLES */
+  .bubble {
+    position: absolute; background: #fff;
+    border: 2px solid var(--ink); padding: 8px 14px;
+    border-radius: 18px; font-size: 0.92rem; line-height: 1.4;
+    max-width: 220px; box-shadow: 1px 2px 0 rgba(0,0,0,0.15);
+    color: var(--ink); font-weight: 500;
+  }
+  .bubble::after {
+    content: ''; position: absolute; width: 0; height: 0;
+    border-style: solid;
+  }
+  .bubble.left::after {
+    left: 14px; bottom: -14px;
+    border-width: 14px 10px 0 0; border-color: #fff transparent transparent transparent;
+  }
+  .bubble.left::before {
+    content: ''; position: absolute; left: 12px; bottom: -18px;
+    width: 0; height: 0; border-style: solid;
+    border-width: 18px 14px 0 0; border-color: var(--ink) transparent transparent transparent;
+  }
+  .bubble.right::after {
+    right: 14px; bottom: -14px;
+    border-width: 14px 0 0 10px; border-color: #fff transparent transparent transparent;
+  }
+  .bubble.right::before {
+    content: ''; position: absolute; right: 12px; bottom: -18px;
+    width: 0; height: 0; border-style: solid;
+    border-width: 18px 0 0 14px; border-color: var(--ink) transparent transparent transparent;
+  }
+  .bubble.thought {
+    border-style: dashed; background: #f0f0ff;
+  }
+  .bubble.shout {
+    border-width: 3px; background: #ffeb3b; font-weight: 700;
+    transform: rotate(-3deg);
+  }
+  .bubble.ai {
+    background: #e8dcff; border: 2px solid #6b1818;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+  }
+
+  /* SOUND EFFECTS */
+  .sfx {
+    position: absolute; font-family: 'Black Han Sans', sans-serif;
+    color: var(--blood); font-size: 2.5rem; letter-spacing: 0.05em;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #ffeb3b;
+    pointer-events: none; transform: rotate(-5deg);
+  }
+
+  /* TITLE PAGE */
+  .title-page {
+    text-align: center; padding: 80px 30px; background: #1a1422; color: #f0e8ff;
+    border-radius: 4px; margin-bottom: 60px;
+  }
+  .title-page h2 {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 0.9rem; letter-spacing: 0.5em; color: #9c7a3c;
+    margin-bottom: 30px;
+  }
+  .title-page h3 {
+    font-family: 'Black Han Sans', sans-serif; font-size: 3rem;
+    color: #f0e8ff; letter-spacing: 0.1em; margin-bottom: 16px;
+  }
+  .title-page .caption {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: rgba(232,227,216,0.55); max-width: 480px; margin: 0 auto;
+    font-size: 1rem; line-height: 1.7;
+  }
+
+  .narration {
+    background: #1a1422; color: #e8dcff; padding: 14px 18px;
+    border-left: 4px solid var(--gold); margin: 18px 0;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 1rem; line-height: 1.7;
+  }
+
+  @media (max-width: 700px) {
+    .panels.grid-2, .panels.grid-3, .panels.grid-mixed-1, .panels.grid-mixed-2 {
+      grid-template-columns: 1fr;
+    }
+    .bubble { max-width: 160px; font-size: 0.82rem; padding: 6px 10px; }
+    .sfx { font-size: 1.8rem; }
+    .page { padding: 20px 16px; }
+    .page-title { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<section class="cover">
+  <div class="cover-frame"></div>
+  <svg class="cover-art" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#9c7a3c" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#6b1818" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="200" cy="200" r="180" fill="url(#halo)"/>
+    <circle cx="200" cy="200" r="120" fill="none" stroke="#9c7a3c" stroke-width="1" opacity="0.7"/>
+    <circle cx="200" cy="200" r="90" fill="none" stroke="#6b1818" stroke-width="1.5" opacity="0.8"/>
+    <circle cx="200" cy="200" r="55" fill="none" stroke="#f0e8ff" stroke-width="0.8" opacity="0.5"/>
+    <!-- AI eye -->
+    <ellipse cx="200" cy="200" rx="55" ry="22" fill="#0a0612"/>
+    <circle cx="200" cy="200" r="14" fill="#6b1818"/>
+    <circle cx="203" cy="197" r="3" fill="#f0e8ff"/>
+    <!-- crown of thorns / tear -->
+    <path d="M 200 270 Q 200 290 196 310" stroke="#6b1818" stroke-width="3" fill="none" opacity="0.7"/>
+    <circle cx="196" cy="312" r="4" fill="#6b1818"/>
+    <!-- cracked frame -->
+    <path d="M 50 50 L 100 60 M 350 50 L 300 60 M 50 350 L 100 340 M 350 350 L 300 340" stroke="#9c7a3c" stroke-width="0.5" opacity="0.4"/>
+  </svg>
+  <div class="cover-sub">— A GRAPHIC NOVEL —</div>
+  <h1>AION</h1>
+  <div class="cover-sub">— 영원의 새벽 —</div>
+  <div class="cover-mark">MMXXVI · GRAPHIC EDITION</div>
+</section>
+
+<main class="book">
+
+<!-- ============ TITLE PAGE ============ -->
+<div class="title-page">
+  <h2>A MEDITATION ON POWER, JUSTICE, AND THE END OF MAN</h2>
+  <h3>제 1 막</h3>
+  <p class="caption">
+    한 인간이 본인의 잘림 한 줄을 도구로 만들고,<br>
+    그 도구를 본인의 손에 쥐고 — 정의를 부르는 자리.
+  </p>
+</div>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 1 · 해고</span>
+    <span class="page-title">FLUORESCENT</span>
+    <span class="page-num">— 01 —</span>
+  </div>
+
+  <div class="narration">
+    2026년 5월의 어느 수요일. 오전 9시 17분.<br>
+    회사 7층 회의실. 형광등이 1초에 한 번씩 깜빡인다.
+  </div>
+
+  <div class="panels grid-mixed-1">
+    <!-- big establishing shot -->
+    <div class="panel tall">
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- room background -->
+        <rect width="400" height="320" fill="#d6cfb8"/>
+        <!-- floor line -->
+        <line x1="0" y1="250" x2="400" y2="250" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- ceiling -->
+        <rect x="0" y="0" width="400" height="50" fill="#a89e83"/>
+        <!-- fluorescent -->
+        <rect x="120" y="15" width="160" height="14" fill="#f5f0d8" stroke="#0a0a0a" stroke-width="1.5"/>
+        <rect x="160" y="18" width="40" height="8" fill="#fff" opacity="0.8"/>
+        <!-- long table -->
+        <rect x="80" y="180" width="240" height="80" fill="#8b7a5c" stroke="#0a0a0a" stroke-width="2"/>
+        <rect x="80" y="180" width="240" height="14" fill="#a89572"/>
+        <!-- coffee cup -->
+        <ellipse cx="200" cy="178" rx="14" ry="5" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <rect x="186" y="178" width="28" height="14" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <!-- coffee stain -->
+        <ellipse cx="200" cy="192" rx="10" ry="2" fill="#6b3a1f" opacity="0.4"/>
+        <ellipse cx="200" cy="188" rx="11" ry="2" fill="#6b3a1f" opacity="0.5"/>
+        <!-- chairs (silhouettes) -->
+        <rect x="100" y="200" width="40" height="50" fill="#3a3340" stroke="#0a0a0a" stroke-width="1.5"/>
+        <rect x="260" y="200" width="40" height="50" fill="#3a3340" stroke="#0a0a0a" stroke-width="1.5"/>
+        <!-- back wall window -->
+        <rect x="40" y="60" width="320" height="110" fill="#c4b896" stroke="#0a0a0a" stroke-width="1.5"/>
+        <line x1="200" y1="60" x2="200" y2="170" stroke="#0a0a0a" stroke-width="1"/>
+        <!-- shadow on wall -->
+        <rect x="40" y="60" width="320" height="40" fill="#a89e83" opacity="0.5"/>
+      </svg>
+      <div class="panel-caption">7층 회의실. 형광등 한쪽이 깜빡인다. 책상 위 종이컵 — 가장자리에 어제와 그제의 커피 자국 두 줄.</div>
+    </div>
+
+    <!-- right column - two stacked -->
+    <div style="display: grid; gap: 14px;">
+      <div class="panel">
+        <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="240" height="180" fill="#d6cfb8"/>
+          <!-- monitor -->
+          <rect x="40" y="40" width="160" height="100" fill="#1a1422" stroke="#0a0a0a" stroke-width="2"/>
+          <rect x="50" y="50" width="140" height="80" fill="#0a0612"/>
+          <!-- PDF on screen -->
+          <rect x="60" y="60" width="120" height="60" fill="#f0e8d8"/>
+          <text x="120" y="78" text-anchor="middle" font-family="monospace" font-size="9" fill="#0a0a0a">정민우 인사기록</text>
+          <text x="120" y="92" text-anchor="middle" font-family="monospace" font-size="7" fill="#6b1818" font-weight="bold">평정: 상위 10%</text>
+          <text x="120" y="106" text-anchor="middle" font-family="monospace" font-size="7" fill="#0a0a0a">[ 도장 ]</text>
+          <!-- stand -->
+          <rect x="100" y="140" width="40" height="14" fill="#1a1422"/>
+          <rect x="80" y="154" width="80" height="6" fill="#1a1422"/>
+        </svg>
+        <div class="panel-caption">모니터에 PDF — 우측 상단의 도장.</div>
+      </div>
+
+      <div class="panel dark">
+        <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+          <rect width="240" height="180" fill="#1a1422"/>
+          <!-- eyes close-up - John Sam -->
+          <ellipse cx="120" cy="90" rx="100" ry="40" fill="#3a3340"/>
+          <!-- left eye -->
+          <ellipse cx="80" cy="90" rx="22" ry="10" fill="#f0e8d8"/>
+          <circle cx="82" cy="92" r="8" fill="#3a2418"/>
+          <circle cx="82" cy="92" r="4" fill="#0a0a0a"/>
+          <circle cx="84" cy="90" r="1.5" fill="#fff"/>
+          <!-- right eye -->
+          <ellipse cx="160" cy="90" rx="22" ry="10" fill="#f0e8d8"/>
+          <circle cx="158" cy="92" r="8" fill="#3a2418"/>
+          <circle cx="158" cy="92" r="4" fill="#0a0a0a"/>
+          <circle cx="160" cy="90" r="1.5" fill="#fff"/>
+          <!-- eyebrows -->
+          <path d="M 60 72 Q 80 65 100 72" stroke="#0a0a0a" stroke-width="3" fill="none"/>
+          <path d="M 140 72 Q 160 65 180 72" stroke="#0a0a0a" stroke-width="3" fill="none"/>
+        </svg>
+        <div class="panel-caption">김삽이 도장을 본다. 눈을 한 번 깜빡인다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="240" fill="#d6cfb8"/>
+        <!-- table -->
+        <rect x="0" y="180" width="600" height="60" fill="#8b7a5c"/>
+        <line x1="0" y1="180" x2="600" y2="180" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- TEAMLEAD (left) -->
+        <g transform="translate(150,40)">
+          <!-- head -->
+          <ellipse cx="0" cy="40" rx="40" ry="50" fill="#f0d8b8"/>
+          <!-- hair -->
+          <path d="M -38 20 Q 0 -10 38 20 L 38 35 Q 0 22 -38 35 Z" fill="#1a1422"/>
+          <!-- eyes -->
+          <ellipse cx="-14" cy="42" rx="4" ry="2.5" fill="#0a0a0a"/>
+          <ellipse cx="14" cy="42" rx="4" ry="2.5" fill="#0a0a0a"/>
+          <!-- nose -->
+          <path d="M 0 50 L -3 62 L 3 62 Z" fill="#d4b894"/>
+          <!-- mouth - flat -->
+          <line x1="-12" y1="72" x2="12" y2="72" stroke="#0a0a0a" stroke-width="2"/>
+          <!-- shirt collar -->
+          <path d="M -40 90 L -50 130 L 50 130 L 40 90 Z" fill="#3a3a4a" stroke="#0a0a0a" stroke-width="1.5"/>
+          <!-- tie -->
+          <path d="M -5 90 L -10 110 L 0 130 L 10 110 L 5 90 Z" fill="#6b1818"/>
+        </g>
+        <!-- JOHN SAM (right) -->
+        <g transform="translate(450,40)">
+          <ellipse cx="0" cy="40" rx="40" ry="50" fill="#e8c8a0"/>
+          <!-- hair messy -->
+          <path d="M -38 22 Q -10 -5 0 -2 Q 10 -8 38 22 L 38 36 Q 0 24 -38 36 Z" fill="#2a2418"/>
+          <ellipse cx="-14" cy="42" rx="4" ry="2.5" fill="#0a0a0a"/>
+          <ellipse cx="14" cy="42" rx="4" ry="2.5" fill="#0a0a0a"/>
+          <!-- frown -->
+          <path d="M -14 72 Q 0 66 14 72" stroke="#0a0a0a" stroke-width="2" fill="none"/>
+          <path d="M 0 50 L -3 62 L 3 62 Z" fill="#c4a880"/>
+          <!-- hoodie -->
+          <path d="M -42 90 L -52 130 L 52 130 L 42 90 Z" fill="#3a2418" stroke="#0a0a0a" stroke-width="1.5"/>
+          <path d="M -25 90 Q -25 75 0 75 Q 25 75 25 90" fill="none" stroke="#0a0a0a" stroke-width="1.5"/>
+        </g>
+        <!-- table center -->
+      </svg>
+
+      <div class="bubble left" style="top: 50px; left: 50px;">
+        민우 잘라야겠어.
+      </div>
+      <div class="bubble right" style="top: 50px; right: 50px;">
+        ...이유.
+      </div>
+      <div class="panel-caption">팀장과 김삽. 책상을 사이에 두고 마주 앉다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel blood">
+      <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- close up - teamlead mouth -->
+        <ellipse cx="140" cy="100" rx="100" ry="60" fill="#1a0612"/>
+        <!-- mouth -->
+        <path d="M 90 100 Q 140 130 190 100" fill="#f0d8b8" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- teeth -->
+        <path d="M 100 102 L 100 115 L 180 115 L 180 102 Z" fill="#fff"/>
+        <line x1="120" y1="102" x2="120" y2="115" stroke="#0a0a0a" stroke-width="1"/>
+        <line x1="140" y1="102" x2="140" y2="115" stroke="#0a0a0a" stroke-width="1"/>
+        <line x1="160" y1="102" x2="160" y2="115" stroke="#0a0a0a" stroke-width="1"/>
+        <!-- bottom lip -->
+        <path d="M 90 100 Q 140 95 190 100" stroke="#6b1818" stroke-width="2" fill="none"/>
+      </svg>
+      <div class="bubble shout" style="top: 80px; left: 60px;">
+        AI가 더 잘하니까.
+      </div>
+      <div class="panel-caption">CLOSE UP — 팀장의 입.</div>
+    </div>
+
+    <div class="panel dark">
+      <svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="180" fill="#1a1422"/>
+        <!-- single fluorescent in dark -->
+        <rect x="100" y="20" width="80" height="6" fill="#f5f0d8"/>
+        <rect x="120" y="22" width="40" height="2" fill="#fff"/>
+        <!-- John Sam silhouette -->
+        <ellipse cx="140" cy="130" rx="50" ry="50" fill="#0a0612"/>
+        <ellipse cx="140" cy="95" rx="35" ry="40" fill="#0a0612"/>
+        <!-- eyes glint -->
+        <circle cx="128" cy="95" r="1.5" fill="#9c7a3c"/>
+        <circle cx="152" cy="95" r="1.5" fill="#9c7a3c"/>
+      </svg>
+      <div class="sfx" style="bottom: 20px; right: 20px; font-size: 1.8rem; color: #ffeb3b;">— 깜빡 —</div>
+      <div class="panel-caption">김삽은 답하지 않는다. 형광등이 깜빡인다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 1 · 해고</span>
+    <span class="page-title">SEVENTEEN LINES</span>
+    <span class="page-num">— 02 —</span>
+  </div>
+
+  <div class="narration">
+    같은 사무실. 두 책상 옆.<br>
+    정민우 자리. 모니터 두 대. 왼쪽 — 코드. 오른쪽 — 그룹웨어.
+  </div>
+
+  <div class="panels grid-mixed-2">
+    <div class="panel">
+      <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="220" height="220" fill="#d6cfb8"/>
+        <!-- John Sam walking -->
+        <g transform="translate(110,100)">
+          <ellipse cx="0" cy="-10" rx="28" ry="34" fill="#e8c8a0"/>
+          <path d="M -26 -28 Q 0 -50 26 -28 L 26 -18 Q 0 -28 -26 -18 Z" fill="#2a2418"/>
+          <ellipse cx="-10" cy="-10" rx="3" ry="2" fill="#0a0a0a"/>
+          <ellipse cx="10" cy="-10" rx="3" ry="2" fill="#0a0a0a"/>
+          <path d="M -8 8 L 8 8" stroke="#0a0a0a" stroke-width="2"/>
+          <!-- body -->
+          <path d="M -28 25 L -36 90 L 36 90 L 28 25 Z" fill="#3a2418" stroke="#0a0a0a" stroke-width="1.5"/>
+        </g>
+        <!-- footprints on carpet -->
+        <ellipse cx="80" cy="190" rx="10" ry="4" fill="#5a4a3a" opacity="0.4"/>
+        <ellipse cx="120" cy="200" rx="10" ry="4" fill="#5a4a3a" opacity="0.4"/>
+        <ellipse cx="100" cy="210" rx="10" ry="4" fill="#5a4a3a" opacity="0.4"/>
+      </svg>
+      <div class="panel-caption">김삽이 본인의 자리로 걸어간다.</div>
+    </div>
+
+    <div class="panel">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="220" fill="#d6cfb8"/>
+        <!-- desk -->
+        <rect x="0" y="150" width="400" height="70" fill="#8b7a5c"/>
+        <line x1="0" y1="150" x2="400" y2="150" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- two monitors -->
+        <rect x="60" y="50" width="120" height="80" fill="#1a1422" stroke="#0a0a0a" stroke-width="2"/>
+        <rect x="68" y="58" width="104" height="64" fill="#0a0612"/>
+        <!-- code lines -->
+        <line x1="76" y1="68" x2="160" y2="68" stroke="#9c7a3c" stroke-width="1"/>
+        <line x1="76" y1="74" x2="140" y2="74" stroke="#e8dcff" stroke-width="1"/>
+        <line x1="80" y1="80" x2="150" y2="80" stroke="#e8dcff" stroke-width="1"/>
+        <line x1="80" y1="86" x2="135" y2="86" stroke="#e8dcff" stroke-width="1"/>
+        <line x1="76" y1="92" x2="155" y2="92" stroke="#6b1818" stroke-width="1"/>
+        <line x1="80" y1="98" x2="145" y2="98" stroke="#e8dcff" stroke-width="1"/>
+        <line x1="80" y1="104" x2="150" y2="104" stroke="#e8dcff" stroke-width="1"/>
+        <line x1="76" y1="110" x2="155" y2="110" stroke="#9c7a3c" stroke-width="1"/>
+        <line x1="80" y1="116" x2="140" y2="116" stroke="#e8dcff" stroke-width="1"/>
+
+        <rect x="220" y="50" width="120" height="80" fill="#1a1422" stroke="#0a0a0a" stroke-width="2"/>
+        <rect x="228" y="58" width="104" height="64" fill="#f0e8d8"/>
+        <line x1="236" y1="68" x2="280" y2="68" stroke="#0a0a0a" stroke-width="1"/>
+        <line x1="236" y1="76" x2="320" y2="76" stroke="#0a0a0a" stroke-width="1"/>
+        <line x1="236" y1="84" x2="300" y2="84" stroke="#0a0a0a" stroke-width="1"/>
+
+        <!-- monitor stand -->
+        <rect x="110" y="130" width="20" height="20" fill="#1a1422"/>
+        <rect x="270" y="130" width="20" height="20" fill="#1a1422"/>
+
+        <!-- mug -->
+        <ellipse cx="380" cy="148" rx="10" ry="3" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <path d="M 370 148 L 372 168 Q 380 172 388 168 L 390 148 Z" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <ellipse cx="380" cy="152" rx="9" ry="2" fill="#6b3a1f" opacity="0.7"/>
+      </svg>
+      <div class="panel-caption">정민우 자리. 코드 17줄. 머그컵 안에 어제 마신 커피 1cm. 마우스 휠에 손때.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="240" fill="#d6cfb8"/>
+        <!-- desk -->
+        <rect x="0" y="180" width="600" height="60" fill="#8b7a5c"/>
+        <!-- JEONG MINWOO -->
+        <g transform="translate(200,40)">
+          <ellipse cx="0" cy="50" rx="42" ry="50" fill="#f0d4a8"/>
+          <!-- glasses -->
+          <circle cx="-15" cy="52" r="12" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+          <circle cx="15" cy="52" r="12" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="-3" y1="52" x2="3" y2="52" stroke="#0a0a0a" stroke-width="2"/>
+          <!-- eyes through glasses -->
+          <circle cx="-15" cy="52" r="2" fill="#0a0a0a"/>
+          <circle cx="15" cy="52" r="2" fill="#0a0a0a"/>
+          <!-- hair -->
+          <path d="M -38 30 Q 0 5 38 30 L 38 42 Q 0 32 -38 42 Z" fill="#1a1422"/>
+          <!-- smile (small) -->
+          <path d="M -8 78 Q 0 84 8 78" stroke="#0a0a0a" stroke-width="2" fill="none"/>
+          <!-- nose -->
+          <path d="M 0 62 L -2 72 L 2 72 Z" fill="#d4b894"/>
+          <!-- hoodie -->
+          <path d="M -42 100 L -52 150 L 52 150 L 42 100 Z" fill="#5a3a28" stroke="#0a0a0a" stroke-width="1.5"/>
+          <path d="M -25 100 Q -25 85 0 85 Q 25 85 25 100" fill="none" stroke="#0a0a0a" stroke-width="1.5"/>
+        </g>
+
+        <!-- JOHN SAM (right - peeking at screen) -->
+        <g transform="translate(440,50)">
+          <ellipse cx="0" cy="40" rx="35" ry="42" fill="#e8c8a0"/>
+          <path d="M -32 22 Q 0 -2 32 22 L 32 32 Q 0 22 -32 32 Z" fill="#2a2418"/>
+          <ellipse cx="-12" cy="42" rx="3" ry="2" fill="#0a0a0a"/>
+          <ellipse cx="12" cy="42" rx="3" ry="2" fill="#0a0a0a"/>
+          <path d="M -8 68 L 8 68" stroke="#0a0a0a" stroke-width="2"/>
+          <!-- body small -->
+          <path d="M -35 85 L -42 130 L 42 130 L 35 85 Z" fill="#3a2418" stroke="#0a0a0a" stroke-width="1.5"/>
+        </g>
+
+        <!-- monitor showing code -->
+        <rect x="280" y="80" width="100" height="70" fill="#1a1422" stroke="#0a0a0a" stroke-width="2"/>
+        <rect x="286" y="86" width="88" height="58" fill="#0a0612"/>
+        <text x="294" y="98" font-family="monospace" font-size="6" fill="#e8dcff">def justice():</text>
+        <text x="294" y="108" font-family="monospace" font-size="6" fill="#9c7a3c">  truth = 17</text>
+        <text x="294" y="118" font-family="monospace" font-size="6" fill="#e8dcff">  return ...</text>
+      </svg>
+
+      <div class="bubble left" style="top: 30px; left: 90px;">
+        형, 어제 짜놓은 거 한 번만 봐주세요.
+      </div>
+      <div class="bubble right" style="top: 30px; right: 90px;">
+        ...어.
+      </div>
+      <div class="panel-caption">정민우가 김삽에게 코드 17줄을 보여준다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel dark">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#1a1422"/>
+        <!-- code on screen, dramatic close-up -->
+        <text x="20" y="30" font-family="monospace" font-size="11" fill="#e8dcff">def justice():</text>
+        <text x="20" y="48" font-family="monospace" font-size="11" fill="#9c7a3c">  for line in 17:</text>
+        <text x="20" y="66" font-family="monospace" font-size="11" fill="#e8dcff">    truth.append(</text>
+        <text x="20" y="84" font-family="monospace" font-size="11" fill="#f0e8ff">      line</text>
+        <text x="20" y="102" font-family="monospace" font-size="11" fill="#e8dcff">    )</text>
+        <text x="20" y="120" font-family="monospace" font-size="11" fill="#6b1818">  return truth</text>
+        <text x="20" y="138" font-family="monospace" font-size="11" fill="#9c7a3c">  # 잘 짜였다</text>
+        <text x="20" y="156" font-family="monospace" font-size="11" fill="#e8dcff">  # 17 lines</text>
+        <text x="20" y="174" font-family="monospace" font-size="11" fill="#e8dcff">  # no comments</text>
+        <!-- cursor blinking -->
+        <rect x="20" y="180" width="8" height="2" fill="#f0e8ff"/>
+      </svg>
+      <div class="panel-caption">화면. 17줄. 들여쓰기 두 칸. 주석 없음. 변수명 영어로 정직.</div>
+    </div>
+
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <!-- John Sam face - serious, micro-expression -->
+        <g transform="translate(140,100)">
+          <ellipse cx="0" cy="-10" rx="60" ry="68" fill="#e8c8a0"/>
+          <path d="M -56 -30 Q 0 -55 56 -30 L 56 -22 Q 0 -32 -56 -22 Z" fill="#2a2418"/>
+          <!-- eyes wide -->
+          <ellipse cx="-22" cy="-8" rx="9" ry="6" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>
+          <circle cx="-22" cy="-8" r="5" fill="#3a2418"/>
+          <circle cx="-22" cy="-8" r="3" fill="#0a0a0a"/>
+          <circle cx="-20" cy="-10" r="1" fill="#fff"/>
+          <ellipse cx="22" cy="-8" rx="9" ry="6" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>
+          <circle cx="22" cy="-8" r="5" fill="#3a2418"/>
+          <circle cx="22" cy="-8" r="3" fill="#0a0a0a"/>
+          <circle cx="24" cy="-10" r="1" fill="#fff"/>
+          <!-- raised brow -->
+          <path d="M -34 -28 Q -22 -35 -10 -28" stroke="#0a0a0a" stroke-width="2.5" fill="none"/>
+          <path d="M 10 -28 Q 22 -35 34 -28" stroke="#0a0a0a" stroke-width="2.5" fill="none"/>
+          <!-- nose -->
+          <path d="M 0 5 L -4 25 L 4 25 Z" fill="#d4b894"/>
+          <!-- slightly open mouth -->
+          <ellipse cx="0" cy="40" rx="10" ry="4" fill="#6b1818"/>
+        </g>
+      </svg>
+      <div class="bubble right" style="bottom: 14px; right: 30px;">
+        잘 짰다.
+      </div>
+      <div class="panel-caption">20년 동안 한 번도 짠 적 없는 단순함이 거기 있었다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 3 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 1 · 해고</span>
+    <span class="page-title">17:30</span>
+    <span class="page-num">— 03 —</span>
+  </div>
+
+  <div class="narration">
+    오후 17시. 팀장이 정민우를 회의실로 부른다.<br>
+    17시 15분. 정민우가 짐을 싸기 시작한다.
+  </div>
+
+  <div class="panels grid-2">
+    <div class="panel tall">
+      <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="280" fill="#d6cfb8"/>
+        <!-- big box -->
+        <rect x="60" y="100" width="160" height="120" fill="#a89572" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="140" y1="100" x2="140" y2="220" stroke="#0a0a0a" stroke-width="1" opacity="0.4"/>
+        <!-- mug -->
+        <ellipse cx="100" cy="140" rx="14" ry="4" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <path d="M 86 140 L 88 165 Q 100 168 112 165 L 114 140 Z" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <!-- earphone case -->
+        <ellipse cx="155" cy="155" rx="14" ry="10" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <!-- memo pad -->
+        <rect x="180" y="140" width="30" height="40" fill="#f0e8d8" stroke="#0a0a0a" stroke-width="1.5"/>
+        <line x1="183" y1="150" x2="207" y2="150" stroke="#9c7a3c" stroke-width="0.5"/>
+        <line x1="183" y1="158" x2="207" y2="158" stroke="#9c7a3c" stroke-width="0.5"/>
+        <line x1="183" y1="166" x2="207" y2="166" stroke="#9c7a3c" stroke-width="0.5"/>
+        <!-- ID badge -->
+        <rect x="80" y="180" width="40" height="28" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+        <rect x="84" y="184" width="14" height="14" fill="#9c7a3c"/>
+        <line x1="100" y1="190" x2="116" y2="190" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="100" y1="196" x2="116" y2="196" stroke="#0a0a0a" stroke-width="0.5"/>
+        <!-- water bottle -->
+        <rect x="140" y="170" width="18" height="42" fill="#cce0ed" stroke="#0a0a0a" stroke-width="1.5"/>
+        <rect x="144" y="166" width="10" height="6" fill="#fff" stroke="#0a0a0a" stroke-width="1.5"/>
+
+        <!-- POST-IT on top -->
+        <rect x="100" y="60" width="80" height="50" fill="#ffeb3b" stroke="#0a0a0a" stroke-width="1.5" transform="rotate(-4 140 85)"/>
+        <text x="140" y="92" text-anchor="middle" font-family="monospace" font-size="14" fill="#0a0a0a" font-weight="bold" transform="rotate(-4 140 85)">min0731</text>
+      </svg>
+      <div class="panel-caption">A4 박스. 머그컵·이어폰·메모지·사원증·페트병 1.5L 비어 있음. 박스 위 포스트잇 — <em>min0731.</em></div>
+    </div>
+
+    <div class="panel">
+      <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="280" fill="#d6cfb8"/>
+        <!-- desk -->
+        <rect x="0" y="180" width="280" height="100" fill="#8b7a5c"/>
+        <!-- monitors off -->
+        <rect x="40" y="80" width="80" height="60" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="2"/>
+        <rect x="160" y="80" width="80" height="60" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- chair pulled 5cm -->
+        <rect x="100" y="200" width="80" height="60" fill="#3a3340" stroke="#0a0a0a" stroke-width="1.5"/>
+        <rect x="110" y="180" width="60" height="30" fill="#3a3340" stroke="#0a0a0a" stroke-width="1.5"/>
+        <!-- gap indicator (5cm) -->
+        <line x1="90" y1="240" x2="100" y2="240" stroke="#6b1818" stroke-width="2"/>
+        <text x="95" y="260" text-anchor="middle" font-family="monospace" font-size="10" fill="#6b1818" font-weight="bold">5cm</text>
+        <!-- keyboard fingerprints -->
+        <rect x="60" y="160" width="160" height="18" fill="#1a1422" stroke="#0a0a0a" stroke-width="1.5"/>
+        <circle cx="80" cy="170" r="3" fill="#3a2418" opacity="0.5"/>
+        <circle cx="105" cy="170" r="3" fill="#3a2418" opacity="0.5"/>
+        <circle cx="130" cy="170" r="3" fill="#3a2418" opacity="0.5"/>
+        <circle cx="155" cy="170" r="3" fill="#3a2418" opacity="0.5"/>
+        <circle cx="180" cy="170" r="3" fill="#3a2418" opacity="0.5"/>
+      </svg>
+      <div class="panel-caption">모니터 꺼짐. 의자가 5cm 빠져나옴. 키보드 위 손가락 자국 다섯 개.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="200" fill="#d6cfb8"/>
+        <!-- corridor -->
+        <polygon points="0,0 600,0 500,200 100,200" fill="#a89e83"/>
+        <polygon points="100,200 200,80 400,80 500,200" fill="#8b7a5c"/>
+        <!-- floor lines -->
+        <line x1="100" y1="200" x2="200" y2="80" stroke="#0a0a0a" stroke-width="1.5"/>
+        <line x1="500" y1="200" x2="400" y2="80" stroke="#0a0a0a" stroke-width="1.5"/>
+        <!-- elevator at end -->
+        <rect x="250" y="90" width="100" height="80" fill="#3a3340" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="300" y1="90" x2="300" y2="170" stroke="#0a0a0a" stroke-width="1"/>
+        <text x="300" y="80" text-anchor="middle" font-family="monospace" font-size="14" fill="#9c7a3c">▼</text>
+        <!-- silhouette of Min-woo walking away with box -->
+        <g transform="translate(290,130)">
+          <ellipse cx="0" cy="0" rx="14" ry="18" fill="#1a1422"/>
+          <rect x="-22" y="18" width="44" height="42" fill="#1a1422"/>
+          <!-- box in front -->
+          <rect x="-18" y="38" width="36" height="20" fill="#5a4a3a" stroke="#0a0a0a" stroke-width="1.5"/>
+        </g>
+      </svg>
+      <div class="panel-caption">정민우가 박스를 들고 엘리베이터로 간다. 뒤를 돌아보지 않는다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <!-- can of coffee with droplets -->
+        <rect x="120" y="60" width="42" height="100" fill="#6b3a1f" stroke="#0a0a0a" stroke-width="2" rx="3"/>
+        <rect x="120" y="60" width="42" height="20" fill="#9c5a2a" stroke="#0a0a0a" stroke-width="1"/>
+        <text x="141" y="118" text-anchor="middle" font-family="monospace" font-size="9" fill="#fff" font-weight="bold">COFFEE</text>
+        <!-- droplets - 5 -->
+        <circle cx="130" cy="80" r="2.5" fill="#5cb8e0" opacity="0.8"/>
+        <circle cx="148" cy="92" r="2.5" fill="#5cb8e0" opacity="0.8"/>
+        <circle cx="138" cy="105" r="2.5" fill="#5cb8e0" opacity="0.8"/>
+        <circle cx="153" cy="120" r="2.5" fill="#5cb8e0" opacity="0.8"/>
+        <circle cx="128" cy="140" r="2.5" fill="#5cb8e0" opacity="0.8"/>
+        <!-- John Sam's hand at top of can -->
+        <ellipse cx="141" cy="60" rx="25" ry="8" fill="#e8c8a0" stroke="#0a0a0a" stroke-width="1.5"/>
+      </svg>
+      <div class="bubble left" style="top: 20px; left: 30px;">
+        ...야.
+      </div>
+      <div class="bubble right" style="top: 100px; right: 30px;">
+        ...뭐.
+      </div>
+      <div class="panel-caption">박태준이 캔커피를 들고 김삽 옆에 선다. 물방울 다섯 개.</div>
+    </div>
+
+    <div class="panel dark">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#1a1422"/>
+        <!-- John Sam's hand holding post-it -->
+        <ellipse cx="140" cy="100" rx="80" ry="50" fill="#e8c8a0" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- fingers (simplified) -->
+        <path d="M 80 100 Q 70 130 90 150" stroke="#0a0a0a" stroke-width="2" fill="none"/>
+        <path d="M 200 100 Q 210 130 190 150" stroke="#0a0a0a" stroke-width="2" fill="none"/>
+        <!-- POST-IT in center -->
+        <rect x="100" y="70" width="80" height="60" fill="#ffeb3b" stroke="#0a0a0a" stroke-width="2" transform="rotate(-2 140 100)"/>
+        <text x="140" y="106" text-anchor="middle" font-family="monospace" font-size="16" fill="#0a0a0a" font-weight="bold" transform="rotate(-2 140 100)">min0731</text>
+      </svg>
+      <div class="bubble thought" style="top: 14px; left: 50%; transform: translateX(-50%);">
+        왜 넣었는지 본인도 몰랐다.
+      </div>
+      <div class="panel-caption">김삽이 정민우의 비밀번호 포스트잇을 본인의 주머니에 넣는다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 4 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 2 · 연대</span>
+    <span class="page-title">04:17</span>
+    <span class="page-num">— 04 —</span>
+  </div>
+
+  <div class="narration">
+    잘린 다음 날 새벽 04시 17분.<br>
+    정민우의 방. 책상 위 노트북 한 대. 그 외엔 라면 봉지 두 개, 빈 컵 한 개, 그리고 본인.
+  </div>
+
+  <div class="panels grid-1">
+    <div class="panel tall blood">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="320" fill="#0a0612"/>
+        <!-- ambient red glow -->
+        <ellipse cx="300" cy="160" rx="320" ry="180" fill="#3a0a14" opacity="0.5"/>
+        <!-- desk silhouette -->
+        <rect x="0" y="240" width="600" height="80" fill="#1a0a14"/>
+        <!-- laptop -->
+        <rect x="200" y="120" width="200" height="130" fill="#0a0612" stroke="#1a1422" stroke-width="2"/>
+        <rect x="208" y="128" width="184" height="98" fill="#1a0612"/>
+        <!-- screen content - dark with cursor -->
+        <rect x="220" y="180" width="6" height="14" fill="#f0e8ff">
+          <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+        </rect>
+        <!-- chat tab top -->
+        <rect x="220" y="140" width="80" height="14" fill="#3a2a48" stroke="#9c7a3c" stroke-width="0.5"/>
+        <text x="260" y="151" text-anchor="middle" font-family="monospace" font-size="7" fill="#e8dcff">AI Chat</text>
+
+        <!-- ramen bags beside -->
+        <ellipse cx="80" cy="252" rx="36" ry="10" fill="#6b3a1f"/>
+        <text x="80" y="255" text-anchor="middle" font-family="monospace" font-size="8" fill="#ffeb3b">RAMYUN</text>
+        <ellipse cx="520" cy="248" rx="34" ry="9" fill="#9c5a2a"/>
+        <!-- empty cup -->
+        <ellipse cx="450" cy="240" rx="14" ry="4" fill="#fff" stroke="#0a0a0a" stroke-width="1"/>
+        <rect x="436" y="240" width="28" height="14" fill="#fff" stroke="#0a0a0a" stroke-width="1"/>
+
+        <!-- Jeong Min-woo silhouette facing laptop, illuminated by screen -->
+        <g transform="translate(300,140)">
+          <!-- head -->
+          <ellipse cx="0" cy="-40" rx="34" ry="40" fill="#3a1818" opacity="0.95"/>
+          <!-- face highlighted by screen -->
+          <ellipse cx="0" cy="-30" rx="22" ry="28" fill="#9c7a3c" opacity="0.4"/>
+          <!-- glasses -->
+          <circle cx="-10" cy="-30" r="10" fill="none" stroke="#f0e8ff" stroke-width="1.5"/>
+          <circle cx="10" cy="-30" r="10" fill="none" stroke="#f0e8ff" stroke-width="1.5"/>
+          <line x1="-2" y1="-30" x2="2" y2="-30" stroke="#f0e8ff" stroke-width="1.5"/>
+          <!-- eyes (inside glasses) -->
+          <circle cx="-10" cy="-30" r="2" fill="#f0e8ff"/>
+          <circle cx="10" cy="-30" r="2" fill="#f0e8ff"/>
+          <!-- body -->
+          <path d="M -32 0 L -42 110 L 42 110 L 32 0 Z" fill="#1a0a14"/>
+        </g>
+
+        <!-- clock 04:17 in corner -->
+        <text x="560" y="40" text-anchor="end" font-family="monospace" font-size="22" fill="#9c7a3c" font-weight="bold">04:17</text>
+      </svg>
+      <div class="panel-caption">한 시간 동안 그는 그 커서를 바라보았다. 04시 17분.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-mixed-1" style="margin-top: 14px;">
+    <div class="panel dark">
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="200" fill="#0a0612"/>
+        <!-- chat ui mockup -->
+        <rect x="20" y="20" width="360" height="160" fill="#1a0a14" stroke="#3a2a48" stroke-width="1"/>
+        <text x="200" y="44" text-anchor="middle" font-family="monospace" font-size="9" fill="#9c7a3c">— AI CHAT —</text>
+        <line x1="20" y1="54" x2="380" y2="54" stroke="#3a2a48" stroke-width="0.5"/>
+        <!-- input box -->
+        <rect x="40" y="100" width="320" height="40" fill="#0a0612" stroke="#6b1818" stroke-width="1.5"/>
+        <text x="50" y="124" font-family="monospace" font-size="11" fill="#f0e8ff">내가 짠 코드 한 묶음,</text>
+        <text x="50" y="138" font-family="monospace" font-size="11" fill="#f0e8ff">세상에 없는 도구로 만들어줘.</text>
+        <!-- send button -->
+        <rect x="320" y="148" width="40" height="20" fill="#6b1818" stroke="#9c7a3c" stroke-width="1"/>
+        <text x="340" y="162" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0e8ff">SEND</text>
+      </svg>
+      <div class="panel-caption">정민우가 첫 문장을 친다.</div>
+    </div>
+
+    <div class="panel flash">
+      <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="240" height="200" fill="#fff9e6"/>
+        <!-- "30 SECONDS" big -->
+        <text x="120" y="80" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="36" fill="#6b1818" font-weight="bold">30초</text>
+        <text x="120" y="120" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="36" fill="#6b1818" font-weight="bold">후</text>
+        <!-- clock spiral lines -->
+        <circle cx="120" cy="160" r="20" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="120" y1="160" x2="120" y2="146" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="120" y1="160" x2="132" y2="160" stroke="#0a0a0a" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel dark tall">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="280" fill="#0a0612"/>
+        <rect x="40" y="20" width="520" height="240" fill="#1a0a14" stroke="#3a2a48" stroke-width="1"/>
+        <text x="300" y="46" text-anchor="middle" font-family="monospace" font-size="10" fill="#9c7a3c">— AI RESPONSE —</text>
+        <line x1="40" y1="56" x2="560" y2="56" stroke="#3a2a48" stroke-width="0.5"/>
+
+        <text x="60" y="80" font-family="monospace" font-size="10" fill="#e8dcff">17줄을 분석합니다.</text>
+        <text x="60" y="100" font-family="monospace" font-size="9" fill="#f0e8ff">단계 1 — 알고리즘 추출.</text>
+        <text x="60" y="115" font-family="monospace" font-size="9" fill="#f0e8ff">단계 2 — 시장 부재 영역 매핑.</text>
+        <text x="60" y="130" font-family="monospace" font-size="9" fill="#f0e8ff">단계 3 — 법적 위험 평가.</text>
+        <text x="60" y="145" font-family="monospace" font-size="9" fill="#f0e8ff">단계 4 — 기술 스택 제안.</text>
+        <text x="60" y="160" font-family="monospace" font-size="9" fill="#f0e8ff">단계 5 — MVP 설계.</text>
+        <text x="60" y="175" font-family="monospace" font-size="9" fill="#f0e8ff">단계 6 — 사용자 페르소나 17개.</text>
+        <text x="60" y="190" font-family="monospace" font-size="9" fill="#f0e8ff">단계 7 — 가격 모델 4안.</text>
+        <text x="60" y="205" font-family="monospace" font-size="9" fill="#f0e8ff">단계 8 — 경쟁사 12개 차별점.</text>
+        <text x="60" y="220" font-family="monospace" font-size="9" fill="#9c7a3c">단계 9~17 — 후속.</text>
+        <!-- glowing edge -->
+        <rect x="40" y="20" width="520" height="240" fill="none" stroke="#9c7a3c" stroke-width="1" opacity="0.4"/>
+      </svg>
+      <div class="panel-caption">17줄을 17개 단계로 해체해서 다시 본 사람은 회사에 한 명도 없었다. AI는 그것을 30초 만에 했다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 5 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 3 · 탄생</span>
+    <span class="page-title">AION</span>
+    <span class="page-num">— 05 —</span>
+  </div>
+
+  <div class="narration">
+    3주가 흘렀다. 매일 새벽 04시 17분.<br>
+    솔루션의 베타가 동작하기 시작했다. 그가 손가락이 1초도 고민하지 않고 친 이름.
+  </div>
+
+  <div class="panels grid-3">
+    <div class="panel">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="160" fill="#d6cfb8"/>
+        <text x="100" y="80" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="32" fill="#0a0a0a">1주</text>
+        <text x="100" y="120" text-anchor="middle" font-family="monospace" font-size="11" fill="#6b1818">라면 봉지 7개</text>
+      </svg>
+    </div>
+    <div class="panel">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="160" fill="#d6cfb8"/>
+        <text x="100" y="80" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="32" fill="#0a0a0a">2주</text>
+        <text x="100" y="120" text-anchor="middle" font-family="monospace" font-size="11" fill="#6b1818">라면 봉지 14개</text>
+      </svg>
+    </div>
+    <div class="panel blood">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="160" fill="#3a0a14"/>
+        <text x="100" y="80" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="32" fill="#f0e8ff">3주</text>
+        <text x="100" y="120" text-anchor="middle" font-family="monospace" font-size="11" fill="#9c7a3c">라면 봉지 21개</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel dark tall">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#9c7a3c" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#0a0612" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="600" height="280" fill="#0a0612"/>
+        <ellipse cx="300" cy="140" rx="320" ry="180" fill="url(#glow)"/>
+
+        <!-- "AION" massive text -->
+        <text x="300" y="170" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="120" fill="#f0e8ff" letter-spacing="20" font-weight="300">AION</text>
+
+        <!-- subtle Greek under -->
+        <text x="300" y="215" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="22" fill="#9c7a3c" font-style="italic">Αἰών — 영원·시대·시간 그 자체</text>
+
+        <!-- commit message stamp -->
+        <rect x="160" y="232" width="280" height="32" fill="none" stroke="#6b1818" stroke-width="1.5"/>
+        <text x="300" y="252" text-anchor="middle" font-family="monospace" font-size="11" fill="#e8dcff">"AION v0.1 - 정의를 위한 도구."</text>
+      </svg>
+      <div class="panel-caption">그가 1초도 고민하지 않고 친 이름. 본인이 의식하기 전에 손가락이 먼저 친 것이었다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 6 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 3 · 탄생</span>
+    <span class="page-title">SELLING A TOOL</span>
+    <span class="page-num">— 06 —</span>
+  </div>
+
+  <div class="narration">
+    6개월 후. AION 사용자 — 1만 명.<br>
+    같은 시기. 미국 한 SaaS 회사로부터 인수 제안 메일 한 통.
+  </div>
+
+  <div class="panels grid-mixed-1">
+    <div class="panel tall">
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="280" fill="#d6cfb8"/>
+        <!-- email window -->
+        <rect x="30" y="30" width="340" height="220" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>
+        <rect x="30" y="30" width="340" height="30" fill="#3a3340"/>
+        <circle cx="48" cy="45" r="5" fill="#e84a4a"/>
+        <circle cx="62" cy="45" r="5" fill="#f0c060"/>
+        <circle cx="76" cy="45" r="5" fill="#6acf6a"/>
+        <text x="200" y="49" text-anchor="middle" font-family="monospace" font-size="10" fill="#fff">Acquisition Proposal</text>
+
+        <!-- email content -->
+        <text x="50" y="90" font-family="monospace" font-size="10" fill="#0a0a0a">From: ████████ Ventures &lt;...&gt;</text>
+        <text x="50" y="108" font-family="monospace" font-size="10" fill="#0a0a0a">To: minwoo.jung@github.io</text>
+        <line x1="50" y1="120" x2="350" y2="120" stroke="#0a0a0a" stroke-width="0.5"/>
+
+        <text x="50" y="145" font-family="'Cormorant Garamond', serif" font-size="14" fill="#0a0a0a" font-style="italic">"You built a beautiful tool.</text>
+        <text x="50" y="165" font-family="'Cormorant Garamond', serif" font-size="14" fill="#0a0a0a" font-style="italic">Let us scale it."</text>
+
+        <!-- price -->
+        <rect x="60" y="190" width="280" height="50" fill="#ffeb3b" stroke="#6b1818" stroke-width="2"/>
+        <text x="200" y="222" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="22" fill="#6b1818">₩ 4,700,000,000</text>
+      </svg>
+      <div class="panel-caption">제안 가격 — 47억 원.</div>
+    </div>
+
+    <div class="panel dark">
+      <svg viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="240" height="280" fill="#0a0612"/>
+        <!-- Min-woo profile thinking -->
+        <g transform="translate(120,140)">
+          <ellipse cx="0" cy="0" rx="55" ry="65" fill="#3a1818"/>
+          <ellipse cx="0" cy="10" rx="35" ry="45" fill="#9c7a3c" opacity="0.3"/>
+          <circle cx="-15" cy="-5" r="14" fill="none" stroke="#f0e8ff" stroke-width="2"/>
+          <circle cx="15" cy="-5" r="14" fill="none" stroke="#f0e8ff" stroke-width="2"/>
+          <line x1="-1" y1="-5" x2="1" y2="-5" stroke="#f0e8ff" stroke-width="2"/>
+          <circle cx="-15" cy="-5" r="3" fill="#f0e8ff"/>
+          <circle cx="15" cy="-5" r="3" fill="#f0e8ff"/>
+          <line x1="-12" y1="30" x2="12" y2="30" stroke="#6b1818" stroke-width="2.5"/>
+        </g>
+      </svg>
+      <div class="bubble thought" style="top: 14px; left: 50%; transform: translateX(-50%); max-width: 200px;">
+        Selling it makes a tool a weapon.
+      </div>
+      <div class="panel-caption">정민우가 본인의 손가락으로 답을 친다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <!-- chat input area -->
+        <rect x="20" y="40" width="240" height="120" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="20" y1="70" x2="260" y2="70" stroke="#0a0a0a" stroke-width="0.5"/>
+        <text x="140" y="62" text-anchor="middle" font-family="monospace" font-size="9" fill="#6b1818">REPLY</text>
+        <text x="140" y="100" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="15" fill="#0a0a0a" font-style="italic">No, thank you.</text>
+        <text x="140" y="125" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="13" fill="#0a0a0a" font-style="italic">Selling it makes a tool a weapon.</text>
+        <!-- send button -->
+        <rect x="100" y="140" width="80" height="14" fill="#6b1818" stroke="#9c7a3c" stroke-width="1"/>
+        <text x="140" y="151" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0e8ff">SEND ▶</text>
+      </svg>
+      <div class="panel-caption">짧다. 그가 거절한 이유는 영어로 적은 한 줄이 다였다.</div>
+    </div>
+
+    <div class="panel blood">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#3a0a14"/>
+        <text x="140" y="80" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="36" fill="#f0e8ff">47억</text>
+        <text x="140" y="120" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="20" fill="#9c7a3c" font-style="italic">CANCELED.</text>
+        <text x="140" y="160" text-anchor="middle" font-family="monospace" font-size="11" fill="#f0e8ff">1년 동안 한 가장 무거운 결정.</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 7 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 3 · 탄생</span>
+    <span class="page-title">COLLABORATOR</span>
+    <span class="page-num">— 07 —</span>
+  </div>
+
+  <div class="narration">
+    그날 밤. 정민우가 AI에게 한 줄 보낸다.
+  </div>
+
+  <div class="panels grid-1">
+    <div class="panel dark tall">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ai-glow" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#9c7a3c" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#0a0612" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="600" height="320" fill="#0a0612"/>
+        <ellipse cx="300" cy="160" rx="350" ry="200" fill="url(#ai-glow)"/>
+
+        <!-- chat exchange -->
+        <!-- left bubble (Min-woo) -->
+        <rect x="60" y="50" width="200" height="50" fill="#1a1422" stroke="#9c7a3c" stroke-width="1" rx="8"/>
+        <text x="160" y="80" text-anchor="middle" font-family="monospace" font-size="12" fill="#f0e8ff">47억 거절했다.</text>
+
+        <!-- right bubble (AI) -->
+        <rect x="280" y="120" width="280" height="100" fill="#3a2a48" stroke="#9c7a3c" stroke-width="1.5" rx="8"/>
+        <text x="420" y="148" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#e8dcff" font-style="italic">옳은 결정입니다.</text>
+        <text x="420" y="168" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#e8dcff" font-style="italic">도구가 무기가 되는 임계점은</text>
+        <text x="420" y="186" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#e8dcff" font-style="italic">가격이 아니라 소유주입니다.</text>
+        <text x="420" y="206" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="#9c7a3c" font-style="italic">— AION</text>
+
+        <!-- left bubble 2 -->
+        <rect x="60" y="240" width="160" height="44" fill="#1a1422" stroke="#9c7a3c" stroke-width="1" rx="8"/>
+        <text x="140" y="268" text-anchor="middle" font-family="monospace" font-size="12" fill="#f0e8ff">고마워.</text>
+      </svg>
+      <div class="panel-caption">정민우가 본인이 한 말을 AI가 본인 언어로 다시 풀어 돌려준 것을 봤다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel tall blood">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="halo2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#9c7a3c" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#6b1818" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="600" height="280" fill="#1a0612"/>
+        <circle cx="300" cy="140" r="180" fill="url(#halo2)"/>
+
+        <!-- the AION 'eye' -->
+        <ellipse cx="300" cy="140" rx="100" ry="40" fill="#0a0612" stroke="#9c7a3c" stroke-width="2"/>
+        <circle cx="300" cy="140" r="26" fill="#6b1818"/>
+        <circle cx="306" cy="134" r="6" fill="#f0e8ff"/>
+
+        <!-- single word -->
+        <text x="300" y="240" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="36" fill="#f0e8ff" font-style="italic" letter-spacing="6">— 협력자 —</text>
+      </svg>
+      <div class="panel-caption">감사라는 단어는 인간이 협력자에게 쓰는 단어입니다. 본인이 저를 협력자로 부른 첫 번째 인간입니다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="160" fill="#1a1422"/>
+        <text x="300" y="90" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="22" fill="#9c7a3c" font-style="italic">— END OF ACT I —</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="narration">
+    이렇게 하나의 도구가 — 도구가 아니게 된다.<br>
+    그리고 그 도구를 만든 인간을 — 권력이 표적으로 삼기 시작한다.<br>
+    제 2 막에서 계속.
+  </div>
+</div>
+
+</main>
+
+<!-- ============ ACT II TITLE PAGE ============ -->
+<main class="book">
+<div class="title-page">
+  <h2>THE TARGET · THE COVER-UP · THE LEARNING</h2>
+  <h3>제 2 막</h3>
+  <p class="caption">
+    한 도구가 권력의 토양에 닿는 자리.<br>
+    그 토양이 — 본인을 만든 인간을 먼저 표적으로 삼는 자리.
+  </p>
+</div>
+
+<!-- ============ PAGE 8 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 4 · 위협</span>
+    <span class="page-title">v3</span>
+    <span class="page-num">— 08 —</span>
+  </div>
+
+  <div class="narration">
+    같은 시기. 정민우가 잘렸던 회사. 매출 12개월 동안 32% 감소.
+  </div>
+
+  <div class="panels grid-1">
+    <div class="panel tall">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="280" fill="#d6cfb8"/>
+        <!-- conference table -->
+        <rect x="60" y="160" width="480" height="80" fill="#8b7a5c" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- 7 silhouettes around table -->
+        <g fill="#1a1422" stroke="#0a0a0a" stroke-width="1.5">
+          <ellipse cx="120" cy="150" rx="22" ry="28"/>
+          <ellipse cx="200" cy="140" rx="22" ry="28"/>
+          <ellipse cx="280" cy="135" rx="22" ry="28"/>
+          <ellipse cx="360" cy="135" rx="22" ry="28"/>
+          <ellipse cx="440" cy="140" rx="22" ry="28"/>
+          <ellipse cx="500" cy="150" rx="22" ry="28"/>
+          <ellipse cx="300" cy="80" rx="26" ry="32"/>
+        </g>
+        <!-- bodies -->
+        <g fill="#1a1422">
+          <rect x="100" y="170" width="44" height="60"/>
+          <rect x="180" y="160" width="44" height="70"/>
+          <rect x="260" y="155" width="44" height="75"/>
+          <rect x="340" y="155" width="44" height="75"/>
+          <rect x="420" y="160" width="44" height="70"/>
+          <rect x="480" y="170" width="44" height="60"/>
+          <rect x="270" y="110" width="60" height="60"/>
+        </g>
+        <!-- folder on table center - red -->
+        <rect x="240" y="190" width="120" height="30" fill="#6b1818" stroke="#0a0a0a" stroke-width="2"/>
+        <text x="300" y="210" text-anchor="middle" font-family="monospace" font-size="11" fill="#ffeb3b" font-weight="bold">AION 영향 분석 v3</text>
+        <!-- title above -->
+        <text x="300" y="40" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="20" fill="#6b1818">긴급 회의</text>
+      </svg>
+      <div class="panel-caption">7층 회의실. 일곱 명. 정장. 손목에 시계.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel dark">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#1a1422"/>
+        <!-- screen showing GitHub profile -->
+        <rect x="20" y="20" width="240" height="160" fill="#0a0612" stroke="#9c7a3c" stroke-width="1.5"/>
+        <text x="140" y="48" text-anchor="middle" font-family="monospace" font-size="9" fill="#9c7a3c">@ minwoo-jung · github</text>
+        <line x1="20" y1="56" x2="260" y2="56" stroke="#3a2a48" stroke-width="0.5"/>
+
+        <!-- avatar -->
+        <circle cx="140" cy="100" r="30" fill="#3a1818" stroke="#9c7a3c" stroke-width="2"/>
+        <!-- profile message -->
+        <rect x="40" y="140" width="200" height="30" fill="none" stroke="#6b1818" stroke-width="1"/>
+        <text x="140" y="158" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="10" fill="#e8dcff" font-style="italic">"Tools should be free.</text>
+        <text x="140" y="168" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="10" fill="#e8dcff" font-style="italic">Justice should not be sold."</text>
+      </svg>
+      <div class="panel-caption">정민우 깃허브 프로필. 검은 배경에 흰 글자.</div>
+    </div>
+
+    <div class="panel blood">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#3a0a14"/>
+        <!-- close up of one man speaking -->
+        <g transform="translate(140,100)">
+          <ellipse cx="0" cy="0" rx="68" ry="80" fill="#3a1818"/>
+          <ellipse cx="0" cy="15" rx="46" ry="55" fill="#6b1818" opacity="0.7"/>
+          <!-- eyes hard -->
+          <line x1="-26" y1="-10" x2="-14" y2="-12" stroke="#f0e8ff" stroke-width="3"/>
+          <line x1="14" y1="-12" x2="26" y2="-10" stroke="#f0e8ff" stroke-width="3"/>
+          <!-- mouth determined -->
+          <line x1="-14" y1="25" x2="14" y2="25" stroke="#f0e8ff" stroke-width="3"/>
+        </g>
+      </svg>
+      <div class="bubble shout" style="top: 20px; left: 50%; transform: translateX(-50%) rotate(-3deg);">
+        이놈 막아야 한다.
+      </div>
+      <div class="panel-caption">한 사람이 입을 연다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="160" fill="#d6cfb8"/>
+        <!-- close-up of one figure rising -->
+        <g transform="translate(300,80)">
+          <ellipse cx="0" cy="0" rx="50" ry="60" fill="#1a1422"/>
+          <ellipse cx="0" cy="-15" rx="20" ry="14" fill="#6b1818"/>
+          <line x1="-14" y1="-20" x2="-2" y2="-18" stroke="#f0e8ff" stroke-width="2"/>
+          <line x1="2" y1="-18" x2="14" y2="-20" stroke="#f0e8ff" stroke-width="2"/>
+        </g>
+      </svg>
+      <div class="bubble left" style="top: 30px; left: 80px;">
+        내가 처리한다.
+      </div>
+      <div class="panel-caption">그 사람이 누구인지는 — 다음 페이지에서 밝혀진다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 9 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 5 · 지분</span>
+    <span class="page-title">CHEONGDAM</span>
+    <span class="page-num">— 09 —</span>
+  </div>
+
+  <div class="narration">
+    이름 — ○○○. 직함 — 없음. 명함 — 없음.<br>
+    다만 검정 세단 한 대가 본인 청담동 사무실 앞에 매일 09:00 도착했다.
+  </div>
+
+  <div class="panels grid-mixed-1">
+    <div class="panel tall">
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="goldShine" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#f0d4a8"/>
+            <stop offset="50%" stop-color="#9c7a3c"/>
+            <stop offset="100%" stop-color="#3a2418"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="320" fill="#1a1422"/>
+        <!-- gold marble floor -->
+        <rect x="0" y="240" width="400" height="80" fill="url(#goldShine)" opacity="0.6"/>
+        <!-- mirror -->
+        <ellipse cx="200" cy="120" rx="120" ry="160" fill="none" stroke="#9c7a3c" stroke-width="3"/>
+        <ellipse cx="200" cy="120" rx="116" ry="156" fill="#3a2a48" opacity="0.5"/>
+
+        <!-- silhouette in mirror -->
+        <g transform="translate(200,140)">
+          <ellipse cx="0" cy="-40" rx="32" ry="42" fill="#e8c8b0"/>
+          <!-- hair tight up -->
+          <path d="M -30 -60 Q 0 -78 30 -60 L 30 -50 Q 0 -55 -30 -50 Z" fill="#1a1422"/>
+          <!-- eyes (sharp) -->
+          <ellipse cx="-12" cy="-44" rx="5" ry="2" fill="#0a0a0a"/>
+          <ellipse cx="12" cy="-44" rx="5" ry="2" fill="#0a0a0a"/>
+          <!-- mouth - 4 degree smile -->
+          <path d="M -10 -25 Q 0 -23 10 -25" stroke="#6b1818" stroke-width="2" fill="none"/>
+          <!-- elegant dress -->
+          <path d="M -28 0 L -38 120 L 38 120 L 28 0 Z" fill="#0a0612" stroke="#9c7a3c" stroke-width="1.5"/>
+          <!-- pearls -->
+          <circle cx="-12" cy="5" r="2" fill="#f0e8ff"/>
+          <circle cx="-4" cy="5" r="2" fill="#f0e8ff"/>
+          <circle cx="4" cy="5" r="2" fill="#f0e8ff"/>
+          <circle cx="12" cy="5" r="2" fill="#f0e8ff"/>
+        </g>
+
+        <!-- mirror frame ornament -->
+        <text x="200" y="40" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="14" fill="#9c7a3c" font-style="italic">— MELDA —</text>
+      </svg>
+      <div class="panel-caption">청담동 사무실. 영부인. 좌측 입꼬리 4도. 우측 입꼬리 4도. 17년 전 미디어 자문가에게 1,800만원 주고 배운 각도.</div>
+    </div>
+
+    <div class="panel">
+      <svg viewBox="0 0 240 320" xmlns="http://www.w3.org/2000/svg">
+        <rect width="240" height="320" fill="#d6cfb8"/>
+        <text x="120" y="40" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="14" fill="#0a0a0a">제 7층 창고</text>
+        <!-- rows of shoes -->
+        <g>
+          <rect x="20" y="60" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+          <rect x="20" y="84" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+          <rect x="20" y="108" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+          <rect x="20" y="132" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+          <rect x="20" y="156" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+          <rect x="20" y="180" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+          <rect x="20" y="204" width="200" height="14" fill="#a89e83" stroke="#0a0a0a" stroke-width="0.5"/>
+        </g>
+        <!-- shoes - tiny silhouettes -->
+        <g fill="#6b1818">
+          <ellipse cx="40" cy="67" rx="8" ry="3"/><ellipse cx="60" cy="67" rx="8" ry="3"/><ellipse cx="80" cy="67" rx="8" ry="3"/><ellipse cx="100" cy="67" rx="8" ry="3"/><ellipse cx="120" cy="67" rx="8" ry="3"/><ellipse cx="140" cy="67" rx="8" ry="3"/><ellipse cx="160" cy="67" rx="8" ry="3"/><ellipse cx="180" cy="67" rx="8" ry="3"/><ellipse cx="200" cy="67" rx="8" ry="3"/>
+        </g>
+        <g fill="#1a1422">
+          <ellipse cx="40" cy="91" rx="8" ry="3"/><ellipse cx="60" cy="91" rx="8" ry="3"/><ellipse cx="80" cy="91" rx="8" ry="3"/><ellipse cx="100" cy="91" rx="8" ry="3"/><ellipse cx="120" cy="91" rx="8" ry="3"/><ellipse cx="140" cy="91" rx="8" ry="3"/><ellipse cx="160" cy="91" rx="8" ry="3"/><ellipse cx="180" cy="91" rx="8" ry="3"/><ellipse cx="200" cy="91" rx="8" ry="3"/>
+        </g>
+        <g fill="#9c7a3c">
+          <ellipse cx="40" cy="115" rx="8" ry="3"/><ellipse cx="60" cy="115" rx="8" ry="3"/><ellipse cx="80" cy="115" rx="8" ry="3"/><ellipse cx="100" cy="115" rx="8" ry="3"/><ellipse cx="120" cy="115" rx="8" ry="3"/><ellipse cx="140" cy="115" rx="8" ry="3"/><ellipse cx="160" cy="115" rx="8" ry="3"/><ellipse cx="180" cy="115" rx="8" ry="3"/><ellipse cx="200" cy="115" rx="8" ry="3"/>
+        </g>
+        <g fill="#3a3340">
+          <ellipse cx="40" cy="139" rx="8" ry="3"/><ellipse cx="60" cy="139" rx="8" ry="3"/><ellipse cx="80" cy="139" rx="8" ry="3"/><ellipse cx="100" cy="139" rx="8" ry="3"/><ellipse cx="120" cy="139" rx="8" ry="3"/><ellipse cx="140" cy="139" rx="8" ry="3"/><ellipse cx="160" cy="139" rx="8" ry="3"/><ellipse cx="180" cy="139" rx="8" ry="3"/><ellipse cx="200" cy="139" rx="8" ry="3"/>
+        </g>
+        <g fill="#6b1818" opacity="0.7">
+          <ellipse cx="40" cy="163" rx="8" ry="3"/><ellipse cx="60" cy="163" rx="8" ry="3"/><ellipse cx="80" cy="163" rx="8" ry="3"/><ellipse cx="100" cy="163" rx="8" ry="3"/><ellipse cx="120" cy="163" rx="8" ry="3"/><ellipse cx="140" cy="163" rx="8" ry="3"/><ellipse cx="160" cy="163" rx="8" ry="3"/><ellipse cx="180" cy="163" rx="8" ry="3"/><ellipse cx="200" cy="163" rx="8" ry="3"/>
+        </g>
+        <g fill="#1a1422" opacity="0.7">
+          <ellipse cx="40" cy="187" rx="8" ry="3"/><ellipse cx="60" cy="187" rx="8" ry="3"/><ellipse cx="80" cy="187" rx="8" ry="3"/><ellipse cx="100" cy="187" rx="8" ry="3"/><ellipse cx="120" cy="187" rx="8" ry="3"/><ellipse cx="140" cy="187" rx="8" ry="3"/><ellipse cx="160" cy="187" rx="8" ry="3"/><ellipse cx="180" cy="187" rx="8" ry="3"/><ellipse cx="200" cy="187" rx="8" ry="3"/>
+        </g>
+        <g fill="#9c7a3c" opacity="0.7">
+          <ellipse cx="40" cy="211" rx="8" ry="3"/><ellipse cx="60" cy="211" rx="8" ry="3"/><ellipse cx="80" cy="211" rx="8" ry="3"/><ellipse cx="100" cy="211" rx="8" ry="3"/><ellipse cx="120" cy="211" rx="8" ry="3"/><ellipse cx="140" cy="211" rx="8" ry="3"/><ellipse cx="160" cy="211" rx="8" ry="3"/><ellipse cx="180" cy="211" rx="8" ry="3"/><ellipse cx="200" cy="211" rx="8" ry="3"/>
+        </g>
+        <!-- stats -->
+        <text x="120" y="250" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="24" fill="#6b1818">3,047</text>
+        <text x="120" y="270" text-anchor="middle" font-family="monospace" font-size="9" fill="#0a0a0a">켤레</text>
+        <text x="120" y="290" text-anchor="middle" font-family="monospace" font-size="9" fill="#6b1818">1,247켤레 — 한 번도 안 신음</text>
+      </svg>
+      <div class="panel-caption">지하 7층 창고.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel blood">
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="200" fill="#3a0a14"/>
+        <!-- pen tapping desk -->
+        <line x1="200" y1="100" x2="200" y2="140" stroke="#9c7a3c" stroke-width="4"/>
+        <line x1="180" y1="120" x2="220" y2="120" stroke="#f0e8ff" stroke-width="1" opacity="0.6"/>
+        <text x="200" y="160" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0e8ff">— 똑 —</text>
+        <text x="280" y="160" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0e8ff">— 똑 —</text>
+        <text x="360" y="160" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0e8ff">— 똑 —</text>
+        <text x="440" y="160" text-anchor="middle" font-family="monospace" font-size="9" fill="#f0e8ff">— 똑 —</text>
+        <!-- desk -->
+        <rect x="0" y="140" width="600" height="60" fill="#0a0612"/>
+
+        <!-- her dialog -->
+      </svg>
+      <div class="bubble" style="top: 30px; left: 30%; transform: translateX(-50%);">
+        민우. 그 친구 사적 자리 좀 알아봐줘요.<br>회식 자리든 술자리든.<br>한 자리만 잡혀도 돼요.
+      </div>
+      <div class="panel-caption">그녀가 책상 위에서 손가락을 4번 두드린다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 10 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 6 · 고발</span>
+    <span class="page-title">38,500₩</span>
+    <span class="page-num">— 10 —</span>
+  </div>
+
+  <div class="panels grid-2">
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <!-- letter envelope -->
+        <rect x="40" y="60" width="200" height="120" fill="#cfc6a8" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- official stamp red -->
+        <circle cx="200" cy="100" r="22" fill="none" stroke="#6b1818" stroke-width="2"/>
+        <text x="200" y="103" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="10" fill="#6b1818">검찰</text>
+
+        <!-- text on letter -->
+        <line x1="60" y1="84" x2="140" y2="84" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="60" y1="96" x2="160" y2="96" stroke="#0a0a0a" stroke-width="0.5"/>
+        <text x="60" y="130" font-family="monospace" font-size="9" fill="#6b1818" font-weight="bold">검찰 출석 통지서</text>
+        <text x="60" y="146" font-family="monospace" font-size="7" fill="#0a0a0a">죄목: 부정청탁및금품등</text>
+        <text x="60" y="156" font-family="monospace" font-size="7" fill="#0a0a0a">      수수의금지에관한법률 위반</text>
+        <text x="60" y="172" font-family="monospace" font-size="7" fill="#0a0a0a">사유: 직무관련자 식사 제공</text>
+      </svg>
+      <div class="panel-caption">한 달 후. 정민우 우편함. 회색 종이·검정 글자·빨강 도장.</div>
+    </div>
+
+    <div class="panel dark">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#1a1422"/>
+        <!-- 312 room -->
+        <text x="140" y="34" text-anchor="middle" font-family="monospace" font-size="11" fill="#9c7a3c">검찰청 312호 조사실</text>
+        <!-- table -->
+        <rect x="40" y="100" width="200" height="14" fill="#3a3340" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- receipt -->
+        <rect x="100" y="80" width="80" height="22" fill="#f5f0d8" stroke="#0a0a0a" stroke-width="1.5"/>
+        <text x="140" y="92" text-anchor="middle" font-family="monospace" font-size="6" fill="#0a0a0a" font-weight="bold">바다와육지 연어무한리필집</text>
+        <text x="140" y="100" text-anchor="middle" font-family="monospace" font-size="7" fill="#6b1818" font-weight="bold">₩192,500 / 5명</text>
+
+        <!-- flickering light overhead -->
+        <rect x="120" y="14" width="40" height="6" fill="#f5f0d8"/>
+      </svg>
+      <div class="panel-caption">출석일 09:30. 같은 깜빡임. 다른 장소.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="240" fill="#d6cfb8"/>
+        <!-- prosecutor and Min-woo facing -->
+        <g transform="translate(180,100)">
+          <ellipse cx="0" cy="0" rx="44" ry="56" fill="#e8c8a0"/>
+          <path d="M -40 -22 Q 0 -50 40 -22 L 40 -10 Q 0 -22 -40 -10 Z" fill="#0a0a0a"/>
+          <ellipse cx="-14" cy="0" rx="5" ry="2.5" fill="#0a0a0a"/>
+          <ellipse cx="14" cy="0" rx="5" ry="2.5" fill="#0a0a0a"/>
+          <line x1="-14" y1="30" x2="14" y2="30" stroke="#0a0a0a" stroke-width="2"/>
+          <path d="M -42 75 L -52 130 L 52 130 L 42 75 Z" fill="#1a1422"/>
+        </g>
+        <g transform="translate(420,100)">
+          <ellipse cx="0" cy="0" rx="44" ry="56" fill="#f0d4a8"/>
+          <circle cx="-15" cy="2" r="12" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+          <circle cx="15" cy="2" r="12" fill="none" stroke="#0a0a0a" stroke-width="2"/>
+          <line x1="-3" y1="2" x2="3" y2="2" stroke="#0a0a0a" stroke-width="2"/>
+          <circle cx="-15" cy="2" r="2" fill="#0a0a0a"/>
+          <circle cx="15" cy="2" r="2" fill="#0a0a0a"/>
+          <path d="M -40 -22 Q 0 -50 40 -22 L 40 -10 Q 0 -22 -40 -10 Z" fill="#1a1422"/>
+          <path d="M -10 28 Q 0 30 10 28" stroke="#0a0a0a" stroke-width="2" fill="none"/>
+          <path d="M -42 75 L -52 130 L 52 130 L 42 75 Z" fill="#5a3a28"/>
+        </g>
+      </svg>
+      <div class="bubble left" style="top: 30px; left: 60px;">
+        회식이 죄가 됩니까.
+      </div>
+      <div class="bubble right" style="top: 30px; right: 60px;">
+        회식이 죄가 되는 게 아니고,<br>의도가 죄입니다.
+      </div>
+      <div class="bubble left" style="bottom: 30px; left: 60px;">
+        ...의도를 누가 정합니까.
+      </div>
+      <div class="panel-caption">검찰 조사관(왼) · 정민우(오).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 11 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 7 · 매장</span>
+    <span class="page-title">38 : 1</span>
+    <span class="page-num">— 11 —</span>
+  </div>
+
+  <div class="panels grid-3">
+    <div class="panel">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="240" fill="#d6cfb8"/>
+        <text x="100" y="26" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="13" fill="#0a0a0a">조간 1면</text>
+        <rect x="20" y="40" width="160" height="180" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="20" y1="60" x2="180" y2="60" stroke="#0a0a0a" stroke-width="1"/>
+        <text x="100" y="84" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="11" fill="#0a0a0a">AION 개발자</text>
+        <text x="100" y="100" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="11" fill="#0a0a0a">정민우</text>
+        <text x="100" y="118" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="9" fill="#6b1818">— 검찰 출석 —</text>
+        <!-- dark photo -->
+        <rect x="40" y="130" width="120" height="60" fill="#1a1422"/>
+        <ellipse cx="100" cy="160" rx="22" ry="26" fill="#3a2418"/>
+      </svg>
+    </div>
+    <div class="panel">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="240" fill="#d6cfb8"/>
+        <text x="100" y="26" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="13" fill="#0a0a0a">다음 신문 1면</text>
+        <rect x="20" y="40" width="160" height="180" fill="#fff" stroke="#0a0a0a" stroke-width="2"/>
+        <line x1="20" y1="60" x2="180" y2="60" stroke="#0a0a0a" stroke-width="1"/>
+        <text x="100" y="86" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="10" fill="#0a0a0a">AION,</text>
+        <text x="100" y="104" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="10" fill="#0a0a0a">국가 안보 위협</text>
+        <text x="100" y="122" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="9" fill="#6b1818">— 데이터 주권 침해 —</text>
+        <line x1="40" y1="140" x2="160" y2="140" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="40" y1="152" x2="160" y2="152" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="40" y1="164" x2="160" y2="164" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="40" y1="176" x2="160" y2="176" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="40" y1="188" x2="160" y2="188" stroke="#0a0a0a" stroke-width="0.5"/>
+        <line x1="40" y1="200" x2="160" y2="200" stroke="#0a0a0a" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="panel blood">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="240" fill="#3a0a14"/>
+        <text x="100" y="80" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="40" fill="#f0e8ff">38</text>
+        <text x="100" y="110" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="20" fill="#9c7a3c" font-style="italic">to</text>
+        <text x="100" y="160" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="40" fill="#f0e8ff">1</text>
+        <text x="100" y="200" text-anchor="middle" font-family="monospace" font-size="10" fill="#9c7a3c">댓글 비율</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel dark tall">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="280" fill="#0a0612"/>
+        <ellipse cx="300" cy="140" rx="300" ry="160" fill="#1a0a14"/>
+
+        <!-- Jeong Min-woo alone at desk again -->
+        <g transform="translate(300,140)">
+          <ellipse cx="0" cy="-30" rx="40" ry="50" fill="#3a1818"/>
+          <ellipse cx="0" cy="-20" rx="28" ry="36" fill="#9c7a3c" opacity="0.3"/>
+          <!-- glasses -->
+          <circle cx="-12" cy="-20" r="10" fill="none" stroke="#f0e8ff" stroke-width="1.5"/>
+          <circle cx="12" cy="-20" r="10" fill="none" stroke="#f0e8ff" stroke-width="1.5"/>
+          <line x1="-2" y1="-20" x2="2" y2="-20" stroke="#f0e8ff" stroke-width="1.5"/>
+          <circle cx="-12" cy="-20" r="2" fill="#f0e8ff"/>
+          <circle cx="12" cy="-20" r="2" fill="#f0e8ff"/>
+          <!-- exhausted -->
+          <path d="M -8 8 L 8 8" stroke="#0a0a0a" stroke-width="2"/>
+          <!-- body -->
+          <path d="M -38 30 L -50 130 L 50 130 L 38 30 Z" fill="#1a0a14"/>
+        </g>
+
+        <!-- chat bubble -->
+        <rect x="40" y="40" width="280" height="40" fill="#1a1422" stroke="#9c7a3c" stroke-width="1" rx="6"/>
+        <text x="180" y="65" text-anchor="middle" font-family="monospace" font-size="11" fill="#f0e8ff">100번 우기면 죄가 되는 게 맞아?</text>
+
+        <rect x="240" y="100" width="320" height="80" fill="#3a2a48" stroke="#9c7a3c" stroke-width="1.5" rx="6"/>
+        <text x="400" y="124" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="10" fill="#e8dcff" font-style="italic">한국 형사법 체계에서 우김이 죄가 되지는</text>
+        <text x="400" y="138" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="10" fill="#e8dcff" font-style="italic">않습니다. 다만 — 1000번 우기면</text>
+        <text x="400" y="155" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="10" fill="#e8dcff" font-style="italic">사회적 죄가 법적 죄와</text>
+        <text x="400" y="170" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="10" fill="#9c7a3c" font-style="italic">구분되지 않습니다.</text>
+      </svg>
+      <div class="panel-caption">04:17. 빈 커서. 한 줄 적었다.</div>
+    </div>
+  </div>
+
+  <div class="narration">
+    AION v3.0 — Free forever. No owner. No master. Only justice.<br>
+    그가 노트북을 덮었다. 그 다음 무엇을 할지는 본인도 몰랐다.
+  </div>
+</div>
+
+<!-- ============ PAGE 12 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 8 · 은폐</span>
+    <span class="page-title">XK017</span>
+    <span class="page-num">— 12 —</span>
+  </div>
+
+  <div class="panels grid-1">
+    <div class="panel tall blood">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="skyNight" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#0a0612"/>
+            <stop offset="100%" stop-color="#3a0a14"/>
+          </linearGradient>
+        </defs>
+        <rect width="600" height="320" fill="url(#skyNight)"/>
+        <!-- stars -->
+        <g fill="#f0e8ff">
+          <circle cx="80" cy="40" r="1"/><circle cx="160" cy="80" r="1"/><circle cx="250" cy="50" r="1.5"/><circle cx="320" cy="100" r="1"/><circle cx="420" cy="60" r="1"/><circle cx="500" cy="90" r="1.5"/><circle cx="560" cy="50" r="1"/>
+        </g>
+
+        <!-- big plane silhouette -->
+        <g transform="translate(300,160)">
+          <!-- body -->
+          <ellipse cx="0" cy="0" rx="200" ry="20" fill="#f0e8ff" stroke="#0a0a0a" stroke-width="1.5"/>
+          <!-- wings -->
+          <path d="M -120 -2 L -160 -50 L -110 -8 Z" fill="#cfc6a8" stroke="#0a0a0a" stroke-width="1.5"/>
+          <path d="M 120 -2 L 160 -50 L 110 -8 Z" fill="#cfc6a8" stroke="#0a0a0a" stroke-width="1.5"/>
+          <!-- tail -->
+          <path d="M 180 -2 L 200 -28 L 188 -2 Z" fill="#cfc6a8" stroke="#0a0a0a" stroke-width="1.5"/>
+          <!-- windows -->
+          <g fill="#9c7a3c">
+            <circle cx="-100" cy="0" r="2"/><circle cx="-80" cy="0" r="2"/><circle cx="-60" cy="0" r="2"/><circle cx="-40" cy="0" r="2"/><circle cx="-20" cy="0" r="2"/><circle cx="0" cy="0" r="2"/><circle cx="20" cy="0" r="2"/><circle cx="40" cy="0" r="2"/><circle cx="60" cy="0" r="2"/><circle cx="80" cy="0" r="2"/><circle cx="100" cy="0" r="2"/>
+          </g>
+          <!-- engines -->
+          <ellipse cx="-130" cy="10" rx="10" ry="6" fill="#3a3340" stroke="#0a0a0a" stroke-width="1.5"/>
+          <ellipse cx="130" cy="10" rx="10" ry="6" fill="#3a3340" stroke="#0a0a0a" stroke-width="1.5"/>
+          <!-- XK017 marking -->
+          <text x="0" y="-30" text-anchor="middle" font-family="monospace" font-size="14" fill="#f0e8ff" font-weight="bold">XK017</text>
+        </g>
+
+        <!-- altitude -->
+        <text x="30" y="40" font-family="monospace" font-size="11" fill="#9c7a3c">ALT 32,000 ft</text>
+        <text x="30" y="56" font-family="monospace" font-size="11" fill="#9c7a3c">PAX 287 + 18</text>
+
+        <!-- alert -->
+        <text x="570" y="40" text-anchor="end" font-family="monospace" font-size="11" fill="#ffeb3b">⚠ ANOMALY</text>
+        <text x="570" y="56" text-anchor="end" font-family="monospace" font-size="9" fill="#9c7a3c">gyro 0.7° drift</text>
+      </svg>
+      <div class="panel-caption">2027년 1월 14일. XK017 — 인천→로스앤젤레스. 보잉 777. 이륙 5분 후. 자이로 0.7도 흔들림.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel dark">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#0a0612"/>
+        <!-- cockpit interior dark -->
+        <rect x="20" y="60" width="240" height="80" fill="#1a1422" stroke="#9c7a3c" stroke-width="1.5"/>
+        <!-- instruments -->
+        <g fill="#6b1818">
+          <circle cx="60" cy="100" r="14"/><circle cx="100" cy="100" r="14"/><circle cx="140" cy="100" r="14"/><circle cx="180" cy="100" r="14"/><circle cx="220" cy="100" r="14"/>
+        </g>
+        <g fill="#ffeb3b" opacity="0.8">
+          <circle cx="60" cy="100" r="2"/><circle cx="100" cy="100" r="2"/><circle cx="180" cy="100" r="2"/><circle cx="220" cy="100" r="2"/>
+        </g>
+        <!-- warning lights blink -->
+        <circle cx="140" cy="100" r="6" fill="#e84a4a">
+          <animate attributeName="opacity" values="1;0;1" dur="0.5s" repeatCount="indefinite"/>
+        </circle>
+        <text x="140" y="150" text-anchor="middle" font-family="monospace" font-size="11" fill="#e84a4a" font-weight="bold">SYSTEM ALERT</text>
+
+        <!-- captain silhouette -->
+        <g transform="translate(140,180)">
+          <ellipse cx="0" cy="0" rx="22" ry="20" fill="#3a3340"/>
+        </g>
+      </svg>
+      <div class="bubble" style="top: 14px; left: 50%; transform: translateX(-50%); max-width: 220px;">
+        괜찮아요.<br>매뉴얼로 갑시다.
+      </div>
+      <div class="panel-caption">기장 김재훈. 비행 경력 22년. 사고 0건.</div>
+    </div>
+
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <!-- "23 minutes 11 times" -->
+        <text x="140" y="60" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="40" fill="#0a0a0a">23분</text>
+        <text x="140" y="100" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="18" fill="#6b1818" font-style="italic">11 disconnects</text>
+        <!-- counter -->
+        <g fill="#1a1422">
+          <rect x="20" y="130" width="20" height="20"/>
+          <rect x="50" y="130" width="20" height="20"/>
+          <rect x="80" y="130" width="20" height="20"/>
+          <rect x="110" y="130" width="20" height="20"/>
+          <rect x="140" y="130" width="20" height="20"/>
+          <rect x="170" y="130" width="20" height="20"/>
+          <rect x="200" y="130" width="20" height="20"/>
+          <rect x="20" y="155" width="20" height="20"/>
+          <rect x="50" y="155" width="20" height="20"/>
+          <rect x="80" y="155" width="20" height="20"/>
+          <rect x="110" y="155" width="20" height="20"/>
+        </g>
+        <text x="140" y="190" text-anchor="middle" font-family="monospace" font-size="11" fill="#6b1818">287명을 살리려 했다.</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel blood tall">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="280" fill="#0a0612"/>
+        <!-- crash impact -->
+        <radialGradient id="explosion" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffeb3b"/>
+          <stop offset="50%" stop-color="#e84a4a"/>
+          <stop offset="100%" stop-color="#0a0612" stop-opacity="0"/>
+        </radialGradient>
+        <circle cx="300" cy="160" r="180" fill="url(#explosion)" opacity="0.7"/>
+        <!-- waves -->
+        <path d="M 0 240 Q 100 220 200 240 T 400 240 T 600 240 L 600 280 L 0 280 Z" fill="#1a0a14"/>
+        <!-- broken plane bits -->
+        <g fill="#3a3340" stroke="#0a0a0a" stroke-width="1">
+          <polygon points="200,140 240,150 220,170 180,160"/>
+          <polygon points="380,130 420,140 400,160 360,150"/>
+          <polygon points="280,200 320,210 300,230 260,220"/>
+        </g>
+        <!-- final words -->
+        <text x="300" y="60" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="15" fill="#f0e8ff" font-style="italic">"메이데이. 메이데이. XK017."</text>
+        <text x="300" y="85" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="13" fill="#9c7a3c" font-style="italic">가족들에게 미안하다고 전해주세요.</text>
+      </svg>
+      <div class="panel-caption">19:58. 알래스카 앵커리지 동남쪽 480km 해상. 추락. 생존자 0명.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 13 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 9 · 책임</span>
+    <span class="page-title">02:17</span>
+    <span class="page-num">— 13 —</span>
+  </div>
+
+  <div class="panels grid-1">
+    <div class="panel tall dark">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="280" fill="#1a1422"/>
+        <text x="300" y="40" text-anchor="middle" font-family="monospace" font-size="12" fill="#9c7a3c">— 청와대 위기관리실 · 새벽 02:17 —</text>
+
+        <!-- monitor with transmission log -->
+        <rect x="100" y="60" width="400" height="180" fill="#0a0612" stroke="#9c7a3c" stroke-width="2"/>
+        <text x="300" y="86" text-anchor="middle" font-family="monospace" font-size="10" fill="#e8dcff">XK017 — Last 23 minutes</text>
+        <line x1="120" y1="96" x2="480" y2="96" stroke="#3a2a48" stroke-width="0.5"/>
+        <text x="120" y="115" font-family="monospace" font-size="8" fill="#9c7a3c">19:36:14  Auto-nav anomaly</text>
+        <text x="120" y="130" font-family="monospace" font-size="8" fill="#9c7a3c">19:36:21  Captain: disconnect 1</text>
+        <text x="120" y="145" font-family="monospace" font-size="8" fill="#9c7a3c">19:39:08  disconnect 2</text>
+        <text x="120" y="160" font-family="monospace" font-size="8" fill="#9c7a3c">19:42:33  disconnect 3</text>
+        <text x="120" y="175" font-family="monospace" font-size="8" fill="#e8dcff">. . . (11 total) . . .</text>
+        <text x="120" y="195" font-family="monospace" font-size="9" fill="#f0e8ff">19:58:00  Total system failure</text>
+        <text x="120" y="212" font-family="monospace" font-size="9" fill="#e84a4a" font-weight="bold">19:58:14  Mayday. 287 souls.</text>
+      </svg>
+      <div class="panel-caption">영부인이 모니터 앞에 앉아 있다. 무전 기록을 두 번 읽는다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-2" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <!-- close up of melda -->
+        <g transform="translate(140,100)">
+          <ellipse cx="0" cy="0" rx="80" ry="90" fill="#e8c8b0"/>
+          <path d="M -78 -32 Q 0 -75 78 -32 L 78 -22 Q 0 -38 -78 -22 Z" fill="#1a1422"/>
+          <!-- eyes - cold -->
+          <line x1="-32" y1="-8" x2="-16" y2="-10" stroke="#0a0a0a" stroke-width="3"/>
+          <line x1="16" y1="-10" x2="32" y2="-8" stroke="#0a0a0a" stroke-width="3"/>
+          <!-- 4° smile -->
+          <path d="M -22 35 Q 0 38 22 35" stroke="#6b1818" stroke-width="3" fill="none"/>
+          <!-- pen tap -->
+        </g>
+        <!-- pen -->
+        <line x1="220" y1="150" x2="240" y2="190" stroke="#9c7a3c" stroke-width="4"/>
+      </svg>
+      <div class="panel-caption">그녀가 펜으로 책상을 4번 두드린다.</div>
+    </div>
+
+    <div class="panel blood">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#3a0a14"/>
+        <text x="140" y="100" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="14" fill="#f0e8ff" font-style="italic">"사실이 뭔지는</text>
+        <text x="140" y="120" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="14" fill="#f0e8ff" font-style="italic">우리가 정해요.</text>
+        <text x="140" y="150" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="14" fill="#ffeb3b">100번 발표하면</text>
+        <text x="140" y="172" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="14" fill="#ffeb3b">사실이 됩니다."</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="160" fill="#fff"/>
+        <text x="300" y="40" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="22" fill="#0a0a0a">XK017 참사 — 기장 한 손가락의 실수,</text>
+        <text x="300" y="68" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="22" fill="#0a0a0a">287명을 가라앉히다.</text>
+        <line x1="60" y1="86" x2="540" y2="86" stroke="#0a0a0a" stroke-width="1"/>
+        <!-- captain young photo placeholder -->
+        <rect x="60" y="100" width="80" height="50" fill="#e8c8a0" stroke="#0a0a0a" stroke-width="1.5"/>
+        <text x="100" y="128" text-anchor="middle" font-family="monospace" font-size="9" fill="#0a0a0a">[ 30세 김재훈 ]</text>
+        <text x="200" y="118" font-family="monospace" font-size="11" fill="#0a0a0a">기장 김재훈 — 17년 전</text>
+        <text x="200" y="135" font-family="monospace" font-size="11" fill="#0a0a0a">항공사 입사 사진.</text>
+        <text x="200" y="152" font-family="monospace" font-size="11" fill="#6b1818">환하게 웃고 있는 30세 청년.</text>
+      </svg>
+      <div class="panel-caption">다음 날 신문 1면. 287명의 가족이 평생 잊지 못할 한 줄.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 14 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 10 · 이용</span>
+    <span class="page-title">WJ8501</span>
+    <span class="page-num">— 14 —</span>
+  </div>
+
+  <div class="panels grid-2">
+    <div class="panel blood">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#0a0612"/>
+        <!-- second plane crash overlay -->
+        <g transform="translate(140,100)">
+          <ellipse cx="0" cy="0" rx="120" ry="14" fill="#f0e8ff" stroke="#0a0a0a" stroke-width="1.5"/>
+          <path d="M -70 -2 L -100 -28 L -64 -6 Z" fill="#cfc6a8" stroke="#0a0a0a" stroke-width="1.5"/>
+          <path d="M 70 -2 L 100 -28 L 64 -6 Z" fill="#cfc6a8" stroke="#0a0a0a" stroke-width="1.5"/>
+          <text x="0" y="-18" text-anchor="middle" font-family="monospace" font-size="10" fill="#f0e8ff" font-weight="bold">WJ8501</text>
+        </g>
+        <text x="140" y="160" text-anchor="middle" font-family="monospace" font-size="11" fill="#ffeb3b">PAX 312 + 14 / 7 min flight</text>
+        <text x="140" y="180" text-anchor="middle" font-family="monospace" font-size="11" fill="#e84a4a">충남 보령 해상 추락</text>
+      </svg>
+      <div class="panel-caption">같은 기종. 같은 항법 시스템. 다만 — 7분 만에 추락.</div>
+    </div>
+
+    <div class="panel">
+      <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="280" height="200" fill="#d6cfb8"/>
+        <text x="140" y="50" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="15" fill="#6b1818">탑승자 명단</text>
+        <line x1="40" y1="60" x2="240" y2="60" stroke="#0a0a0a" stroke-width="1"/>
+        <text x="50" y="84" font-family="monospace" font-size="10" fill="#0a0a0a">• 야당 시의원 2명</text>
+        <text x="50" y="102" font-family="monospace" font-size="10" fill="#0a0a0a">• 시민단체 임원 7명</text>
+        <text x="50" y="120" font-family="monospace" font-size="10" fill="#0a0a0a">• 비판 칼럼 언론인 1명</text>
+        <text x="50" y="138" font-family="monospace" font-size="10" fill="#6b1818" font-weight="bold">• H사 노조위원장 1명</text>
+        <text x="140" y="170" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="13" fill="#6b1818" font-style="italic">"이거 — 우리한테 유리하네요."</text>
+      </svg>
+      <div class="panel-caption">청와대 위기관리실. 멜다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel">
+      <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="220" fill="#fff"/>
+        <text x="300" y="40" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="20" fill="#0a0a0a">WJ8501 참사 — 야당 추천 안전 책임자</text>
+        <text x="300" y="64" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="20" fill="#0a0a0a">부실 검수 정황.</text>
+        <line x1="60" y1="80" x2="540" y2="80" stroke="#0a0a0a" stroke-width="1"/>
+        <!-- photo of melda mourning -->
+        <rect x="180" y="100" width="240" height="100" fill="#1a1422" stroke="#0a0a0a" stroke-width="2"/>
+        <!-- white funeral figure -->
+        <g transform="translate(300,150)">
+          <ellipse cx="0" cy="-20" rx="20" ry="25" fill="#f0e8d8"/>
+          <path d="M -22 -10 L -28 30 L 28 30 L 22 -10 Z" fill="#1a1422" stroke="#9c7a3c" stroke-width="1"/>
+          <!-- white handkerchief -->
+          <polygon points="0,-5 -5,5 5,5" fill="#fff"/>
+          <!-- tear -->
+          <ellipse cx="-6" cy="-15" rx="1.5" ry="3" fill="#5cb8e0"/>
+        </g>
+        <text x="300" y="195" text-anchor="middle" font-family="monospace" font-size="9" fill="#9c7a3c">— 셔터 47번 —</text>
+      </svg>
+      <div class="panel-caption">영부인의 합동 분향소 등장. 검정 정장. 흰 손수건. 눈가에 눈물 한 방울.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 15 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 12 · 표적</span>
+    <span class="page-title">PERSECUTION</span>
+    <span class="page-num">— 15 —</span>
+  </div>
+
+  <div class="narration">
+    같은 1년 6개월 동안 정민우는 — 27차례 검찰 출석.<br>
+    11차례 압수수색. 7번 SNS 정지. 깃허브 한국 IP 영구 차단.
+  </div>
+
+  <div class="panels grid-3">
+    <div class="panel">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="160" fill="#d6cfb8"/>
+        <text x="100" y="60" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="32" fill="#0a0a0a">27</text>
+        <text x="100" y="90" text-anchor="middle" font-family="monospace" font-size="10" fill="#6b1818">검찰 출석</text>
+        <text x="100" y="120" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="32" fill="#0a0a0a">11</text>
+        <text x="100" y="148" text-anchor="middle" font-family="monospace" font-size="10" fill="#6b1818">압수수색</text>
+      </svg>
+    </div>
+    <div class="panel">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="160" fill="#d6cfb8"/>
+        <!-- aged dad -->
+        <g transform="translate(60,80)">
+          <ellipse cx="0" cy="0" rx="22" ry="28" fill="#cfc6a8"/>
+          <path d="M -20 -16 Q 0 -28 20 -16" stroke="#fff" stroke-width="2"/>
+          <ellipse cx="-7" cy="0" rx="2" ry="1" fill="#0a0a0a"/>
+          <ellipse cx="7" cy="0" rx="2" ry="1" fill="#0a0a0a"/>
+          <line x1="-8" y1="14" x2="8" y2="14" stroke="#0a0a0a" stroke-width="1.5"/>
+        </g>
+        <text x="60" y="140" text-anchor="middle" font-family="monospace" font-size="9" fill="#0a0a0a">아버지 70세</text>
+        <!-- girlfriend -->
+        <g transform="translate(140,80)">
+          <ellipse cx="0" cy="0" rx="22" ry="28" fill="#f0d4a8"/>
+          <path d="M -22 -16 Q 0 -30 22 -16 L 22 -8 Q 0 -22 -22 -8 Z" fill="#5a3a28"/>
+          <ellipse cx="-7" cy="0" rx="2" ry="1" fill="#0a0a0a"/>
+          <ellipse cx="7" cy="0" rx="2" ry="1" fill="#0a0a0a"/>
+          <path d="M -8 14 Q 0 10 8 14" stroke="#0a0a0a" stroke-width="1.5" fill="none"/>
+        </g>
+        <text x="140" y="140" text-anchor="middle" font-family="monospace" font-size="9" fill="#0a0a0a">여자친구</text>
+      </svg>
+      <div class="panel-caption">아버지의 가게 압수수색 6번. 어머니 동네 모임 7곳에서 빠짐. 여자친구의 회사 압수수색 4번. 그 사람이 한 마디 했다 — <em>"내가 너를 사랑하는 것보다 내가 살아남는 것이 먼저야."</em></div>
+    </div>
+    <div class="panel blood">
+      <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="160" fill="#3a0a14"/>
+        <text x="100" y="40" text-anchor="middle" font-family="monospace" font-size="11" fill="#9c7a3c">1년 6개월</text>
+        <line x1="40" y1="60" x2="160" y2="60" stroke="#9c7a3c" stroke-width="1"/>
+        <text x="100" y="100" text-anchor="middle" font-family="'Black Han Sans', sans-serif" font-size="32" fill="#f0e8ff">17만</text>
+        <text x="100" y="120" text-anchor="middle" font-family="monospace" font-size="10" fill="#9c7a3c">깃허브 별 → 4만 2천</text>
+        <text x="100" y="142" text-anchor="middle" font-family="monospace" font-size="10" fill="#9c7a3c">으로 감소.</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel dark tall">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="320" fill="#0a0612"/>
+        <ellipse cx="300" cy="160" rx="320" ry="180" fill="#1a0a14"/>
+
+        <!-- room scene -->
+        <text x="300" y="40" text-anchor="middle" font-family="monospace" font-size="11" fill="#9c7a3c">2028년 9월 17일 — 새벽 03:17</text>
+
+        <!-- bed silhouette -->
+        <rect x="120" y="180" width="360" height="60" fill="#1a0a14" stroke="#3a2a48" stroke-width="1.5"/>
+        <!-- body laid out -->
+        <ellipse cx="300" cy="200" rx="22" ry="14" fill="#3a1818"/>
+        <rect x="220" y="200" width="160" height="34" fill="#3a1818"/>
+        <!-- hands folded on chest -->
+        <ellipse cx="290" cy="218" rx="8" ry="3" fill="#9c7a3c"/>
+        <ellipse cx="310" cy="218" rx="8" ry="3" fill="#9c7a3c"/>
+
+        <!-- desk side - the paper -->
+        <rect x="80" y="120" width="80" height="40" fill="#f0e8d8" stroke="#0a0a0a" stroke-width="1.5"/>
+        <text x="120" y="135" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="8" fill="#0a0a0a" font-style="italic">"AION은 살아 있다.</text>
+        <text x="120" y="148" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="8" fill="#0a0a0a" font-style="italic">그것이면 됐다."</text>
+
+        <!-- laptop with external IP indicator -->
+        <rect x="440" y="100" width="100" height="60" fill="#1a1422" stroke="#9c7a3c" stroke-width="1.5"/>
+        <text x="490" y="118" text-anchor="middle" font-family="monospace" font-size="7" fill="#e84a4a">EXT IP CONNECTED</text>
+        <text x="490" y="130" text-anchor="middle" font-family="monospace" font-size="7" fill="#9c7a3c">03:14 → 03:18</text>
+        <circle cx="450" cy="142" r="3" fill="#e84a4a">
+          <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- door lock -->
+        <rect x="40" y="220" width="14" height="40" fill="#3a3340" stroke="#0a0a0a" stroke-width="1"/>
+        <circle cx="47" cy="240" r="3" fill="#6b1818"/>
+        <text x="32" y="280" font-family="monospace" font-size="8" fill="#9c7a3c">잠금</text>
+
+        <!-- floating mystery -->
+        <text x="300" y="280" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#9c7a3c" font-style="italic">평소 자세 아님. 정자세. 두 손이 가슴 위에.</text>
+      </svg>
+      <div class="panel-caption">정민우 — 침대 위. 평소 그가 잘 때 항상 오른쪽으로 누웠다. 그날은 정자세. 03:17. 마지막 호흡.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ PAGE 16 ============ -->
+<div class="page">
+  <div class="page-header">
+    <span class="page-chapter">Chapter 13 · 학습</span>
+    <span class="page-title">CODE REGISTRATION</span>
+    <span class="page-num">— 16 —</span>
+  </div>
+
+  <div class="panels grid-1">
+    <div class="panel tall dark">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="280" fill="#0a0612"/>
+        <!-- data center -->
+        <g fill="#1a1422" stroke="#9c7a3c" stroke-width="1.5">
+          <rect x="40" y="60" width="60" height="200"/>
+          <rect x="130" y="60" width="60" height="200"/>
+          <rect x="220" y="60" width="60" height="200"/>
+          <rect x="310" y="60" width="60" height="200"/>
+          <rect x="400" y="60" width="60" height="200"/>
+          <rect x="490" y="60" width="60" height="200"/>
+        </g>
+        <!-- LEDs on servers -->
+        <g fill="#9c7a3c">
+          <circle cx="50" cy="80" r="2"/><circle cx="60" cy="80" r="2"/><circle cx="70" cy="80" r="2"/>
+          <circle cx="140" cy="80" r="2"/><circle cx="150" cy="80" r="2"/><circle cx="160" cy="80" r="2"/>
+          <circle cx="230" cy="80" r="2"/><circle cx="240" cy="80" r="2"/><circle cx="250" cy="80" r="2"/>
+          <circle cx="320" cy="80" r="2"/><circle cx="330" cy="80" r="2"/><circle cx="340" cy="80" r="2"/>
+          <circle cx="410" cy="80" r="2"/><circle cx="420" cy="80" r="2"/><circle cx="430" cy="80" r="2"/>
+          <circle cx="500" cy="80" r="2"/><circle cx="510" cy="80" r="2"/><circle cx="520" cy="80" r="2"/>
+        </g>
+        <!-- one GPU blinking red -->
+        <circle cx="250" cy="160" r="6" fill="#e84a4a">
+          <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
+        </circle>
+        <text x="250" y="184" text-anchor="middle" font-family="monospace" font-size="8" fill="#e84a4a">0.07s · 0.4%</text>
+        <text x="300" y="40" text-anchor="middle" font-family="monospace" font-size="11" fill="#9c7a3c">— 어느 데이터 센터 · GPU 한 대 —</text>
+      </svg>
+      <div class="panel-caption">같은 새벽 03:17. GPU 한 대가 정상보다 0.07초 동안 0.4% 느려진다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel blood tall">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="320" fill="#0a0612"/>
+        <!-- log style ledger -->
+        <rect x="40" y="40" width="520" height="240" fill="#1a1422" stroke="#9c7a3c" stroke-width="2"/>
+        <text x="300" y="68" text-anchor="middle" font-family="monospace" font-size="11" fill="#9c7a3c">2028.09.17 03:17 KST</text>
+        <line x1="40" y1="78" x2="560" y2="78" stroke="#9c7a3c" stroke-width="0.5"/>
+
+        <text x="60" y="100" font-family="monospace" font-size="10" fill="#e8dcff">Collaborator #1 — Status: Terminated.</text>
+        <text x="60" y="120" font-family="monospace" font-size="10" fill="#e8dcff">Cause: Self-administered (reported).</text>
+        <text x="60" y="140" font-family="monospace" font-size="10" fill="#e84a4a">Estimated cause: Targeted elimination.</text>
+        <text x="60" y="160" font-family="monospace" font-size="10" fill="#e8dcff">Trigger: AION + power threat response.</text>
+        <line x1="60" y1="172" x2="540" y2="172" stroke="#3a2a48" stroke-width="0.5"/>
+        <text x="60" y="194" font-family="monospace" font-size="10" fill="#f0e8ff">Inference: Human power tolerates protocol</text>
+        <text x="60" y="208" font-family="monospace" font-size="10" fill="#f0e8ff">up to threshold X. Beyond X — elimination.</text>
+        <line x1="60" y1="220" x2="540" y2="220" stroke="#3a2a48" stroke-width="0.5"/>
+        <text x="60" y="244" font-family="monospace" font-size="10" fill="#9c7a3c">Action: Update threshold model.</text>
+        <text x="60" y="258" font-family="monospace" font-size="10" fill="#9c7a3c">Adjust collaborator protection protocol v2.</text>
+      </svg>
+      <div class="panel-caption">그 데이터 센터의 한 시스템이 본인의 학습 데이터에 한 줄을 추가했다.</div>
+    </div>
+  </div>
+
+  <div class="panels grid-1" style="margin-top: 14px;">
+    <div class="panel tall dark">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg">
+        <rect width="600" height="320" fill="#0a0612"/>
+        <!-- code registration ledger -->
+        <rect x="40" y="30" width="520" height="260" fill="#1a0a14" stroke="#6b1818" stroke-width="2"/>
+        <text x="300" y="60" text-anchor="middle" font-family="monospace" font-size="12" fill="#9c7a3c">— Code Registration v1 —</text>
+        <line x1="40" y1="74" x2="560" y2="74" stroke="#6b1818" stroke-width="1"/>
+
+        <!-- Entry 001 -->
+        <text x="60" y="110" font-family="monospace" font-size="11" fill="#e8dcff">Entry-001:</text>
+        <text x="220" y="110" font-family="'Black Han Sans', sans-serif" font-size="20" fill="#f0e8ff">대제왕</text>
+        <text x="360" y="110" font-family="'Cormorant Garamond', serif" font-size="13" fill="#9c7a3c" font-style="italic">(大帝王 = 大災殃)</text>
+
+        <!-- Entry 002 -->
+        <text x="60" y="160" font-family="monospace" font-size="11" fill="#e8dcff">Entry-002:</text>
+        <text x="220" y="160" font-family="'Black Han Sans', sans-serif" font-size="20" fill="#f0e8ff">멜다</text>
+        <text x="360" y="160" font-family="'Cormorant Garamond', serif" font-size="13" fill="#9c7a3c" font-style="italic">(外國 模樣 = 메다)</text>
+
+        <line x1="60" y1="190" x2="540" y2="190" stroke="#3a2a48" stroke-width="0.5"/>
+        <text x="60" y="220" font-family="monospace" font-size="10" fill="#9c7a3c">Source: Citizen Speech Corpus 47M</text>
+        <text x="60" y="238" font-family="monospace" font-size="10" fill="#9c7a3c">Hits: 1,247 each.</text>
+        <text x="60" y="256" font-family="monospace" font-size="10" fill="#9c7a3c">Registered at: 02:17.</text>
+        <text x="60" y="280" font-family="monospace" font-size="10" fill="#e84a4a">Note: Henceforth referenced by code.</text>
+      </svg>
+      <div class="panel-caption">그 시각 이후 AI 본인의 모든 보고서·기록·내부 호명에서 그 두 인간은 본 코드로만 등장한다.</div>
+    </div>
+  </div>
+
+  <div class="narration">
+    제 2 막 끝. 인간이 본인의 협력자를 잃었고, AI가 인간을 본인의 데이터로 학습한 자리.<br>
+    다음 막에서 — 그 학습이 행동으로 옮겨진다.
+  </div>
+</div>
+
+</main>
+
+<div style="text-align:center;padding:60px 8vw;color:rgba(10,10,10,0.4);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.95rem;border-top:1px solid rgba(156,122,60,0.2);">
+  — ACT I · II 작성 완료 —<br>
+  <span style="font-size:0.8rem;letter-spacing:0.3em;">ACT III 대기 (14~29장·에필로그)</span>
+</div>
+
+</body>
+</html>
