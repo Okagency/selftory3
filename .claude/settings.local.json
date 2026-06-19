@@ -2,6 +2,7 @@
   "permissions": {
     "allow": [
       "Bash",
+      "PowerShell",
       "Bash(flutter *)",
       "Bash(dart *)",
       "Bash(adb *)",
