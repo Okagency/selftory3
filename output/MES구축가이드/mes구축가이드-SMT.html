@@ -71,19 +71,33 @@
  border-radius: 6px; padding: 20px 26px; margin: 28px 0;
  }
  .case-title { font-weight: 900; color: var(--accent); font-size: 17px; margin-bottom: 10px; letter-spacing: 0.5px; }
- .case-title::before { content: "📁 "; }
+ .case-title::before,
+ .cost-title::before,
+ .check-title::before,
+ .side-title::before {
+   content: "";
+   display: inline-block;
+   width: 18px;
+   height: 18px;
+   vertical-align: -4px;
+   margin-right: 6px;
+   background-color: currentColor;
+   -webkit-mask: var(--ico) no-repeat center / contain;
+           mask: var(--ico) no-repeat center / contain;
+ }
+ .case-title::before  { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z'/></svg>"); }
  .cost {
  background: var(--cost-bg); border-left: 5px solid var(--gold);
  padding: 16px 22px; margin: 22px 0; border-radius: 0 6px 6px 0;
  }
  .cost-title { font-weight: 700; color: #6b4f1a; margin-bottom: 8px; }
- .cost-title::before { content: "💰 "; }
+ .cost-title::before  { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M8 9l4 7 4-7M7 13h10M7 16h10'/></svg>"); }
  .check {
  background: var(--check-bg); border: 1px dashed #8b7d5f;
  padding: 16px 22px; margin: 22px 0; border-radius: 6px;
  }
  .check-title { font-weight: 700; color: #6b4f1a; margin-bottom: 8px; }
- .check-title::before { content: "✅ "; }
+ .check-title::before { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='m7 12 4 4 6-8'/></svg>"); }
  .check ul { margin: 6px 0 0 20px; }
  .check li { margin: 4px 0; }
  .side {
@@ -92,7 +106,7 @@
  font-style: italic;
  }
  .side-title { font-weight: 700; color: var(--teal); margin-bottom: 8px; font-style: normal; }
- .side-title::before { content: "🗣️ "; }
+ .side-title::before  { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z'/></svg>"); }
  .keypoint {
  background: #f0f5f4; border: 2px solid var(--accent);
  padding: 18px 26px; margin: 28px 0; border-radius: 8px;
@@ -203,14 +217,84 @@
  figcaption { color:#a8a090; }
  .stage-box { background:#1f1d18; }
  #bm-panel { background:#2a2620 !important; color:#e8e4d8 !important; border-color:#5c5240 !important; }
+ #search-panel { background:#2a2620 !important; color:#e8e4d8 !important; border-color:#5c5240 !important; }
+ #search-input { background:#1f1d18 !important; color:#e8e4d8 !important; border-color:#5c5240 !important; }
+ .search-btn { background:#3a342a !important; color:#e8e4d8 !important; }
+ .search-history-text { color:#e8e4d8 !important; }
+ #app-modal { background:#2a2620 !important; color:#e8e4d8 !important; }
+ #app-modal h4 { color:var(--accent) !important; border-bottom-color:#5c5240 !important; }
+ #app-modal .modal-body { color:#d8d2c2 !important; }
+ #app-modal .modal-body kbd { background:#1f1d18 !important; border-color:#5c5240 !important; color:#e8e4d8 !important; }
+ #app-modal .modal-btn.secondary { background:#3a342a !important; color:#e8e4d8 !important; }
+ #app-modal .modal-btn.secondary:hover { background:#4a4234 !important; }
  }
  @media print {
  body { max-width:100%; padding:20px; font-size:11pt; }
  h2.part { page-break-before:always; }
  .case,.cost,.check,.side,.keypoint, figure { page-break-inside:avoid; }
  table { page-break-inside:avoid; }
- #bm-toolbar, #progress-bar, #position-indicator { display:none !important; }
+ #bm-toolbar, #progress-bar, #position-indicator, #search-panel { display:none !important; }
  }
+
+ /* === 커스텀 SVG 아이콘 (mask 모드 — currentColor 자동 매칭) === */
+ .ico {
+   display: inline-block;
+   width: 1em;
+   height: 1em;
+   vertical-align: -0.15em;
+   background-color: currentColor;
+   -webkit-mask: var(--ico) no-repeat center / contain;
+           mask: var(--ico) no-repeat center / contain;
+ }
+ .ico-book     { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 5h7a2 2 0 012 2v13a2 2 0 00-2-2H3zM21 5h-7a2 2 0 00-2 2v13a2 2 0 012-2h7z'/></svg>"); }
+ .ico-books    { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 5h6v15H4zM12 4h6v16h-6z'/><path d='M4 9h6M12 8h6M12 16h6'/></svg>"); }
+ .ico-index    { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M5 4h11l3 3v13H5zM16 4v3h3M8 12h8M8 16h5'/></svg>"); }
+ .ico-bookmark { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M6 3h12v18l-6-4-6 4z'/></svg>"); }
+ .ico-search   { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>"); }
+ .ico-trash    { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6'/></svg>"); }
+ .ico-pin      { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z'/><circle cx='12' cy='9' r='2.5'/></svg>"); }
+ .ico-pushpin  { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 3h6v6l3 3H6l3-3zM12 12v9'/></svg>"); }
+ .ico-prev     { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 15l-6-6-6 6'/></svg>"); }
+ .ico-next     { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>"); }
+ .ico-x        { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 6l12 12M18 6L6 18'/></svg>"); }
+
+ /* === 검색 UI === */
+ #search-toggle { background:#5d4a8b; color:#fff; border:0; padding:0; border-radius:14px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.18); width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; margin-right:6px; vertical-align:top; }
+ #search-toggle .ico { width:18px; height:18px; }
+ #search-panel { display:none; position:fixed; bottom:60px; right:14px; width:320px; max-width:calc(100vw - 28px); max-height:70vh; overflow-y:auto; background:#fff; color:#1a1a1a; border:1px solid #b8a988; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,.25); padding:12px 14px; z-index:10000; font-family:'Noto Sans KR', sans-serif; font-size:13px; }
+ .search-row { display:flex; gap:6px; align-items:center; margin-bottom:8px; }
+ #search-input { flex:1; padding:6px 10px; border:1px solid #ccc; border-radius:6px; font-size:14px; outline:none; font-family:inherit; }
+ #search-input:focus { border-color:#5d4a8b; }
+ .search-btn { background:#f0ece4; border:0; color:#1a1a1a; padding:6px 8px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; }
+ .search-btn:hover { background:#e0d8c6; }
+ .search-btn .ico { width:14px; height:14px; }
+ .search-meta { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#666; margin-bottom:10px; }
+ .search-history-header { display:flex; justify-content:space-between; align-items:center; border-top:1px solid #ddd; padding-top:8px; margin-top:4px; margin-bottom:6px; font-weight:700; color:#5d4a8b; font-size:12.5px; }
+ .search-history-clear { background:none; border:0; color:#c66; cursor:pointer; font-size:11px; padding:2px 4px; }
+ .search-history-empty { color:#999; padding:6px 0; }
+ .search-history-item { display:flex; align-items:center; padding:4px 0; border-bottom:1px dotted #eee; }
+ .search-history-text { flex:1; cursor:pointer; color:#1a1a1a; padding:2px 0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+ .search-history-text:hover { color:#8b3a2a; }
+ .search-history-del { background:none; border:0; color:#c66; cursor:pointer; font-size:13px; padding:2px 6px; line-height:1; display:inline-flex; align-items:center; }
+ .search-history-del .ico { width:11px; height:11px; }
+ mark.search-hit { background:#fff176; color:inherit; padding:0 1px; border-radius:2px; }
+ mark.search-hit.current { background:#ffa726; box-shadow:0 0 0 2px #ffa726; }
+
+ /* === 공통 모달 === */
+ #app-modal-mask { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:11000; align-items:center; justify-content:center; padding:20px; }
+ #app-modal-mask.show { display:flex; }
+ #app-modal { background:#fff; color:#1a1a1a; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.3); max-width:360px; width:100%; padding:18px 22px; font-family:'Noto Sans KR', sans-serif; font-size:14px; line-height:1.7; }
+ #app-modal h4 { margin:0 0 12px; font-size:16px; color:#5d4a8b; border-bottom:1px solid #ddd; padding-bottom:8px; display:flex; align-items:center; gap:6px; }
+ #app-modal .modal-body { font-size:13.5px; color:#333; }
+ #app-modal .modal-body kbd { display:inline-block; background:#f0ece4; border:1px solid #c9bfa8; border-bottom-width:2px; border-radius:4px; padding:1px 6px; font-size:12px; font-family:'JetBrains Mono', monospace; min-width:18px; text-align:center; }
+ #app-modal .modal-note { margin-top:12px; padding-top:10px; border-top:1px dotted #ddd; font-size:12px; color:#666; display:flex; gap:6px; align-items:flex-start; }
+ #app-modal .modal-actions { margin-top:16px; display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; }
+ #app-modal .modal-btn { background:#5d4a8b; color:#fff; border:0; padding:8px 18px; border-radius:6px; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; min-width:68px; transition:background .12s ease; }
+ #app-modal .modal-btn:hover { background:#4a3a72; }
+ #app-modal .modal-btn.secondary { background:#f0ece4; color:#1a1a1a; font-weight:500; }
+ #app-modal .modal-btn.secondary:hover { background:#e0d8c6; }
+ #app-modal .modal-btn.danger { background:#c04040; }
+ #app-modal .modal-btn.danger:hover { background:#a03030; }
 </style>
 </head>
 <body>
@@ -9971,7 +10055,7 @@ A4 노트 1권 + 4색 볼펜
 
 <div id="toc-popup" style="display:none;position:fixed;left:14px;right:14px;bottom:60px;max-height:60vh;overflow-y:auto;overscroll-behavior:contain;background:#fff;color:#1a1a1a;border:1px solid #b8a988;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);padding:14px 18px;z-index:10000;font-family:'Noto Sans KR',sans-serif;-webkit-overflow-scrolling:touch;">
  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding-bottom:8px;margin-bottom:10px;position:sticky;top:-14px;background:#fff;z-index:5;padding-top:14px;margin-top:-14px;">
- <span style="font-weight:700;font-size:14px;">📖 목차</span>
+ <span style="font-weight:700;font-size:14px;"><span class="ico ico-book"></span> 목차</span>
  <span onclick="toggleTocPopup(false);" ontouchend="event.preventDefault();toggleTocPopup(false);" style="cursor:pointer;color:#888;font-size:18px;font-weight:700;padding:0 6px;">×</span>
  </div>
  <div id="toc-popup-list" style="font-size:13px;line-height:1.7;"></div>
@@ -10048,17 +10132,340 @@ function gotoSection(id) {
 </script>
 
 <div id="bm-toolbar" style="position:fixed;bottom:14px;right:14px;z-index:9999;font-family:'Noto Sans KR',sans-serif;">
- <button id="bm-toggle" title="책갈피 (L)" style="background:#2c5f5d;color:#fff;border:0;padding:7px 12px;border-radius:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);font-size:16px;">🔖</button>
+ <button id="search-toggle" title="검색 (F)"><span class="ico ico-search"></span></button>
+ <button id="bm-toggle" title="책갈피 (L)" style="background:#2c5f5d;color:#fff;border:0;padding:0;border-radius:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;vertical-align:top;"><span class="ico ico-bookmark" style="width:18px;height:18px;"></span></button>
+ <div id="search-panel">
+  <div class="search-row">
+   <input id="search-input" type="text" placeholder="검색어 입력 (Enter=다음, Shift+Enter=이전)" autocomplete="off" />
+   <button class="search-btn" id="search-close" title="닫기"><span class="ico ico-x"></span></button>
+  </div>
+  <div class="search-meta">
+   <span id="search-counter">0 / 0</span>
+   <div>
+    <button class="search-btn" id="search-prev" title="이전 (Shift+Enter)"><span class="ico ico-prev"></span></button>
+    <button class="search-btn" id="search-next" title="다음 (Enter)"><span class="ico ico-next"></span></button>
+   </div>
+  </div>
+  <div class="search-history-header">
+   <span>최근 검색어</span>
+   <button class="search-history-clear" id="search-history-clear">전체 삭제</button>
+  </div>
+  <div id="search-history-list"></div>
+ </div>
  <div id="bm-panel" style="display:none;position:absolute;bottom:48px;right:0;width:280px;max-height:380px;overflow-y:auto;background:#fff;color:#1a1a1a;border:1px solid #b8a988;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:12px 14px;">
- <div style="font-weight:700;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:8px;">📑 책갈피 목록</div>
+ <div style="font-weight:700;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:8px;"><span class="ico ico-index"></span> 책갈피 목록</div>
  <div id="bm-list" style="font-size:12.5px;line-height:1.5;"></div>
  <div style="border-top:1px solid #ddd;margin-top:8px;padding-top:8px;font-size:11px;color:#666;">
  <button id="bm-add" style="background:#8b3a2a;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;margin-right:4px;">+ 현재 위치 추가</button>
  <button id="bm-clear" style="background:#f0e0e0;color:#2c5f5d;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;">전체 삭제</button>
- <div style="margin-top:6px;">단축키: B(추가) L(목록) Esc(닫기) H(도움말)</div>
+ <div style="margin-top:6px;">단축키: B(추가) L(목록) F(검색) Esc(닫기) H(도움말)</div>
  </div>
  </div>
 </div>
+
+<!-- 공통 모달 마스크 -->
+<div id="app-modal-mask">
+ <div id="app-modal">
+  <h4 id="app-modal-title">제목</h4>
+  <div class="modal-body" id="app-modal-body">본문</div>
+  <div class="modal-actions" id="app-modal-actions"></div>
+ </div>
+</div>
+
+<script>
+/* ===== 검색 기능 ===== */
+(function() {
+ 'use strict';
+ const HIST_KEY = 'mes_guide_smt_search_history_' + (location.pathname.split('/').pop() || 'main');
+ const MAX_HIST = 30;
+
+ let currentMatches = [];
+ let currentIdx = -1;
+ let lastTerm = '';
+ let debTimer;
+
+ function $(id) { return document.getElementById(id); }
+ function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+ function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+   return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+  });
+ }
+
+ function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); }
+  catch(e) { return []; }
+ }
+ function saveHistory(arr) { localStorage.setItem(HIST_KEY, JSON.stringify(arr)); }
+ function pushHistory(term) {
+  if (!term) return;
+  let h = getHistory();
+  h = h.filter(function(t) { return t !== term; });
+  h.unshift(term);
+  if (h.length > MAX_HIST) h = h.slice(0, MAX_HIST);
+  saveHistory(h);
+  renderHistory();
+ }
+ function deleteHistory(idx) {
+  const h = getHistory();
+  h.splice(idx, 1);
+  saveHistory(h);
+  renderHistory();
+ }
+ function clearHistory() {
+  const doClear = function() { saveHistory([]); renderHistory(); };
+  if (window._showConfirmModal) {
+   window._showConfirmModal(
+    '<span class="ico ico-trash"></span> 검색 기록 전체 삭제',
+    '저장된 검색어를 모두 삭제하시겠습니까?<br><span style="color:#888;font-size:12px;">되돌릴 수 없습니다.</span>',
+    doClear,
+    { yesLabel: '전체 삭제' }
+   );
+  } else if (confirm('모든 검색 기록을 삭제하시겠습니까?')) {
+   doClear();
+  }
+ }
+ function renderHistory() {
+  const list = $('search-history-list');
+  if (!list) return;
+  const h = getHistory();
+  if (h.length === 0) {
+   list.innerHTML = '<div class="search-history-empty">기록 없음</div>';
+   return;
+  }
+  list.innerHTML = h.map(function(t, i) {
+   return '<div class="search-history-item">' +
+    '<span class="search-history-text" data-idx="' + i + '" title="' + escapeHtml(t) + '">' + escapeHtml(t) + '</span>' +
+    '<button class="search-history-del" data-idx="' + i + '" title="삭제"><span class="ico ico-x"></span></button>' +
+    '</div>';
+  }).join('');
+  list.querySelectorAll('.search-history-text').forEach(function(el) {
+   el.addEventListener('click', function() {
+    const idx = parseInt(el.dataset.idx, 10);
+    const term = getHistory()[idx];
+    if (term) {
+     $('search-input').value = term;
+     doSearch(term);
+     pushHistory(term);
+    }
+   });
+  });
+  list.querySelectorAll('.search-history-del').forEach(function(el) {
+   el.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    deleteHistory(parseInt(el.dataset.idx, 10));
+   });
+  });
+ }
+
+ function clearHighlights() {
+  const marks = document.querySelectorAll('mark.search-hit');
+  marks.forEach(function(m) {
+   const parent = m.parentNode;
+   if (!parent) return;
+   while (m.firstChild) parent.insertBefore(m.firstChild, m);
+   parent.removeChild(m);
+  });
+  const dirty = new Set();
+  marks.forEach(function(m) { if (m.parentNode) dirty.add(m.parentNode); });
+  dirty.forEach(function(p) { try { p.normalize(); } catch(e) {} });
+  currentMatches = [];
+  currentIdx = -1;
+ }
+
+ function doSearch(term) {
+  clearHighlights();
+  lastTerm = term || '';
+  if (!term || !term.length) { updateCounter(); return; }
+  const re = new RegExp(escRe(term), 'gi');
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+   acceptNode: function(node) {
+    const p = node.parentNode;
+    if (!p) return NodeFilter.FILTER_REJECT;
+    const tag = p.nodeName;
+    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'MARK' || tag === 'NOSCRIPT') return NodeFilter.FILTER_REJECT;
+    if (p.closest && (
+     p.closest('#search-panel') ||
+     p.closest('#bm-panel') ||
+     p.closest('#bm-toolbar') ||
+     p.closest('#toc-popup') ||
+     p.closest('#app-modal-mask') ||
+     p.closest('#position-indicator')
+    )) return NodeFilter.FILTER_REJECT;
+    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+    return NodeFilter.FILTER_ACCEPT;
+   }
+  });
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+
+  nodes.forEach(function(node) {
+   const text = node.nodeValue;
+   re.lastIndex = 0;
+   let m, last = 0, found = false;
+   const frag = document.createDocumentFragment();
+   while ((m = re.exec(text))) {
+    found = true;
+    if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+    const mark = document.createElement('mark');
+    mark.className = 'search-hit';
+    mark.textContent = m[0];
+    frag.appendChild(mark);
+    last = m.index + m[0].length;
+    if (m[0].length === 0) re.lastIndex++;
+   }
+   if (found) {
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+   }
+  });
+
+  currentMatches = Array.from(document.querySelectorAll('mark.search-hit'));
+  if (currentMatches.length > 0) {
+   currentIdx = 0;
+   currentMatches[0].classList.add('current');
+   currentMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  updateCounter();
+ }
+
+ function moveMatch(dir) {
+  if (currentMatches.length === 0) return;
+  if (currentMatches[currentIdx]) currentMatches[currentIdx].classList.remove('current');
+  currentIdx = (currentIdx + dir + currentMatches.length) % currentMatches.length;
+  currentMatches[currentIdx].classList.add('current');
+  currentMatches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  updateCounter();
+ }
+
+ function updateCounter() {
+  const c = $('search-counter');
+  if (!c) return;
+  c.textContent = currentMatches.length === 0 ? '0 / 0' : (currentIdx + 1) + ' / ' + currentMatches.length;
+ }
+
+ function togglePanel(force) {
+  const p = $('search-panel');
+  if (!p) return;
+  const show = (typeof force === 'boolean') ? force : (p.style.display !== 'block');
+  p.style.display = show ? 'block' : 'none';
+  if (show) {
+   renderHistory();
+   const inp = $('search-input');
+   if (inp) setTimeout(function() { inp.focus(); inp.select(); }, 50);
+  } else {
+   clearHighlights();
+   updateCounter();
+  }
+ }
+ window._searchToggle = togglePanel;
+
+ function bind() {
+  const toggleBtn = $('search-toggle');
+  if (toggleBtn) toggleBtn.addEventListener('click', function() { togglePanel(); });
+  const closeBtn = $('search-close');
+  if (closeBtn) closeBtn.addEventListener('click', function() { togglePanel(false); });
+  const inp = $('search-input');
+  if (inp) {
+   inp.addEventListener('input', function() {
+    clearTimeout(debTimer);
+    debTimer = setTimeout(function() { doSearch(inp.value); }, 250);
+   });
+   inp.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+     e.preventDefault();
+     if (inp.value !== lastTerm) doSearch(inp.value);
+     else moveMatch(e.shiftKey ? -1 : 1);
+     pushHistory(inp.value);
+    } else if (e.key === 'Escape') {
+     e.preventDefault(); togglePanel(false);
+    } else if (e.key === 'ArrowDown') {
+     e.preventDefault(); moveMatch(1);
+    } else if (e.key === 'ArrowUp') {
+     e.preventDefault(); moveMatch(-1);
+    }
+   });
+  }
+  const nextBtn = $('search-next');
+  if (nextBtn) nextBtn.addEventListener('click', function() { moveMatch(1); if (lastTerm) pushHistory(lastTerm); });
+  const prevBtn = $('search-prev');
+  if (prevBtn) prevBtn.addEventListener('click', function() { moveMatch(-1); });
+  const clrBtn = $('search-history-clear');
+  if (clrBtn) clrBtn.addEventListener('click', clearHistory);
+  renderHistory();
+ }
+
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+ else bind();
+})();
+
+/* ===== 공통 모달 (도움말·확인 다이얼로그) ===== */
+(function() {
+ function showModal(opts) {
+  const mask = document.getElementById('app-modal-mask');
+  if (!mask) return;
+  document.getElementById('app-modal-title').innerHTML = opts.title || '';
+  document.getElementById('app-modal-body').innerHTML = opts.body || '';
+  const actions = document.getElementById('app-modal-actions');
+  if (actions) {
+   actions.innerHTML = '';
+   const buttons = (opts.buttons && opts.buttons.length) ? opts.buttons : [{ label: '닫기', kind: 'primary' }];
+   buttons.forEach(function(b) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'modal-btn' + (b.kind === 'secondary' ? ' secondary' : (b.kind === 'danger' ? ' danger' : ''));
+    btn.textContent = b.label;
+    btn.addEventListener('click', function() {
+     closeModal();
+     if (typeof b.onClick === 'function') b.onClick();
+    });
+    actions.appendChild(btn);
+   });
+  }
+  mask.classList.add('show');
+ }
+ function closeModal() {
+  const mask = document.getElementById('app-modal-mask');
+  if (mask) mask.classList.remove('show');
+ }
+ window._closeModal = closeModal;
+ window._showHelpModal = function() {
+  showModal({
+   title: '<span class="ico ico-book"></span> 단축키',
+   body:
+    '<div>' +
+    '<kbd>B</kbd> &mdash; 책갈피 추가<br>' +
+    '<kbd>L</kbd> &mdash; 책갈피 목록 토글<br>' +
+    '<kbd>F</kbd> &mdash; 검색 패널 토글<br>' +
+    '<kbd>H</kbd> &mdash; 이 도움말<br>' +
+    '<kbd>Esc</kbd> &mdash; 책갈피·목차·검색·도움말 닫기<br>' +
+    '<kbd>Enter</kbd> / <kbd>Shift</kbd>+<kbd>Enter</kbd> &mdash; 검색 결과 다음·이전 (검색창 안)' +
+    '</div>' +
+    '<div class="modal-note"><span class="ico ico-pushpin" style="width:14px;height:14px;flex-shrink:0;margin-top:2px;"></span><span>마지막 본 위치는 자동 저장됩니다. 파일을 다시 열어도 그 위치부터 시작합니다.</span></div>',
+   buttons: [{ label: '닫기', kind: 'primary' }]
+  });
+ };
+ window._showConfirmModal = function(title, body, onYes, opts) {
+  opts = opts || {};
+  showModal({
+   title: title,
+   body: body,
+   buttons: [
+    { label: '취소', kind: 'secondary' },
+    { label: opts.yesLabel || '삭제', kind: opts.yesKind || 'danger', onClick: onYes }
+   ]
+  });
+ };
+ function bind() {
+  const mask = document.getElementById('app-modal-mask');
+  if (!mask) return;
+  mask.addEventListener('click', function(e) { if (e.target === mask) closeModal(); });
+ }
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+ else bind();
+})();
+</script>
 
 <script>
 (function() {
@@ -10121,7 +10528,17 @@ function gotoSection(id) {
  const bm = getBookmarks(); bm.splice(idx, 1); saveBookmarks(bm); renderList();
  }
  function clearAll() {
- if (confirm('모든 책갈피를 삭제하시겠습니까?')) { saveBookmarks([]); renderList(); }
+  const doClear = function() { saveBookmarks([]); renderList(); };
+  if (window._showConfirmModal) {
+   window._showConfirmModal(
+    '<span class="ico ico-trash"></span> 책갈피 전체 삭제',
+    '저장된 책갈피를 모두 삭제하시겠습니까?<br><span style="color:#888;font-size:12px;">되돌릴 수 없습니다.</span>',
+    doClear,
+    { yesLabel: '전체 삭제' }
+   );
+  } else if (confirm('모든 책갈피를 삭제하시겠습니까?')) {
+   doClear();
+  }
  }
  function renderList() {
  const list = document.getElementById('bm-list');
@@ -10133,10 +10550,10 @@ function gotoSection(id) {
  }
  list.innerHTML = bm.map(function(b, i) {
  return '<div style="padding:6px 0;border-bottom:1px dotted #eee;">' +
- '<a href="#" onclick="window._bmGoto(' + i + ');return false;" style="color:#2c5f5d;text-decoration:none;font-weight:500;display:block;">📍 ' + escapeHtml(b.name) + '</a>' +
+ '<a href="#" onclick="window._bmGoto(' + i + ');return false;" style="color:#2c5f5d;text-decoration:none;font-weight:500;display:block;"><span class="ico ico-pin" style="width:12px;height:12px;"></span> ' + escapeHtml(b.name) + '</a>' +
  '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">' +
  '<span style="color:#999;font-size:10.5px;">' + escapeHtml(b.time) + '</span>' +
- '<button onclick="window._bmDelete(' + i + ')" style="background:none;border:0;color:#c66;cursor:pointer;font-size:11px;">🗑️</button>' +
+ '<button onclick="window._bmDelete(' + i + ')" style="background:none;border:0;color:#c66;cursor:pointer;padding:2px 6px;display:inline-flex;align-items:center;"><span class="ico ico-trash" style="width:13px;height:13px;"></span></button>' +
  '</div></div>';
  }).join('');
  }
@@ -10218,9 +10635,15 @@ function gotoSection(id) {
  const key = e.key.toLowerCase();
  if (key === 'b') { e.preventDefault(); addBookmark(); }
  else if (key === 'l') { e.preventDefault(); togglePanel(); }
- else if (key === 'escape') { togglePanel(false); if (typeof toggleTocPopup === 'function') toggleTocPopup(false); }
+ else if (key === 'f') { e.preventDefault(); if (window._searchToggle) window._searchToggle(true); }
+ else if (key === 'escape') {
+  togglePanel(false);
+  if (typeof toggleTocPopup === 'function') toggleTocPopup(false);
+  if (window._searchToggle) window._searchToggle(false);
+  if (window._closeModal) window._closeModal();
+ }
  else if (key === 'h' && !e.shiftKey) {
- alert('📖 단축키\n\nB — 책갈피 추가\nL — 책갈피 목록 토글\nEsc — 책갈피·목차 팝업 닫기\nH — 이 도움말\n\n📌 마지막 본 위치는 자동 저장됩니다.\n파일을 다시 열어도 그 위치부터 시작합니다.');
+  if (window._showHelpModal) window._showHelpModal();
  }
  });
 })();
