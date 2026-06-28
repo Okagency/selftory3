@@ -131,7 +131,21 @@
  font-size: 17px;
  margin-bottom: 10px;
  letter-spacing: 0.5px;
- }.case-title::before { content: "📁 "; }.cost {
+ }
+ .case-title::before,
+ .cost-title::before,
+ .check-title::before,
+ .side-title::before {
+   content: "";
+   display: inline-block;
+   width: 18px;
+   height: 18px;
+   vertical-align: -4px;
+   margin-right: 6px;
+   background: no-repeat center/contain;
+ }
+ .case-title::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b3a2a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z'/></svg>"); }
+ .cost {
  background: var(--cost-bg);
  border-left: 5px solid var(--gold);
  padding: 16px 22px;
@@ -141,7 +155,9 @@
  font-weight: 700;
  color: #6b4f1a;
  margin-bottom: 8px;
- }.cost-title::before { content: "💰 "; }.check {
+ }
+ .cost-title::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b4f1a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='9'/><path d='M8 9l4 7 4-7M7 13h10M7 16h10'/></svg>"); }
+ .check {
  background: var(--check-bg);
  border: 1px dashed #6f8d6a;
  padding: 16px 22px;
@@ -151,7 +167,11 @@
  font-weight: 700;
  color: #2e5328;
  margin-bottom: 8px;
- }.check-title::before { content: "✅ "; }.check ul { margin: 6px 0 0 20px; }.check li { margin: 4px 0; }.side {
+ }
+ .check-title::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232e5328' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2'/><path d='m7 12 4 4 6-8'/></svg>"); }
+ .check ul { margin: 6px 0 0 20px; }
+ .check li { margin: 4px 0; }
+ .side {
  background: var(--side-bg);
  border-left: 5px solid var(--teal);
  padding: 16px 22px;
@@ -163,7 +183,9 @@
  color: var(--teal);
  margin-bottom: 8px;
  font-style: normal;
- }.side-title::before { content: "🗣️ "; }.keypoint {
+ }
+ .side-title::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c5f5d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z'/></svg>"); }
+ .keypoint {
  background: #fef6f5;
  border: 2px solid var(--accent);
  padding: 18px 26px;
@@ -291,13 +313,267 @@
  ul.toc li { border-bottom-color:#4a4135; }
  ul.toc a { color:var(--ink); }.dialogue { border-left-color:#5c5240; }
  #bm-panel { background:#2a2620 !important; color:#e8e4d8 !important; border-color:#5c5240 !important; }
+ #search-panel { background:#2a2620 !important; color:#e8e4d8 !important; border-color:#5c5240 !important; }
+ #search-input { background:#1f1d18 !important; color:#e8e4d8 !important; border-color:#5c5240 !important; }
+ .search-btn { background:#3a342a !important; color:#e8e4d8 !important; }
+ .search-history-text { color:#e8e4d8 !important; }
+ #app-modal { background:#2a2620 !important; color:#e8e4d8 !important; }
+ #app-modal h4 { color:var(--accent) !important; border-bottom-color:#5c5240 !important; }
+ #app-modal .modal-body { color:#d8d2c2 !important; }
+ #app-modal .modal-body kbd { background:#1f1d18 !important; border-color:#5c5240 !important; color:#e8e4d8 !important; }
+ #app-modal .modal-btn.secondary { background:#3a342a !important; color:#e8e4d8 !important; }
+ #app-modal .modal-btn.secondary:hover { background:#4a4234 !important; }
  }
  @media print {
  body { max-width:100%; padding:20px; font-size:11pt; }
  h2.part { page-break-before:always; }.case,.cost,.check,.side,.keypoint { page-break-inside:avoid; }
  table { page-break-inside:avoid; }
- #bm-toolbar { display:none !important; }
+ #bm-toolbar, #search-panel { display:none !important; }
  }
+
+ /* === 커스텀 SVG 아이콘 (mask 모드 — currentColor 자동 매칭) === */
+ .ico {
+   display: inline-block;
+   width: 1em;
+   height: 1em;
+   vertical-align: -0.15em;
+   background-color: currentColor;
+   -webkit-mask: var(--ico) no-repeat center / contain;
+           mask: var(--ico) no-repeat center / contain;
+ }
+ .ico-book     { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 5h7a2 2 0 012 2v13a2 2 0 00-2-2H3zM21 5h-7a2 2 0 00-2 2v13a2 2 0 012-2h7z'/></svg>"); }
+ .ico-books    { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 5h6v15H4zM12 4h6v16h-6z'/><path d='M4 9h6M12 8h6M12 16h6'/></svg>"); }
+ .ico-index    { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M5 4h11l3 3v13H5zM16 4v3h3M8 12h8M8 16h5'/></svg>"); }
+ .ico-bookmark { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M6 3h12v18l-6-4-6 4z'/></svg>"); }
+ .ico-search   { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>"); }
+ .ico-trash    { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6'/></svg>"); }
+ .ico-pin      { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M12 21s-7-7-7-12a7 7 0 0114 0c0 5-7 12-7 12z'/><circle cx='12' cy='9' r='2.5'/></svg>"); }
+ .ico-pushpin  { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M9 3h6v6l3 3H6l3-3zM12 12v9'/></svg>"); }
+ .ico-prev     { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 15l-6-6-6 6'/></svg>"); }
+ .ico-next     { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>"); }
+ .ico-x        { --ico: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 6l12 12M18 6L6 18'/></svg>"); }
+
+ /* === 검색 UI === */
+ #search-toggle {
+   background:#5d4a8b;
+   color:#fff;
+   border:0;
+   padding:0;
+   border-radius:14px;
+   cursor:pointer;
+   box-shadow:0 2px 8px rgba(0,0,0,.18);
+   width:34px;
+   height:34px;
+   display:inline-flex;
+   align-items:center;
+   justify-content:center;
+   margin-right:6px;
+   vertical-align:top;
+ }
+ #search-toggle .ico { width:18px; height:18px; }
+ #search-panel {
+   display: none;
+   position: fixed;
+   bottom: 60px;
+   right: 14px;
+   width: 320px;
+   max-width: calc(100vw - 28px);
+   max-height: 70vh;
+   overflow-y: auto;
+   background: #fff;
+   color: #1a1a1a;
+   border: 1px solid #b8a988;
+   border-radius: 10px;
+   box-shadow: 0 6px 20px rgba(0,0,0,.25);
+   padding: 12px 14px;
+   z-index: 10000;
+   font-family: 'Noto Sans KR', sans-serif;
+   font-size: 13px;
+ }
+ .search-row {
+   display: flex;
+   gap: 6px;
+   align-items: center;
+   margin-bottom: 8px;
+ }
+ #search-input {
+   flex: 1;
+   padding: 6px 10px;
+   border: 1px solid #ccc;
+   border-radius: 6px;
+   font-size: 14px;
+   outline: none;
+   font-family: inherit;
+ }
+ #search-input:focus { border-color: #5d4a8b; }
+ .search-btn {
+   background: #f0ece4;
+   border: 0;
+   color: #1a1a1a;
+   padding: 6px 8px;
+   border-radius: 6px;
+   cursor: pointer;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   line-height: 1;
+ }
+ .search-btn:hover { background: #e0d8c6; }
+ .search-btn .ico { width: 14px; height: 14px; }
+ .search-meta {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   font-size: 12px;
+   color: #666;
+   margin-bottom: 10px;
+ }
+ .search-history-header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   border-top: 1px solid #ddd;
+   padding-top: 8px;
+   margin-top: 4px;
+   margin-bottom: 6px;
+   font-weight: 700;
+   color: #5d4a8b;
+   font-size: 12.5px;
+ }
+ .search-history-clear {
+   background: none;
+   border: 0;
+   color: #c66;
+   cursor: pointer;
+   font-size: 11px;
+   padding: 2px 4px;
+ }
+ .search-history-empty { color: #999; padding: 6px 0; }
+ .search-history-item {
+   display: flex;
+   align-items: center;
+   padding: 4px 0;
+   border-bottom: 1px dotted #eee;
+ }
+ .search-history-text {
+   flex: 1;
+   cursor: pointer;
+   color: #1a1a1a;
+   padding: 2px 0;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+ }
+ .search-history-text:hover { color: #8b3a2a; }
+ .search-history-del {
+   background: none;
+   border: 0;
+   color: #c66;
+   cursor: pointer;
+   font-size: 13px;
+   padding: 2px 6px;
+   line-height: 1;
+   display: inline-flex;
+   align-items: center;
+ }
+ .search-history-del .ico { width: 11px; height: 11px; }
+ mark.search-hit {
+   background: #fff176;
+   color: inherit;
+   padding: 0 1px;
+   border-radius: 2px;
+ }
+ mark.search-hit.current {
+   background: #ffa726;
+   box-shadow: 0 0 0 2px #ffa726;
+ }
+
+ /* === 모달 (도움말 등) === */
+ #app-modal-mask {
+   display: none;
+   position: fixed;
+   inset: 0;
+   background: rgba(0,0,0,0.45);
+   z-index: 11000;
+   align-items: center;
+   justify-content: center;
+   padding: 20px;
+ }
+ #app-modal-mask.show { display: flex; }
+ #app-modal {
+   background: #fff;
+   color: #1a1a1a;
+   border-radius: 10px;
+   box-shadow: 0 10px 30px rgba(0,0,0,.3);
+   max-width: 360px;
+   width: 100%;
+   padding: 18px 22px;
+   font-family: 'Noto Sans KR', sans-serif;
+   font-size: 14px;
+   line-height: 1.7;
+ }
+ #app-modal h4 {
+   margin: 0 0 12px;
+   font-size: 16px;
+   color: #5d4a8b;
+   border-bottom: 1px solid #ddd;
+   padding-bottom: 8px;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+ }
+ #app-modal .modal-body { font-size: 13.5px; color: #333; }
+ #app-modal .modal-body kbd {
+   display: inline-block;
+   background: #f0ece4;
+   border: 1px solid #c9bfa8;
+   border-bottom-width: 2px;
+   border-radius: 4px;
+   padding: 1px 6px;
+   font-size: 12px;
+   font-family: 'JetBrains Mono', monospace;
+   min-width: 18px;
+   text-align: center;
+ }
+ #app-modal .modal-note {
+   margin-top: 12px;
+   padding-top: 10px;
+   border-top: 1px dotted #ddd;
+   font-size: 12px;
+   color: #666;
+   display: flex;
+   gap: 6px;
+   align-items: flex-start;
+ }
+ #app-modal .modal-actions {
+   margin-top: 16px;
+   display: flex;
+   gap: 8px;
+   justify-content: flex-end;
+   flex-wrap: wrap;
+ }
+ #app-modal .modal-btn {
+   background: #5d4a8b;
+   color: #fff;
+   border: 0;
+   padding: 8px 18px;
+   border-radius: 6px;
+   cursor: pointer;
+   font-family: inherit;
+   font-size: 13px;
+   font-weight: 600;
+   min-width: 68px;
+   transition: background .12s ease;
+ }
+ #app-modal .modal-btn:hover { background: #4a3a72; }
+ #app-modal .modal-btn.secondary {
+   background: #f0ece4;
+   color: #1a1a1a;
+   font-weight: 500;
+ }
+ #app-modal .modal-btn.secondary:hover { background: #e0d8c6; }
+ #app-modal .modal-btn.danger { background: #c04040; }
+ #app-modal .modal-btn.danger:hover { background: #a03030; }
 </style>
 </head>
 <body>
@@ -520,11 +796,11 @@
  </div> <p>의자는 다 똑같이 생겼다. 가까운 데 앉았다.</p>
 
  <p>세빈의 노트북. SAP 입문 강의 PDF.</p> <p>"재훈씨." 서책임이 화이트보드 쪽으로 한 번 몸을 돌리며 말했다. "한성정밀 자동차 1차 협력사 도입 처음이시죠? 이번 ERP — 본질이 어디라고 보세요?"</p> <p>나는 잠시 망설였다.</p> <p>서책임이 마커를 들었다. "ERP는 시스템이 아니에요. 회사가 하는 일을 — <em>조직화하고, 정의하고, 표준화하는</em> 프레임워크예요." 마커가 화이트보드 위에 세 단어를 차례로 적었다. <strong>Organize · Define · Standardize.</strong> 글씨 끝이 평소보다 더 또렷했다. "내부 지식을 외부 경쟁우위로 만드는 도구. 시스템은 그 프레임워크를 새기는 수단이고요. ERP 도입 실패하는 회사들 — 거의 다 시스템만 보고 프레임워크는 안 본 회사들이에요." 마커를 마커 트레이에 놓았다.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Enterprise Resource Planning (ERP)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Enterprise Resource Planning (ERP)</strong><br>
  <em>"Framework for organizing, defining, and standardizing the business processes necessary to effectively plan and control an organization so the organization can use its internal knowledge to seek external advantage."</em><br>
  (조직의 내부 지식을 외부 경쟁우위로 전환할 수 있도록, 조직을 효과적으로 계획·통제하는 데 필요한 비즈니스 프로세스를 조직화·정의·표준화하는 프레임워크)
  </blockquote> <div style="background:#fff8ef;border:1px solid #d4c5a0;padding:12px 16px;margin:14px 0;font-size:14px;color:#555;">
- 📚 <strong>APICS란?</strong> American Production and Inventory Control Society — 1957년 미국에서 설립된 공급망·생산관리 전문 단체. 2018년 ASCM(Association for Supply Chain Management)으로 리브랜딩됐지만, 자격증과 사전은 여전히 APICS 이름을 유지한다. <strong>APICS Dictionary</strong>(현재 16판, 2019)는 SCM·생산·재고·ERP 분야의 전 세계 표준 용어 정의서로, 글로벌 컨설팅사·SAP·Oracle·제조 기업에서 표준 참조서로 인용한다. 자격증 3종 — <strong>CPIM</strong>(생산·재고관리), <strong>CSCP</strong>(공급망 전문가), <strong>CLTD</strong>(물류·운송·유통). 본 가이드의 모든 ERP·SCM 정의 인용은 APICS Dictionary 16판을 기준으로 한다. 한 책 안의 정의가 글로벌 표준이라는 게 중요하다 — 컨설턴트 사이의 단어 충돌이 줄어들기 때문에.
+ <span class="ico ico-books"></span> <strong>APICS란?</strong> American Production and Inventory Control Society — 1957년 미국에서 설립된 공급망·생산관리 전문 단체. 2018년 ASCM(Association for Supply Chain Management)으로 리브랜딩됐지만, 자격증과 사전은 여전히 APICS 이름을 유지한다. <strong>APICS Dictionary</strong>(현재 16판, 2019)는 SCM·생산·재고·ERP 분야의 전 세계 표준 용어 정의서로, 글로벌 컨설팅사·SAP·Oracle·제조 기업에서 표준 참조서로 인용한다. 자격증 3종 — <strong>CPIM</strong>(생산·재고관리), <strong>CSCP</strong>(공급망 전문가), <strong>CLTD</strong>(물류·운송·유통). 본 가이드의 모든 ERP·SCM 정의 인용은 APICS Dictionary 16판을 기준으로 한다. 한 책 안의 정의가 글로벌 표준이라는 게 중요하다 — 컨설턴트 사이의 단어 충돌이 줄어들기 때문에.
  </div> <p>나는 답하지 못했다.</p> <p>그녀가 화이트보드 마커를 들고 세 단어를 크게 썼다.</p> <blockquote class="story">
  통합 · 표준 · 가시성
  </blockquote> <p>"ERP의 본질은 이 세 가지예요." 서책임이 말했다. "<strong>통합 — 회사의 모든 트랜잭션을 단일 데이터베이스로 묶는다.</strong> 자재 입고, 생산 투입, 출하, 매출, 결제 — 부서별로 따로 흐르던 정보가 한 시스템에 모이는 거지요. <strong>표준 — 그 위에 검증된 프로세스를 구현한다.</strong> Procure-to-Pay, Order-to-Cash, Make-to-Order 같은 글로벌 모범 사례. 사람이 바뀌어도 프로세스는 그대로. <strong>가시성 — 통합된 데이터로 의사결정에 필요한 답을 빠르게 낸다.</strong> 사장이 '베트남 공장 흑자야 적자야'를 6개월이 아니라 6일 안에 답할 수 있게."</p> <p>"흔히 'ERP는 돈이다'라고들 해요. 결과만 보면 맞는 말이긴 한데 — 정확히는 결과지 본질이 아니에요. 모든 트랜잭션이 회계(FI/CO)로 자동 분개돼서 손익이 정량화되는 건 — 통합 + 표준 + 가시성이 만들어낸 결과예요. <strong>회계는 모든 모듈의 종착점이지 출발점이 아니고요.</strong> 트랜잭션은 MM·SD·PP·QM·HR에서 발생, 회계는 그걸 받아서 대장(大帳, ledger)에 정리. 이게 ERP의 진짜 겁니다."</p> <p>나는 수첩을 꺼내 적었다. <em>ERP = 통합 + 표준 + 가시성. 회계 = 종착점(대장). 트랜잭션은 MM·SD·PP·QM·HR에서 발생. '돈'은 결과지 본질이 아님.</em></p> <p>"왜 회사가 ERP에 수십, 수백 억을 쓰는지 아세요?" 서책임이 계속했다. "법적으로 강제되는 부분도 있지만, 본질은 한 가지예요. <strong>회사 안에서 정보가 어떻게 흐르는지 통합된 시각으로 보지 못하면 경영을 할 수 없거든요.</strong> 매출이 1,000억인데 실제 이익이 어디서 나는지 모르는 회사. 재고가 200억인데 그게 팔리는 건지 죽은 자산인지 모르는 회사. 사장님이 '베트남 공장 닫자'고 말하기 전에 거기서 부품 단가가 한국보다 비싼지 싼지 한 달 안에 답할 수 있는 회사. 그 차이를 만드는 게 ERP예요."</p> <p>그녀가 화이트보드에 그림을 그렸다. 한가운데에 큰 박스, 그 박스 안에 작은 박스 여러 개. 박스 위에 사람들 — 영업팀, 생산팀, 구매팀, 회계팀 — 이 서서 데이터를 던져넣고 있었다.</p> <p>"한성정밀의 김 사장님은 작년에 베트남 공장을 닫을지 말지 결정해야 했어요. 사장님 머릿속에선 베트남 공장이 흑자였거든요. 인건비가 한국의 3분의 1이니까. 그런데 회계팀이 6개월 걸려서 분석해보니 적자였어요. 베트남으로 부품을 보내고 받고 다시 한국으로 가져오는 물류비, 환차손, 품질 불량 재작업 비용, 본사 관리비 배부, 이런 게 다 빠져 있었던 거지요. 결국 사장님은 결정을 6개월 늦췄고, 그 6개월 동안 베트남 공장은 7억을 더 까먹었어요. 6개월이 아니라 6일 만에 답을 낼 수 있었더라면, 그 7억은 다른 데 썼을 거 아니에요? 그 6일을 6개월에서 줄이는 게 ERP의 임무예요."</p> <div class="cost">
@@ -576,7 +852,7 @@
  <tr><td>2010s</td><td>ERP Cloud</td><td>SaaS ERP</td><td>+ 구독·실시간·모바일</td></tr>
  <tr><td>2020s</td><td>Composable / Intelligent ERP</td><td>AI·임베디드 분석·이벤트 기반</td><td>+ 자동화·예측·자율운영</td></tr>
  </table> <p>"재훈씨." 서책임이 마커로 1970년대를 가리켰다. "MRP가 ERP의 어머니예요. MRP가 풀려고 했던 문제가 뭔지 알면 ERP를 절반은 안 거고요. 문제는 이거였어요." 그녀가 마커로 화이트보드 한쪽에 한 줄을 적었다. <em>"고객이 100개를 6주 후에 달라고 했다. 창고에 60개 있고, 부품 A, B, C가 필요한데 A는 재고 충분, B는 4주 리드타임, C는 8주 리드타임. 지금 무엇을 얼마나 발주해야 하는가?"</em> "이걸 손으로 푸는 회사들이 1960년대까지 있었어요. 큰 회사일수록 더 손으로 풀 수 없었고요. 그래서 컴퓨터에 시켰는데 — 그게 MRP예요. 시간 단계별로(time-phased) 자재 소요량을 자동 계산하고, 발주를 권고하고, 일정이 안 맞으면 재조정까지 권고하는 기법." 그녀가 마커를 트레이에 가지런히 놓았다.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Material Requirements Planning (MRP)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Material Requirements Planning (MRP)</strong><br>
  <em>"A set of techniques that uses bill of material data, inventory data, and the master production schedule to calculate requirements for materials. It makes recommendations to release replenishment orders for material. Further, because it is time-phased, it makes recommendations to reschedule open orders when due dates and need dates are not in phase."</em><br>
  (BOM·재고·MPS를 입력으로 자재 소요량을 계산하고, 보충 주문 발주를 권고하며, 시간 단계별 분석을 통해 기존 주문의 일정 재조정도 권고하는 기법)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), MRP 표제어 — 인용</small>
@@ -3919,7 +4195,7 @@
  <small>설계 단계 5주차</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#16.1</div>
 <p id="p16-1">설계 5주차 어느 화요일 오전. PP 워크숍 첫날. 서책임이 화이트보드 앞에 섰다. 흰 셔츠 소매를 팔꿈치까지 한 번 접어 올린 모양, 묶은 긴 머리가 등 한가운데에 한 줄로 떨어져 있었다. 마커를 든 손가락이 평소보다 한 박자 천천히 움직였다. PP는 서책임이 12년 동안 가장 깊이 들여다본 모듈이었다. 그녀가 마커로 화이트보드 위에 한 단어를 적었다. <strong>Production Planning.</strong> 글자 끝이 단정했다.</p> <p>"이 차장이 PP 책임이지만 — 첫 워크숍은 제가 본질부터 짚을게요. PP는 한성정밀의 심장이에요. 매출의 95%가 PP가 만든 결과고, 표준원가-실제원가 차이의 모든 원인이 PP에 있어요." 그녀의 시선이 회의실 천장 한쪽을 잠시 봤다 — 자기가 12년 동안 본 PP 사례들을 한 번에 떠올린 사람의 시선. "PP의 본질은 단순해요. <em>고객이 원하는 제품을, 약속한 날짜에, 가장 낮은 원가로 만든다.</em> 이 한 줄이 PP의 전부예요. 그런데 그 한 줄을 깨뜨리는 변수가 — BOM·라우팅·워크센터·생산오더·MRP·CRP — 여섯 가지가 동시에 작동해야 풀려요. 한 가지만 어긋나도 — 라인이 멈추고, 원가가 흔들리고, OEM 페널티가 회사를 덮쳐요." 그녀가 마커를 한 번 더 천천히 돌렸다. 회의실 형광등이 그녀의 묶은 긴 머리 약간 위에 떨어졌다 사라졌다.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Production Planning</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Production Planning</strong><br>
  <em>"A process to develop tactical plans based on setting the overall level of manufacturing output (production plan) and other activities to best satisfy the current planned levels of sales (sales plan or forecasts), while meeting general business objectives of profitability, productivity, competitive customer lead times, and so on."</em><br>
  (수익성·생산성·경쟁력 있는 납기 등 사업 목표를 충족하면서, 현재 계획된 판매 수준(판매계획·예측)을 가장 잘 만족시키는 생산 산출 수준 및 활동의 전술 계획을 수립하는 프로세스)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Production Planning 표제어 — 인용</small>
@@ -4271,7 +4547,7 @@
  <small>설계 단계 6주차</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#17.1</div>
 <p id="p17-1">설계 6주차 월요일. 서책임이 SD 워크숍 자리에서 마커를 들었다. 평소 단정한 묶은 긴 머리, 흰 셔츠 위에 짙은 회색 블라우스을 약간 걸친 모양. 그녀의 시선이 회의실에 들어선 영업팀 박 부장(클라이언트 측)을 한 번 머물렀다 화이트보드로 돌아왔다. "박 부장님, 영업의 본질부터 짚을게요. SD는 — 고객이 주문을 던진 순간부터 회사 통장에 돈이 들어오기까지의 모든 흐름이에요. 한 줄 빠지면 매출 손실, 한 박자 늦으면 고객 신뢰 손실." 마커 끝이 화이트보드 위에 한 줄을 적었다. <strong>Order-to-Cash.</strong> 글자 끝에 잠시 머물렀다.</p> <p>"한성정밀처럼 자동차 1차 협력사는 SD가 더 깊어요. EDI 주문 자동 수신, OEM 납기 100% 준수, 가격조건 5단계 자동 계산, ASN(Advance Shipment Notice) 자동 발행, 매출 인식 K-IFRS 1115호 통제 이전 시점 — 이 다섯 가지가 SD에 같이 들어가요. 한 가지만 어긋나도 H자동차 페널티 1건당 500만 원이 회사 손익에 직접 새겨져요." 그녀가 마커를 한 번 트레이에 가지런히 놓았다. 회의실에 잠시 정적이 흘렀고, 박 부장이 한 번 짧게 고개를 끄덕였다.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Order-to-Cash (O2C)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Order-to-Cash (O2C)</strong><br>
  <em>"A set of business processes that involves receiving and fulfilling customer requests for goods or services. These processes typically include order management, credit management, order fulfillment, distribution, invoicing, and accounts receivable."</em><br>
  (고객의 재화·서비스 요청을 수신하고 이행하는 비즈니스 프로세스 집합. 일반적으로 주문 관리, 여신 관리, 주문 이행, 물류, 청구, 외상매출금 관리 포함)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Order-to-Cash 표제어 — 인용</small>
@@ -5577,7 +5853,7 @@
  <small>설계 단계 10주차</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#21.1</div>
 <p id="p21-1">설계 10주차 어느 수요일 오후. 서책임이 회의실 화이트보드 앞에 섰다. 손에 마커 두 자루 — 검정과 빨강. 평소 회의에서는 검정 한 자루만 들던 사람이었다. 그날은 두 자루. 마스터데이터 관리 워크숍 첫날 — 서책임이 가장 무겁게 보는 이었다.</p> <p>"마스터데이터는 ERP의 골격이에요." 그녀의 마커가 화이트보드 한가운데에 한 단어를 적었다. <strong>Master Data.</strong> "트랜잭션은 매일 흐르고 사라지지만, 마스터는 5년·10년 회사가 떠나지 않을 뿌리예요. 한성정밀 자체ERP에 등록된 31만 SKU 중 — 작년 한 해 동안 한 번이라도 거래가 발생한 자재가 4만 6,800건. 활성 비율 15.1%. 나머지 26만 3,200건은 — '죽은 마스터'예요. 그게 매일 MRP 계산에 들어가서 시스템을 무겁게 만들고, 분석 보고서를 왜곡시키고, 외부감사인에게 통제 의심을 사요." 그녀가 빨간 마커를 한 번 들었다. 회의실 형광등이 빨간 캡 위에 한 점 떨어졌다 사라졌다. "이 26만 건이 한성정밀 ERP의 진짜 적이에요. 우리가 18개월 안에 정제해야 할 거고요."</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Master Data</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Master Data</strong><br>
  <em>"The data records that contain key information about an enterprise's customers, suppliers, products, materials, and other key entities. Master data is shared across multiple business processes and remains relatively stable over time, in contrast to transactional data."</em><br>
  (기업의 고객·공급자·제품·자재 등 핵심 객체에 대한 키 정보를 담은 데이터 레코드. 트랜잭션 데이터와 달리 여러 비즈니스 프로세스에 걸쳐 공유되며 시간이 흘러도 비교적 안정적으로 유지되는 데이터)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Master Data 표제어 — 인용</small>
@@ -6107,7 +6383,7 @@
  <small>설계 단계 11주차</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#22.1</div>
 <p id="p22-1">설계 11주차 월요일 오전 9시. 서책임이 회의실에 두꺼운 파일 두 권을 가져왔다. 하나는 한성정밀 자체ERP의 BOM 88,000건, 다른 하나는 라우팅 12,000건. 두 권 합쳐 약 1,200페이지. 그녀가 파일을 회의실 책상 한가운데에 가지런히 놓았다. 평소 묶은 긴 머리, 흰 셔츠, 짙은 베이지 블라우스 차림. 그 표정가 — 회의실에 들어선 모든 사람의 시선을 한 번에 한가운데로 모았다.</p> <p>"BOM은 회사의 DNA예요." 그녀가 한 권을 한 손으로 짚었다. 평소보다 한 박자 천천히. "한성정밀이 만드는 모든 자동차 부품의 — 무엇이 무엇으로 어떻게 조립되는지가 이 88,000줄에 다 적혀 있어요. 한 줄이 틀리면 — 라인이 멈춰요. 한 줄에 들어간 자재 한 개 누락 — 그게 작년 시화공장 라인 정지 12건 중 4건의 원인이었고요." 그녀의 시선이 회의실 끝자리에 앉은 세빈에게 한 번 흘렀다. "김세빈씨, 자동차 1차 협력사 BOM은 단순한 자재명세서가 아니에요. <em>회사가 고객한테 한 약속의 가장 작은 단위</em>예요. 외워두세요."</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Bill of Materials (BOM)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Bill of Materials (BOM)</strong><br>
  <em>"A listing of all the subassemblies, intermediates, parts, and raw materials that go into a parent assembly showing the quantity of each required to make an assembly. It is used in conjunction with the master production schedule to determine the items for which purchase requisitions and production orders must be released."</em><br>
  (상위 조립품 한 단위 생산에 필요한 하위 조립품·중간품·부품·원자재의 수량을 명시한 목록. MPS와 함께 사용되어 발주 요청 및 생산오더 발행 대상을 결정)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Bill of Materials 표제어 — 인용</small>
@@ -6960,7 +7236,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  <small>설계 단계 13주차</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#24.1</div>
 <p id="p24-1">설계 13주차 화요일 오전. 서책임이 회의실 화이트보드 앞에 섰다. 평소 86도, 마커 한 자루, 묶은 긴 머리. 그날따라 그녀의 모양가 한 박자 더 단정했다. ECO는 서책임이 12년 동안 수많은 라인 정지의 원인을 추적하면서 가장 깊이 들여다본 이었다. "한성정밀 자체ERP에는 ECO 시스템이 없어요. 설계변경이 메일과 종이 결재로 굴러가요. BOM 반영까지 평균 7일. 그 7일 사이에 발주가 나가면 — 구버전 자재가 입고되고 라인이 멈춰요. 작년 시화공장 라인 정지 12건 중 5건의 진짜 원인이 — ECO 부재예요." 그녀의 시선이 회의실 한쪽 벽의 한성정밀 라인 정지 통계 차트를 한 번 짚었다 돌아왔다.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Engineering Change Order (ECO)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Engineering Change Order (ECO)</strong><br>
  <em>"A revision to a blueprint or design released by engineering to modify or correct a part. The request for the change can be from a customer or from production, quality control, or another department."</em><br>
  (부품을 수정·보완하기 위해 엔지니어링이 발행하는 도면·설계 개정. 변경 요청은 고객·생산·품질관리·기타 부서에서 제기 가능)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Engineering Change Order 표제어 — 인용</small>
@@ -7421,7 +7697,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  <p id="scene-marker-drop">마커를 바꾸다 한 번 떨어뜨렸다. 줍느라 잠시 몸을 숙였다. 다시 일어섰다.</p> <p>그녀가 위에서 아래로 큰 글씨를 썼다.</p> <blockquote class="story" style="text-align:center;font-size:28px;font-weight:900;font-style:normal;">
  구축 6개월. 152영업일. 1,216시간.
  </blockquote> <p>"재훈씨, 지금부터 152영업일 동안 우리는 한성정밀의 SAP를 진짜로 만듭니다. 일정과 위험. 이 두 단어가 6개월의 모든 것 같아요. 일정은 빗나가기 위해 있고, 위험은 터지기 위해 있습니다. 그래서 우리는 일정을 정밀하게 그리고, 위험을 끊임없이 추적라고 봐요. PMO의 일은 시스템을 만드는 게 아니라, 시스템이 만들어지는 동안 회사가 무너지지 않게 지키는 거예요."</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Risk Management</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Risk Management</strong><br>
  <em>"The identification, assessment, and prioritization of risks followed by coordinated and economical application of resources to minimize, monitor, and control the probability and/or impact of unfortunate events or to maximize the realization of opportunities."</em><br>
  (위험을 식별·평가·우선순위화한 후, 부정적 사건의 발생 확률·영향을 최소화·감시·통제하거나 기회 실현을 극대화하기 위해 자원을 조율하여 경제적으로 투입하는 활동)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Risk Management 표제어 — 인용</small>
@@ -7958,7 +8234,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  <p>"재훈씨, 와 있었어요?" 시선이 서류에서 올라왔다. "IST 시작이 다음 주예요. 250건 시나리오를 한 줄씩 같이 봐 줄래요." 마커로 화이트보드에 한 줄을 적었다. <strong>Integration Testing.</strong></p>
 
  <p>"통합테스트는 모듈별 단위테스트 통과 후 — 모듈 간 흐름을 시나리오로 검증하는 거예요. 컨설턴트와 Key User가 같이 실행. P1 결함 0건이 컷오버의 입장권이에요."</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Integration Testing</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Integration Testing</strong><br>
  <em>"The phase in software testing in which individual software modules are combined and tested as a group. It occurs after unit testing and before system testing."</em><br>
  (개별 소프트웨어 모듈을 결합해 그룹으로 테스트하는 단계. 단위테스트 이후, 시스템 테스트 이전에 수행)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Integration Testing 표제어 — 인용</small>
@@ -8012,7 +8288,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  <small>구축 단계 5개월</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#31.1</div>
 <p id="p31-1">구축 5개월차 첫 날 오전. 서책임이 한성정밀 회의실 31번 화이트보드 앞에 섰다. 평소보다 한 박자 더 단정한 표정 — UAT는 컨설턴트가 운전대에서 잠시 내려와 클라이언트에게 핸들을 넘기는 이었다. 흰 셔츠에 베이지 블라우스, 묶은 긴 머리. 그녀의 마커가 화이트보드 위에 한 줄을 적었다. <strong>User Acceptance Test.</strong> "재훈씨, 김세빈씨. 오늘부터 4주가 — 18개월 중 가장 미묘한 거예요. 우리가 만든 시스템을 한성정밀 사용자가 직접 테스트해서 — '받겠다 / 못 받겠다'를 결정하는 거고요. 우리는 옆에서 보조만. 핸들에서 손을 떼는 4주예요." 블라우스 가닥이 화이트보드 쪽으로 한 번 흘렀다. 그녀가 한 번 다시 가다듬었다.</p> <p>"통과 기준이 까다로워요. <strong>P1 결함 0건, P2 결함 5건 이하, 주요 시나리오 100% 통과, 주변 시나리오 95% 통과, 운영위 Sign-off.</strong> 이 다섯 가지가 다 충족되어야 컷오버로 넘어가요. 한 가지만 빠져도 — 일정이 한 달 밀려요." 마커가 화이트보드 위에 다섯 줄 더 적혔다. 글씨 끝마다 평소처럼 그대로의 마침표.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — User Acceptance Testing (UAT)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — User Acceptance Testing (UAT)</strong><br>
  <em>"The final stage of testing in which the actual users of a software product test the software in the operational environment to verify that the system meets their business requirements and is ready for deployment."</em><br>
  (소프트웨어 제품의 실제 사용자가 운영 환경에서 시스템을 테스트하여, 사업 요구사항을 충족하고 배포 준비가 되었는지 검증하는 최종 테스트 단계)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), User Acceptance Testing 표제어 — 인용</small>
@@ -8769,7 +9045,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  <p>매일 한 칸씩 X를 그릴 빨간 마커를 들었다.</p>
 
  <p><em>"재훈씨, 이 30일이 18개월의 진짜 시험인 것 같아요. 이 30일이 잘못되면 앞의 17개월이 다 무너집니다."</em></p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Cutover</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Cutover</strong><br>
  <em>"The point in the implementation of a new system at which the existing system is replaced and the new system goes live. It is the moment when the new system becomes the system of record for the organization."</em><br>
  (새 시스템 구현 과정에서 기존 시스템을 교체하고 새 시스템이 가동되는 시점. 새 시스템이 조직의 공식 기록 시스템이 되는 순간)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Cutover 표제어 — 인용</small>
@@ -8928,7 +9204,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  <small>Go-Live + 8주</small>
  </h3> <div style="color:#bbb;font-size:10px;font-weight:normal;margin-top:6px;margin-bottom:-2px;">#38.1</div>
 <p id="p38-1">Go-Live 다음 날 오전 9시. 서책임이 한성정밀 회계팀 사무실에 자리를 잡았다. 컨설팅사 회의실 31번이 아니라 — 이번엔 클라이언트 회계팀 옆자리. 8주 동안 회계팀 안에 상주. 평소 묶은 긴 머리, 흰 셔츠, 베이지 블라우스. 책상 위에 노트북 한 대 + 한성정밀 결산 캘린더 + 빨간 마커 한 자루. 한성정밀 회계팀 김 부장(54세, 27년차)이 옆자리에서 한 번 짧게 인사를 했다. "서책임님, 8주 동안 잘 부탁합니다."</p> <p>그녀가 평소 처럼 답했다. "김 부장님, 제가 8주 동안 옆에 앉아 있을게요. 부장님 손가락이 SAP 키보드에 익숙해지실 때까지요." 그러더니 덧붙였다. "Hyper Care는 — 시스템이 안정되는 자리가 아니라, 사람이 시스템을 자기 거라고 부르게 되는 8주예요. 그게 진짜 정착이고요." 그녀의 시선이 김 부장 책상 옆에 27년 동안 쌓인 매크로 출력물 한 권을 한 번 짚었다 돌아왔다. 27년의 한 사람이 한 시스템을 — 8주 안에 받아들여야 하는 자리.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Stabilization (Hyper Care)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Stabilization (Hyper Care)</strong><br>
  <em>"The post-implementation period in which the project team provides intensive support to end users to ensure the system operates as intended and to address issues quickly. It typically lasts from a few weeks to several months following go-live."</em><br>
  (Go-Live 직후 프로젝트 팀이 최종 사용자에게 집중 지원을 제공하여 시스템이 의도대로 작동하고 이슈가 신속하게 해결되도록 하는 도입 후 기간. 일반적으로 Go-Live 후 수 주에서 수 개월 지속)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Stabilization 표제어 — 인용</small>
@@ -9003,7 +9279,7 @@ Q5: 회계 보고에서 별도 표시 의도?
 <p id="scene-dawn-hair">Go-Live + 5주차 새벽 3시 47분. 서책임이 회계팀 사무실에 혼자. D+5 결산 마감 직전. 5시간째 야근.</p>
 
  <p>"재훈씨, 와 있었어요? 207번 분개만 한 번 더 봐 줘요."</p> <p>한성정밀의 첫 SAP 결산이 D+5에 정확히 끝난 그날 저녁, 김 사장은 임원·컨설팅사 전원을 회식자리에 불렀다. 회식 자리에서 김 사장은 마이크를 잡고 한 마디 했다. <em>"오늘 우리는 두 번째 창립을 완성했습니다."</em> 모두가 박수쳤다. 마이크 내려놓은 김 사장이 우리 자리로 한 번 와서 내 어깨를 두 번 두드렸다. <em>"재훈씨, 18개월 됐네. 술도 그때보다 잘 먹지?"</em> 18개월 전 시화 횟집 1차에서 던졌던 같은 한 마디. 같은 어깨 두드림. 18개월 만의 회수. 김 부장(54세 회계팀장)이 이 차장 옆자리에서 소주 다섯 잔을 한꺼번에 비우고 울었다. 누구도 그를 막지 않았다.</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Closing</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Closing</strong><br>
  <em>"The process of finalizing the financial accounts for a specified period (monthly, quarterly, or annually). It includes posting all transactions, reconciling accounts, performing accruals and adjustments, and producing financial statements."</em><br>
  (특정 기간(월·분기·연)에 대한 회계 계정을 최종 확정하는 프로세스. 모든 거래의 기장, 계정 조정, 발생주의·조정 분개, 재무제표 산출을 포함)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), Closing 표제어 — 인용</small>
@@ -9074,7 +9350,7 @@ Q5: 회계 보고에서 별도 표시 의도?
  ↓
 [Production Activity Control / Purchasing] ← 실행
  </div> <p>"이게 6단계 Closed-loop MRP — 1980년대부터 제조업이 표준으로 써 온 위계예요. 한성정밀 SAP S/4HANA에 새겨진 것도 — 이 6단계의 한국 자동차 1차 협력사 버전이고요. 이 위계 안에서 — 위 계획이 무너지면 아래 계획이 자동으로 무너져요. 한 박자로 묶인 거예요."</p> <blockquote class="story" style="background:#f3ece0;border-left:4px solid #2c5f5d;padding:12px 16px;font-size:14.5px;">
- 📖 <strong>APICS Dictionary 16th Edition — Manufacturing Resource Planning (MRP-II)</strong><br>
+ <span class="ico ico-book"></span> <strong>APICS Dictionary 16th Edition — Manufacturing Resource Planning (MRP-II)</strong><br>
  <em>"A method for the effective planning of all resources of a manufacturing company. Ideally, it addresses operational planning in units, financial planning in dollars, and has a simulation capability to answer 'what-if' questions… It is made up of a variety of functions, each linked together: business planning, production planning (sales and operations planning), master production scheduling, material requirements planning, capacity requirements planning…"</em><br>
  (제조 기업의 모든 자원을 효과적으로 계획하는 방법. 사업 계획·S&amp;OP·MPS·MRP·CRP가 한 위계로 연결된 구조)<br>
  <small style="color:#777;">출처: APICS Dictionary 16th Edition (2019), MRP-II 표제어 — 인용</small>
@@ -13428,7 +13704,7 @@ Q5: 회계 보고에서 별도 표시 의도?
 <!-- 목차 팝업 -->
 <div id="toc-popup" style="display:none;position:fixed;left:14px;right:14px;bottom:60px;max-height:60vh;overflow-y:auto;overscroll-behavior:contain;background:#fff;color:#1a1a1a;border:1px solid #b8a988;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.25);padding:14px 18px;z-index:10000;font-family:'Noto Sans KR',sans-serif;-webkit-overflow-scrolling:touch;">
  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;padding-bottom:8px;margin-bottom:10px;position:sticky;top:-14px;background:#fff;z-index:5;padding-top:14px;margin-top:-14px;">
- <span style="font-weight:700;font-size:14px;">📖 목차</span>
+ <span style="font-weight:700;font-size:14px;"><span class="ico ico-book"></span> 목차</span>
  <span onclick="toggleTocPopup(false);" ontouchend="event.preventDefault();toggleTocPopup(false);" style="cursor:pointer;color:#888;font-size:18px;font-weight:700;padding:0 6px;">×</span>
  </div>
  <div id="toc-popup-list" style="font-size:13px;line-height:1.7;"></div>
@@ -13461,7 +13737,7 @@ function toggleTocPopup(force) {
  html += '<div onclick="gotoSection(\'' + id + '\');" style="cursor:pointer;padding:8px 0 8px ' + indent + 'px;font-weight:' + weight + ';color:' + color + ';border-bottom:1px dotted #eee;-webkit-tap-highlight-color:rgba(139,58,42,0.15);">' + title + '</div>';
  });
  // 색인 항목
- html += '<div onclick="gotoSection(\'index\');" style="cursor:pointer;padding:10px 0;font-weight:700;color:#5d4a8b;border-top:2px solid #8b3a2a;margin-top:8px;-webkit-tap-highlight-color:rgba(139,58,42,0.15);">📑 색인 (가나다·알파벳순)</div>';
+ html += '<div onclick="gotoSection(\'index\');" style="cursor:pointer;padding:10px 0;font-weight:700;color:#5d4a8b;border-top:2px solid #8b3a2a;margin-top:8px;-webkit-tap-highlight-color:rgba(139,58,42,0.15);"><span class="ico ico-index"></span> 색인 (가나다·알파벳순)</div>';
  // 썸 색인 19개 자리 다 나열
  var sumScenes = [
  ['scene-bike-cycle', '#6.3 한강 새벽 사이클 (서책임·체력 관리)'],
@@ -13550,17 +13826,353 @@ function gotoSection(id) {
 </script>
 
 <div id="bm-toolbar" style="position:fixed;bottom:14px;right:14px;z-index:9999;font-family:'Noto Sans KR',sans-serif;">
- <button id="bm-toggle" title="책갈피 (L)" style="background:#8b3a2a;color:#fff;border:0;padding:7px 12px;border-radius:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);font-size:16px;">🔖</button>
+ <button id="search-toggle" title="검색 (F)"><span class="ico ico-search"></span></button>
+ <button id="bm-toggle" title="책갈피 (L)" style="background:#8b3a2a;color:#fff;border:0;padding:0;border-radius:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;vertical-align:top;"><span class="ico ico-bookmark" style="width:18px;height:18px;"></span></button>
+ <div id="search-panel">
+  <div class="search-row">
+   <input id="search-input" type="text" placeholder="검색어 입력 (Enter=다음, Shift+Enter=이전)" autocomplete="off" />
+   <button class="search-btn" id="search-close" title="닫기"><span class="ico ico-x"></span></button>
+  </div>
+  <div class="search-meta">
+   <span id="search-counter">0 / 0</span>
+   <div>
+    <button class="search-btn" id="search-prev" title="이전 (Shift+Enter)"><span class="ico ico-prev"></span></button>
+    <button class="search-btn" id="search-next" title="다음 (Enter)"><span class="ico ico-next"></span></button>
+   </div>
+  </div>
+  <div class="search-history-header">
+   <span>최근 검색어</span>
+   <button class="search-history-clear" id="search-history-clear">전체 삭제</button>
+  </div>
+  <div id="search-history-list"></div>
+ </div>
  <div id="bm-panel" style="display:none;position:absolute;bottom:48px;right:0;width:280px;max-height:380px;overflow-y:auto;background:#fff;color:#1a1a1a;border:1px solid #b8a988;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:12px 14px;">
- <div style="font-weight:700;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:8px;">📑 책갈피 목록</div>
+ <div style="font-weight:700;border-bottom:1px solid #ddd;padding-bottom:6px;margin-bottom:8px;"><span class="ico ico-index"></span> 책갈피 목록</div>
  <div id="bm-list" style="font-size:12.5px;line-height:1.5;"></div>
  <div style="border-top:1px solid #ddd;margin-top:8px;padding-top:8px;font-size:11px;color:#666;">
  <button id="bm-add" style="background:#2c5f5d;color:#fff;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;margin-right:4px;">+ 현재 위치 추가</button>
  <button id="bm-clear" style="background:#f0e0e0;color:#8b3a2a;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:12px;">전체 삭제</button>
- <div style="margin-top:6px;">단축키: B(추가) L(목록) Esc(닫기) H(도움말)</div>
+ <div style="margin-top:6px;">단축키: B(추가) L(목록) F(검색) Esc(닫기) H(도움말)</div>
  </div>
  </div>
 </div>
+
+<!-- 공통 모달 마스크 -->
+<div id="app-modal-mask">
+ <div id="app-modal">
+  <h4 id="app-modal-title">제목</h4>
+  <div class="modal-body" id="app-modal-body">본문</div>
+  <div class="modal-actions" id="app-modal-actions"></div>
+ </div>
+</div>
+
+<script>
+/* ===== 검색 기능 ===== */
+(function() {
+ 'use strict';
+ const HIST_KEY = 'erp_search_history_' + (location.pathname.split('/').pop() || 'main');
+ const MAX_HIST = 30;
+
+ let currentMatches = [];
+ let currentIdx = -1;
+ let lastTerm = '';
+ let debTimer;
+
+ function $(id) { return document.getElementById(id); }
+ function escRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+ function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+   return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+  });
+ }
+
+ function getHistory() {
+  try { return JSON.parse(localStorage.getItem(HIST_KEY) || '[]'); }
+  catch(e) { return []; }
+ }
+ function saveHistory(arr) { localStorage.setItem(HIST_KEY, JSON.stringify(arr)); }
+ function pushHistory(term) {
+  if (!term) return;
+  let h = getHistory();
+  h = h.filter(function(t) { return t !== term; });
+  h.unshift(term);
+  if (h.length > MAX_HIST) h = h.slice(0, MAX_HIST);
+  saveHistory(h);
+  renderHistory();
+ }
+ function deleteHistory(idx) {
+  const h = getHistory();
+  h.splice(idx, 1);
+  saveHistory(h);
+  renderHistory();
+ }
+ function clearHistory() {
+  const doClear = function() { saveHistory([]); renderHistory(); };
+  if (window._showConfirmModal) {
+   window._showConfirmModal(
+    '<span class="ico ico-trash"></span> 검색 기록 전체 삭제',
+    '저장된 검색어를 모두 삭제하시겠습니까?<br><span style="color:#888;font-size:12px;">되돌릴 수 없습니다.</span>',
+    doClear,
+    { yesLabel: '전체 삭제' }
+   );
+  } else if (confirm('모든 검색 기록을 삭제하시겠습니까?')) {
+   doClear();
+  }
+ }
+ function renderHistory() {
+  const list = $('search-history-list');
+  if (!list) return;
+  const h = getHistory();
+  if (h.length === 0) {
+   list.innerHTML = '<div class="search-history-empty">기록 없음</div>';
+   return;
+  }
+  list.innerHTML = h.map(function(t, i) {
+   return '<div class="search-history-item">' +
+    '<span class="search-history-text" data-idx="' + i + '" title="' + escapeHtml(t) + '">' + escapeHtml(t) + '</span>' +
+    '<button class="search-history-del" data-idx="' + i + '" title="삭제"><span class="ico ico-x"></span></button>' +
+    '</div>';
+  }).join('');
+  list.querySelectorAll('.search-history-text').forEach(function(el) {
+   el.addEventListener('click', function() {
+    const idx = parseInt(el.dataset.idx, 10);
+    const term = getHistory()[idx];
+    if (term) {
+     $('search-input').value = term;
+     doSearch(term);
+     pushHistory(term);
+    }
+   });
+  });
+  list.querySelectorAll('.search-history-del').forEach(function(el) {
+   el.addEventListener('click', function(ev) {
+    ev.stopPropagation();
+    deleteHistory(parseInt(el.dataset.idx, 10));
+   });
+  });
+ }
+
+ function clearHighlights() {
+  const marks = document.querySelectorAll('mark.search-hit');
+  marks.forEach(function(m) {
+   const parent = m.parentNode;
+   if (!parent) return;
+   while (m.firstChild) parent.insertBefore(m.firstChild, m);
+   parent.removeChild(m);
+  });
+  // 인접 텍스트 노드 병합
+  const dirty = new Set();
+  marks.forEach(function(m) { if (m.parentNode) dirty.add(m.parentNode); });
+  dirty.forEach(function(p) { try { p.normalize(); } catch(e) {} });
+  currentMatches = [];
+  currentIdx = -1;
+ }
+
+ function doSearch(term) {
+  clearHighlights();
+  lastTerm = term || '';
+  if (!term || !term.length) { updateCounter(); return; }
+  const re = new RegExp(escRe(term), 'gi');
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+   acceptNode: function(node) {
+    const p = node.parentNode;
+    if (!p) return NodeFilter.FILTER_REJECT;
+    const tag = p.nodeName;
+    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'MARK' || tag === 'NOSCRIPT') return NodeFilter.FILTER_REJECT;
+    if (p.closest && (
+     p.closest('#search-panel') ||
+     p.closest('#bm-panel') ||
+     p.closest('#bm-toolbar') ||
+     p.closest('#toc-popup') ||
+     p.closest('#app-modal-mask') ||
+     p.closest('#position-indicator')
+    )) return NodeFilter.FILTER_REJECT;
+    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+    return NodeFilter.FILTER_ACCEPT;
+   }
+  });
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+
+  nodes.forEach(function(node) {
+   const text = node.nodeValue;
+   re.lastIndex = 0;
+   let m, last = 0, found = false;
+   const frag = document.createDocumentFragment();
+   while ((m = re.exec(text))) {
+    found = true;
+    if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+    const mark = document.createElement('mark');
+    mark.className = 'search-hit';
+    mark.textContent = m[0];
+    frag.appendChild(mark);
+    last = m.index + m[0].length;
+    if (m[0].length === 0) re.lastIndex++;
+   }
+   if (found) {
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+   }
+  });
+
+  currentMatches = Array.from(document.querySelectorAll('mark.search-hit'));
+  if (currentMatches.length > 0) {
+   currentIdx = 0;
+   currentMatches[0].classList.add('current');
+   currentMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  updateCounter();
+ }
+
+ function moveMatch(dir) {
+  if (currentMatches.length === 0) return;
+  if (currentMatches[currentIdx]) currentMatches[currentIdx].classList.remove('current');
+  currentIdx = (currentIdx + dir + currentMatches.length) % currentMatches.length;
+  currentMatches[currentIdx].classList.add('current');
+  currentMatches[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  updateCounter();
+ }
+
+ function updateCounter() {
+  const c = $('search-counter');
+  if (!c) return;
+  c.textContent = currentMatches.length === 0 ? '0 / 0' : (currentIdx + 1) + ' / ' + currentMatches.length;
+ }
+
+ function togglePanel(force) {
+  const p = $('search-panel');
+  if (!p) return;
+  const show = (typeof force === 'boolean') ? force : (p.style.display !== 'block');
+  p.style.display = show ? 'block' : 'none';
+  if (show) {
+   renderHistory();
+   const inp = $('search-input');
+   if (inp) {
+    setTimeout(function() { inp.focus(); inp.select(); }, 50);
+   }
+  } else {
+   clearHighlights();
+   updateCounter();
+  }
+ }
+ window._searchToggle = togglePanel;
+
+ function bind() {
+  const toggleBtn = $('search-toggle');
+  if (toggleBtn) toggleBtn.addEventListener('click', function() { togglePanel(); });
+
+  const closeBtn = $('search-close');
+  if (closeBtn) closeBtn.addEventListener('click', function() { togglePanel(false); });
+
+  const inp = $('search-input');
+  if (inp) {
+   inp.addEventListener('input', function() {
+    clearTimeout(debTimer);
+    debTimer = setTimeout(function() { doSearch(inp.value); }, 250);
+   });
+   inp.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+     e.preventDefault();
+     if (inp.value !== lastTerm) doSearch(inp.value);
+     else moveMatch(e.shiftKey ? -1 : 1);
+     pushHistory(inp.value);
+    } else if (e.key === 'Escape') {
+     e.preventDefault();
+     togglePanel(false);
+    } else if (e.key === 'ArrowDown') {
+     e.preventDefault(); moveMatch(1);
+    } else if (e.key === 'ArrowUp') {
+     e.preventDefault(); moveMatch(-1);
+    }
+   });
+  }
+
+  const nextBtn = $('search-next');
+  if (nextBtn) nextBtn.addEventListener('click', function() { moveMatch(1); if (lastTerm) pushHistory(lastTerm); });
+  const prevBtn = $('search-prev');
+  if (prevBtn) prevBtn.addEventListener('click', function() { moveMatch(-1); });
+
+  const clrBtn = $('search-history-clear');
+  if (clrBtn) clrBtn.addEventListener('click', clearHistory);
+
+  renderHistory();
+ }
+
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+ else bind();
+})();
+
+/* ===== 공통 모달 (도움말·확인 다이얼로그) ===== */
+(function() {
+ function showModal(opts) {
+  const mask = document.getElementById('app-modal-mask');
+  if (!mask) return;
+  document.getElementById('app-modal-title').innerHTML = opts.title || '';
+  document.getElementById('app-modal-body').innerHTML = opts.body || '';
+  const actions = document.getElementById('app-modal-actions');
+  if (actions) {
+   actions.innerHTML = '';
+   const buttons = (opts.buttons && opts.buttons.length) ? opts.buttons : [{ label: '닫기', kind: 'primary' }];
+   buttons.forEach(function(b) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'modal-btn' + (b.kind === 'secondary' ? ' secondary' : (b.kind === 'danger' ? ' danger' : ''));
+    btn.textContent = b.label;
+    btn.addEventListener('click', function() {
+     closeModal();
+     if (typeof b.onClick === 'function') b.onClick();
+    });
+    actions.appendChild(btn);
+   });
+  }
+  mask.classList.add('show');
+ }
+ function closeModal() {
+  const mask = document.getElementById('app-modal-mask');
+  if (mask) mask.classList.remove('show');
+ }
+ window._closeModal = closeModal;
+ window._showHelpModal = function() {
+  showModal({
+   title: '<span class="ico ico-book"></span> 단축키',
+   body:
+    '<div>' +
+    '<kbd>B</kbd> &mdash; 책갈피 추가<br>' +
+    '<kbd>L</kbd> &mdash; 책갈피 목록 토글<br>' +
+    '<kbd>F</kbd> &mdash; 검색 패널 토글<br>' +
+    '<kbd>H</kbd> &mdash; 이 도움말<br>' +
+    '<kbd>Esc</kbd> &mdash; 책갈피·목차·검색·도움말 닫기<br>' +
+    '<kbd>Enter</kbd> / <kbd>Shift</kbd>+<kbd>Enter</kbd> &mdash; 검색 결과 다음·이전 (검색창 안)' +
+    '</div>' +
+    '<div class="modal-note"><span class="ico ico-pushpin" style="width:14px;height:14px;flex-shrink:0;margin-top:2px;"></span><span>마지막 본 위치는 자동 저장됩니다. 파일을 다시 열어도 그 위치부터 시작합니다.</span></div>',
+   buttons: [{ label: '닫기', kind: 'primary' }]
+  });
+ };
+ /* _showConfirmModal(title, body, onYes, opts?) — opts: { yesLabel, yesKind } */
+ window._showConfirmModal = function(title, body, onYes, opts) {
+  opts = opts || {};
+  showModal({
+   title: title,
+   body: body,
+   buttons: [
+    { label: '취소', kind: 'secondary' },
+    { label: opts.yesLabel || '삭제', kind: opts.yesKind || 'danger', onClick: onYes }
+   ]
+  });
+ };
+
+ function bind() {
+  const mask = document.getElementById('app-modal-mask');
+  if (!mask) return;
+  mask.addEventListener('click', function(e) {
+   if (e.target === mask) closeModal();
+  });
+ }
+ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+ else bind();
+})();
+</script>
 
 <script>
 (function() {
@@ -13631,10 +14243,17 @@ function gotoSection(id) {
  renderList();
  }
  function clearAll() {
- if (confirm('모든 책갈피를 삭제하시겠습니까?')) {
- saveBookmarks([]);
- renderList();
- }
+  const doClear = function() { saveBookmarks([]); renderList(); };
+  if (window._showConfirmModal) {
+   window._showConfirmModal(
+    '<span class="ico ico-trash"></span> 책갈피 전체 삭제',
+    '저장된 책갈피를 모두 삭제하시겠습니까?<br><span style="color:#888;font-size:12px;">되돌릴 수 없습니다.</span>',
+    doClear,
+    { yesLabel: '전체 삭제' }
+   );
+  } else if (confirm('모든 책갈피를 삭제하시겠습니까?')) {
+   doClear();
+  }
  }
  function renderList() {
  const list = document.getElementById('bm-list');
@@ -13646,10 +14265,10 @@ function gotoSection(id) {
  }
  list.innerHTML = bm.map(function(b, i) {
  return '<div style="padding:6px 0;border-bottom:1px dotted #eee;">' +
- '<a href="#" onclick="window._bmGoto(' + i + ');return false;" style="color:#8b3a2a;text-decoration:none;font-weight:500;display:block;">📍 ' + escapeHtml(b.name) + '</a>' +
+ '<a href="#" onclick="window._bmGoto(' + i + ');return false;" style="color:#8b3a2a;text-decoration:none;font-weight:500;display:block;"><span class="ico ico-pin" style="width:12px;height:12px;"></span> ' + escapeHtml(b.name) + '</a>' +
  '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">' +
  '<span style="color:#999;font-size:10.5px;">' + escapeHtml(b.time) + '</span>' +
- '<button onclick="window._bmDelete(' + i + ')" style="background:none;border:0;color:#c66;cursor:pointer;font-size:11px;">🗑️</button>' +
+ '<button onclick="window._bmDelete(' + i + ')" style="background:none;border:0;color:#c66;cursor:pointer;padding:2px 6px;display:inline-flex;align-items:center;"><span class="ico ico-trash" style="width:13px;height:13px;"></span></button>' +
  '</div></div>';
  }).join('');
  }
@@ -13759,9 +14378,15 @@ function gotoSection(id) {
  const key = e.key.toLowerCase();
  if (key === 'b') { e.preventDefault(); addBookmark(); }
  else if (key === 'l') { e.preventDefault(); togglePanel(); }
- else if (key === 'escape') { togglePanel(false); if (typeof toggleTocPopup === 'function') toggleTocPopup(false); }
+ else if (key === 'f') { e.preventDefault(); if (window._searchToggle) window._searchToggle(true); }
+ else if (key === 'escape') {
+  togglePanel(false);
+  if (typeof toggleTocPopup === 'function') toggleTocPopup(false);
+  if (window._searchToggle) window._searchToggle(false);
+  if (window._closeModal) window._closeModal();
+ }
  else if (key === 'h' && !e.shiftKey) {
- alert('📖 단축키\n\nB — 책갈피 추가\nL — 책갈피 목록 토글\nEsc — 책갈피·목차 팝업 닫기\nH — 이 도움말\n\n📌 마지막 본 위치는 자동 저장됩니다.\n파일을 다시 열어도 그 위치부터 시작합니다.');
+  if (window._showHelpModal) window._showHelpModal();
  }
  });
 })();
